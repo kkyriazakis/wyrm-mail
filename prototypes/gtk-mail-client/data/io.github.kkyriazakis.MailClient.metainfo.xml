@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.kkyriazakis.MailClient</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <name>Mail Client</name>
+  <summary>Read and write email</summary>
+  <description>
+    <p>
+      Mail Client is a native email client for GNOME. It connects to your
+      existing IMAP and SMTP accounts so you can read, organize and send email
+      from a fast, adaptive desktop app that fits in with the rest of your system.
+    </p>
+  </description>
+
+  <developer id="io.github.kkyriazakis">
+    <name>kkyriazakis</name>
+  </developer>
+
+  <url type="homepage">https://example.com/mail-client</url>
+
+  <launchable type="desktop-id">io.github.kkyriazakis.MailClient.desktop</launchable>
+  <provides>
+    <binary>mail-client</binary>
+  </provides>
+
+  <categories>
+    <category>Network</category>
+    <category>Email</category>
+  </categories>
+
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
+  <content_rating type="oars-1.1"/>
+
+  <releases>
+    <release version="0.1.0" date="2026-10-07">
+      <description>
+        <p>Initial scaffold.</p>
+      </description>
+    </release>
+  </releases>
+</component>

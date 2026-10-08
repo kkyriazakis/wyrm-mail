@@ -1,0 +1,26 @@
+# Mozilla platform checkout, created by scripts/setup.sh (~10 GB).
+/firefox/
+
+# Temporary upstream clones.
+/.comm-upstream-clone/
+
+# Build output and logs.
+obj-*/
+*.log
+/artifacts/
+
+# GTK prototype build output.
+/prototypes/gtk-mail-client/build/
+/prototypes/gtk-mail-client/_install/
+/prototypes/gtk-mail-client/.flatpak-builder/
+/prototypes/gtk-mail-client/flatpak-build/
+/prototypes/gtk-mail-client/repo/
+*.flatpak
+
+# Python / editors / OS.
+__pycache__/
+*.pyc
+.idea/
+*.swp
+*~
+.DS_Store

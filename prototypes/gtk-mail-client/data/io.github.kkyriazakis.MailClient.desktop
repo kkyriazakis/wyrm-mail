@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Mail Client
+Comment=Read and write email
+Exec=mail-client
+Icon=io.github.kkyriazakis.MailClient
+Terminal=false
+Type=Application
+Categories=Network;Email;GTK;
+Keywords=email;mail;imap;smtp;
+MimeType=x-scheme-handler/mailto;
+StartupNotify=true
+DBusActivatable=false
