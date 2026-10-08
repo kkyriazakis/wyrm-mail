@@ -611,3 +611,89 @@ add_task(function testEWSifyConfig() {
     "mailnews.auto_config.fetchFromExchange.enabled"
   );
 });
+
+function makeEwsConfig(ewsURL) {
+  const config = new AccountConfig();
+  config.incoming = {
+    type: "ews",
+    hostname: URL.parse(ewsURL).hostname,
+    exchangeURL: ewsURL,
+    username: "user@example.com",
+    auth: Ci.nsMsgAuthMethod.passwordCleartext,
+    oauthSettings: {
+      issuer: "outlook.office365.com",
+      scope: "https://outlook.office365.com/EWS.AccessAsUser.All",
+    },
+  };
+  config.incomingAlternatives = [];
+  return config;
+}
+
+add_task(function test_preferGraphForMicrosoft365() {
+  const config = makeEwsConfig(
+    "https://outlook.office365.com/EWS/Exchange.asmx"
+  );
+
+  FindConfig.preferGraphForMicrosoft365(config);
+
+  Assert.equal(config.incoming.type, "graph", "Graph should be recommended.");
+  Assert.equal(
+    config.incoming.exchangeURL,
+    "https://graph.microsoft.com",
+    "Graph config should point at Microsoft Graph."
+  );
+  Assert.equal(
+    config.incoming.auth,
+    Ci.nsMsgAuthMethod.OAuth2,
+    "Graph config should use OAuth2."
+  );
+  Assert.equal(
+    config.incoming.oauthSettings,
+    null,
+    "EWS OAuth settings should not be carried over."
+  );
+  Assert.equal(
+    config.incoming.username,
+    "user@example.com",
+    "Username should be kept."
+  );
+  Assert.deepEqual(
+    config.incomingAlternatives.map(({ type }) => type),
+    ["ews"],
+    "EWS should remain available as an alternative."
+  );
+
+  FindConfig.preferGraphForMicrosoft365(config);
+  Assert.equal(
+    [config.incoming, ...config.incomingAlternatives].filter(
+      ({ type }) => type === "graph"
+    ).length,
+    1,
+    "Running twice should not add a second Graph config."
+  );
+});
+
+add_task(function test_preferGraphForMicrosoft365_onPremises() {
+  const config = makeEwsConfig("https://mail.example.com/EWS/Exchange.asmx");
+
+  FindConfig.preferGraphForMicrosoft365(config);
+
+  Assert.equal(
+    config.incoming.type,
+    "ews",
+    "On-premises Exchange should stay on EWS."
+  );
+  Assert.equal(config.incomingAlternatives.length, 0, "No Graph alternative.");
+});
+
+add_task(function test_preferGraphForMicrosoft365_graphDisabled() {
+  Services.prefs.setBoolPref("mail.graph.enabled", false);
+  const config = makeEwsConfig(
+    "https://outlook.office365.com/EWS/Exchange.asmx"
+  );
+
+  FindConfig.preferGraphForMicrosoft365(config);
+
+  Assert.equal(config.incoming.type, "ews", "Graph pref off keeps EWS.");
+  Services.prefs.clearUserPref("mail.graph.enabled");
+});

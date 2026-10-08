@@ -252,6 +252,49 @@ function ewsifyConfig(config, includeExchangeAddon = true) {
 }
 
 /**
+ * Hosts that serve EWS for mailboxes hosted on Microsoft 365 (Exchange Online).
+ */
+const MICROSOFT_365_EWS_HOSTS = ["outlook.office365.com", "outlook.office.com"];
+
+/**
+ * Makes Microsoft Graph the recommended protocol for a configuration whose
+ * native EWS server is Exchange Online. Microsoft is retiring EWS in Exchange
+ * Online, and Autodiscover never returns a Graph configuration itself, so
+ * mailboxes on custom domains would otherwise only be offered EWS.
+ *
+ * Must run after ewsifyConfig(). Does nothing for on-premises Exchange.
+ *
+ * @param {AccountConfig} config - The configuration to revise.
+ */
+function preferGraphForMicrosoft365(config) {
+  if (!Services.prefs.getBoolPref("mail.graph.enabled", false)) {
+    return;
+  }
+  const incomings = [config.incoming, ...config.incomingAlternatives];
+  if (incomings.some(({ type }) => type === "graph")) {
+    return;
+  }
+  const ewsIncoming = incomings.find(
+    ({ type, exchangeURL }) =>
+      type === "ews" &&
+      MICROSOFT_365_EWS_HOSTS.includes(URL.parse(exchangeURL)?.hostname)
+  );
+  if (!ewsIncoming) {
+    return;
+  }
+
+  const graphIncoming = structuredClone(ewsIncoming);
+  graphIncoming.type = "graph";
+  graphIncoming.exchangeURL = "https://graph.microsoft.com";
+  graphIncoming.hostname = "graph.microsoft.com";
+  graphIncoming.auth = Ci.nsMsgAuthMethod.OAuth2;
+  graphIncoming.oauthSettings = null;
+
+  config.incomingAlternatives.unshift(config.incoming);
+  config.incoming = graphIncoming;
+}
+
+/**
  * Returns the exchange config object if available.
  *
  * @param {AccountConfig} config - The found AccountConfig object.
@@ -266,4 +309,5 @@ function getIncomingExchangeConfig(config) {
 export const FindConfig = {
   parallelAutoDiscovery,
   ewsifyConfig,
+  preferGraphForMicrosoft365,
 };

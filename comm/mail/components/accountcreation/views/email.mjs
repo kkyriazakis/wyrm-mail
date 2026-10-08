@@ -1146,6 +1146,7 @@ class AccountHubEmail extends HTMLElement {
           // Check if we have found an Exchange config we should tweak to make it work
           // with our native EWS support (and do so if that's the case).
           lazy.FindConfig.ewsifyConfig(config);
+          lazy.FindConfig.preferGraphForMicrosoft365(config);
 
           this.#currentConfig = this.#fillAccountConfig(
             config,
@@ -1604,6 +1605,7 @@ class AccountHubEmail extends HTMLElement {
       // Check if we have found an Exchange config we should tweak to make it work
       // with our native EWS support (and do so if that's the case).
       lazy.FindConfig.ewsifyConfig(config, addonDiscoveryEnabled);
+      lazy.FindConfig.preferGraphForMicrosoft365(config);
 
       config = this.#fillAccountConfig(config);
     }

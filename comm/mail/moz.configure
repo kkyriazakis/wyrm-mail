@@ -5,7 +5,7 @@
 set_config("MOZ_THUNDERBIRD", True)
 set_define("MOZ_THUNDERBIRD", True)
 
-imply_option("MOZ_APP_NAME", "thunderbird")
+imply_option("MOZ_APP_NAME", "fedora-email-client")
 
 set_config("MOZ_APPUPDATE_HOST", "aus.thunderbird.net")
 
@@ -30,7 +30,7 @@ imply_option("MOZ_EXTRA_ERROR_DEFINITIONS", "../../comm/mail/errors.json")
 imply_option("NSS_EXTRA_SYMBOLS_FILE", "../comm/mailnews/nss-extra.symbols")
 
 imply_option("MOZ_APP_ID", "{3550f703-e582-4d05-9a08-453d09bdfdc6}")
-imply_option("MOZ_APP_VENDOR", "Mozilla")
+imply_option("MOZ_APP_VENDOR", "kkyriazakis")
 imply_option("BROWSER_CHROME_URL", "chrome://messenger/content/extensionPopup.xhtml")
 # Include the DevTools client, not just the server (which is the default)
 imply_option("MOZ_DEVTOOLS", "all")
@@ -264,12 +264,12 @@ def thunderbird_enterprise(enterprise, project):
 # for application.ini's "Name" field, which controls profile location in
 # the absence of a "Profile" field, and various system
 # integration hooks (Unix remoting, Windows MessageWindow name, etc.)
-imply_option("MOZ_APP_BASENAME", "Thunderbird", when=~thunderbird_enterprise)
+imply_option("MOZ_APP_BASENAME", "FedoraEmailClient", when=~thunderbird_enterprise)
 
 # MOZ_APP_PROFILE: When set, used for application.ini's
 # "Profile" field, which controls profile location.
-imply_option("MOZ_APP_PROFILE", "Thunderbird", when=(target_is_windows | target_is_osx) & ~thunderbird_enterprise)
-imply_option("MOZ_APP_PROFILE", "thunderbird", when=~target_is_windows & ~target_is_osx & ~thunderbird_enterprise)
+imply_option("MOZ_APP_PROFILE", "FedoraEmailClient", when=(target_is_windows | target_is_osx) & ~thunderbird_enterprise)
+imply_option("MOZ_APP_PROFILE", "fedora-email-client", when=~target_is_windows & ~target_is_osx & ~thunderbird_enterprise)
 
 imply_option("MOZ_APP_PROFILE", "ThunderbirdEnterprise", when=(target_is_windows | target_is_osx) & thunderbird_enterprise)
 imply_option("MOZ_APP_PROFILE", "thunderbirdenterprise", when=~target_is_windows & ~target_is_osx & thunderbird_enterprise)
