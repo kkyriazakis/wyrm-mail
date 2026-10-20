@@ -34,7 +34,7 @@
   border: 1px solid transparent;
   min-inline-size: 10em;
   padding: 1px 3px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-small);
   display: flex;
   align-items: baseline;
   flex-shrink: 1;

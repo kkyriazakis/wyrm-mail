@@ -250,6 +250,17 @@ gloda-show-results-as-list-label =
     .accesskey = L
 
 datetime-formatting-legend = Date and Time Formatting
+message-list-date-format-label =
+    .value = Message list dates:
+    .accesskey = M
+message-list-date-format-weekday-time =
+    .label = Weekday and time (Mon 14:21)
+message-list-date-format-smart =
+    .label = Time today, weekday this week, date before
+message-list-date-format-date =
+    .label = Date only
+message-list-date-format-date-time =
+    .label = Date and time
 language-selector-legend = Language
 
 allow-hw-accel =
@@ -1321,6 +1332,19 @@ qr-export-more-accounts = Export more accounts
 ## Appearance Tab
 
 appearance-category-header = Appearance
+
+theme-mode-legend = Theme
+theme-mode-label =
+    .value = Appearance:
+theme-mode-system =
+    .label = Same as system
+theme-mode-light =
+    .label = Light
+theme-mode-dark =
+    .label = Dark
+translucent-window-label =
+    .label = Translucent window
+translucent-window-description = Let the desktop show through the window background. Blurring what is behind needs a compositor that offers it.
 
 accent-color-legend = Accent Color
 

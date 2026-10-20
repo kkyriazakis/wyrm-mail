@@ -9,6 +9,30 @@
     <html:h1 data-l10n-id="appearance-category-header"/>
   </hbox>
 
+  <html:fieldset id="themeGroup" data-category="paneAppearance">
+    <html:legend data-l10n-id="theme-mode-legend"></html:legend>
+    <hbox align="center" pack="start">
+      <label data-l10n-id="theme-mode-label"
+             control="themeMode"/>
+      <menulist id="themeMode">
+        <menupopup native="false">
+          <menuitem value="system" data-l10n-id="theme-mode-system"/>
+          <menuitem value="light" data-l10n-id="theme-mode-light"/>
+          <menuitem value="dark" data-l10n-id="theme-mode-dark"/>
+        </menupopup>
+      </menulist>
+    </hbox>
+    <hbox>
+      <vbox>
+        <checkbox id="translucentWindow"
+                  data-l10n-id="translucent-window-label"
+                  preference="wyrm.ui.translucent"/>
+        <description data-l10n-id="translucent-window-description"
+                     class="tip-caption indent"/>
+      </vbox>
+    </hbox>
+  </html:fieldset>
+
   <html:fieldset id="colorGroup" data-category="paneAppearance">
     <html:legend data-l10n-id="accent-color-legend"></html:legend>
     <hbox align="center" pack="start">

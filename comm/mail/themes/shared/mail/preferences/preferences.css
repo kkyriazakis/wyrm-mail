@@ -196,7 +196,7 @@ menulist::part(dropmarker-icon) {
   background-color: var(--background-color-box-info);
   padding: 9px;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
 }
 
 .info-box-container.smaller-font-size {
@@ -541,7 +541,7 @@ treechildren::-moz-tree-cell-text(selected) {
 }
 
 #telemetry-container {
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
   background-color: rgba(12, 12, 13, 0.2);
   font-size: 85%;
   padding: 3px;
@@ -1211,7 +1211,7 @@ calendar-notifications-setting {
 
   .qr-subpanel {
     background: var(--color-surface-base);
-    border-radius: 3px;
+    border-radius: var(--border-radius-medium);
     padding: var(--qr-gap);
 
     header {
@@ -1287,7 +1287,7 @@ calendar-notifications-setting {
 #qrExportSelectAll {
   font-size: 0.7rem;
   text-transform: uppercase;
-  border-radius: 3px;
+  border-radius: var(--button-border-radius);
   background: var(--button-primary-background-color);
   color: var(--button-primary-text-color);
   padding: 4px 9px;

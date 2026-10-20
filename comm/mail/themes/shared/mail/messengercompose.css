@@ -249,7 +249,7 @@
     -moz-context-properties: fill;
     fill: currentColor;
     padding-inline: 25px 6px;
-    border-radius: 3px;
+    border-radius: var(--border-radius-small);
     background-color: var(--drop-attachment-title-background);
     background-position: 6px center;
     background-repeat: no-repeat;
@@ -1508,7 +1508,7 @@ dialog .key-list {
   flex-direction: column;
   gap: 3px;
   border: 1px solid var(--dialog-box-border-color);
-  border-radius: 3px;
+  border-radius: var(--border-radius-medium);
   margin-block: 12px 6px;
 }
 

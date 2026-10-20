@@ -460,7 +460,7 @@
     line-height: 1;
     font-weight: bold;
     border: 1px solid color-mix(in srgb, var(--layout-border-2) 60%, transparent);
-    border-radius: 3px;
+    border-radius: var(--border-radius-small);
     display: inline-block;
     padding: 2px 3px;
 

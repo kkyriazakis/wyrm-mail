@@ -80,6 +80,9 @@ const { ThreadPaneColumns } = ChromeUtils.importESModule(
 // As defined in nsMsgDBView.h.
 const MSG_VIEW_FLAG_DUMMY = 0x20000000;
 
+// Message keyword marking a message the user pinned in the message list.
+const PINNED_KEYWORD = "$pinned";
+
 /**
  * The TreeListbox widget that displays folders.
  */
@@ -2913,6 +2916,8 @@ var folderPane = {
       // At this point `dbViewWrapperListener.onCreatedView` gets called,
       // setting up gDBView and scrolling threadTree to the right end.
 
+      threadPane.applyDefaultDateGrouping();
+
       threadPane.updateListRole(
         !gViewWrapper?.showThreaded && !gViewWrapper?.showGroupedBySort
       );
@@ -3028,6 +3033,9 @@ var folderPane = {
   },
 
   _onMiddleClick(event) {
+    if (Services.prefs.getBoolPref("wyrm.ui.singleView", false)) {
+      return;
+    }
     if (
       event.target.closest(".mode-container") ||
       folderTree.selectedIndex == -1
@@ -4499,6 +4507,18 @@ var threadPane = {
         [event.detail.index]
       );
     });
+    this.treeTable.addEventListener("toggle-pin", event => {
+      const message = gDBView.getMsgHdrAt(event.detail.index);
+      const isPinned = message
+        .getStringProperty("keywords")
+        .split(" ")
+        .includes(PINNED_KEYWORD);
+      if (isPinned) {
+        message.folder.removeKeywordsFromMessages([message], PINNED_KEYWORD);
+      } else {
+        message.folder.addKeywordsToMessages([message], PINNED_KEYWORD);
+      }
+    });
     this.treeTable.addEventListener("toggle-unread", event => {
       gDBView.applyCommandToIndices(
         event.detail.isUnread
@@ -4762,6 +4782,9 @@ var threadPane = {
   },
 
   _onMiddleClick(event) {
+    if (Services.prefs.getBoolPref("wyrm.ui.singleView", false)) {
+      return;
+    }
     const row =
       event.target.closest(`tr[is^="thread-"]`) ||
       threadTree.getRowAtIndex(threadTree.currentIndex);
@@ -5456,6 +5479,33 @@ var threadPane = {
     }
 
     threadTree.dataset.showGroupedBySort = gViewWrapper.showGroupedBySort;
+  },
+
+  /**
+   * The first time a folder is shown, group it by date (Today, Yesterday,
+   * Last Week, This Month, Older). Later changes by the user are kept.
+   */
+  applyDefaultDateGrouping() {
+    if (
+      !Services.prefs.getBoolPref("wyrm.threadpane.groupByDate", true) ||
+      !gViewWrapper?.isSingleFolder ||
+      gFolder.getStringProperty("wyrmGroupedByDate")
+    ) {
+      return;
+    }
+    gFolder.setStringProperty("wyrmGroupedByDate", "1");
+    if (
+      gViewWrapper.showGroupedBySort &&
+      gViewWrapper.primarySortColumnId == "dateCol"
+    ) {
+      return;
+    }
+    gViewWrapper.beginViewUpdate();
+    gViewWrapper.showGroupedBySort = true;
+    gViewWrapper.endViewUpdate();
+    gViewWrapper.sort("dateCol", Ci.nsMsgViewSortOrder.descending);
+    gDBView.doCommand(Ci.nsMsgViewCommandType.expandAll);
+    threadPane.updateListRole(false);
   },
 
   /**

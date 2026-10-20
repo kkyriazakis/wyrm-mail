@@ -106,7 +106,7 @@ progress {
   block-size: 4px;
   background-color: hsla(0, 0%, 60%, 0.2);
   border-style: none;
-  border-radius: 2px;
+  border-radius: var(--border-radius-circle);
 }
 
 ::-moz-progress-bar {

@@ -70,8 +70,8 @@ body {
   block-size: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding: 0 8px 8px;
-  background-color: var(--layout-background-2);
+  padding: 8px;
+  background-color: var(--inner-window-background);
   text-shadow: none;
 
   display: grid;
@@ -123,13 +123,15 @@ body {
 /* Different layouts */
 
 #folderPane {
-  border-radius: var(--border-radius-large);
   grid-area: folders;
   box-sizing: border-box;
   /* Matches the collapse-width on the splitter. */
   min-inline-size: 100px;
   overflow: hidden;
-  background-color: var(--sidebar-background);
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  background-color: var(--layout-background-1);
   color: var(--sidebar-color);
   user-select: none;
   display: flex;
@@ -141,8 +143,17 @@ body {
   grid-area: folderPaneSplitter;
 }
 
+/* Splitters are the 8px gutter between the pane cards. */
+body > hr[is="pane-splitter"]:not(.splitter-collapsed) {
+  --splitter-content-size: 8px;
+  --splitter-occupy-size: 8px;
+  border-color: transparent;
+}
+
 #threadPane {
   border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
   container-name: threadPane;
   container-type: inline-size;
   grid-area: threads;
@@ -163,7 +174,8 @@ body {
   border-radius: var(--border-radius-large);
   grid-area: message;
   box-sizing: border-box;
-  background-color: var(--layout-background-1);
+  /* The message view draws its own cards on the window background. */
+  background-color: transparent;
   /* Matches the collapse-height and collapse-width on the splitter. */
   min-block-size: 100px;
   min-inline-size: 300px;
@@ -176,6 +188,10 @@ body {
 #accountCentralBrowser {
   grid-area: account-central;
   box-sizing: border-box;
+  border-radius: var(--border-radius-large);
+  overflow: clip;
+  outline: var(--card-outline);
+  outline-offset: -1px;
   min-inline-size: 400px;
 }
 
@@ -195,7 +211,7 @@ body {
 
 #folderPaneHeaderBar {
   flex-direction: row-reverse;
-  background-color: var(--sidebar-background);
+  background-color: transparent;
 }
 
 #folderPaneGetMessages,
@@ -454,7 +470,7 @@ body {
   & > li {
     &:not(:first-of-type) > .mode-container {
       justify-content: space-between;
-      border-block-start: 1px solid var(--sidebar-border);
+      border-block-start: 1px solid transparent;
     }
 
     &.unselectable > .mode-container {
@@ -599,11 +615,13 @@ body {
 .unread-count {
   .unread > .container > & {
     display: unset;
-    background-color: var(--folderpane-unread-count-background);
+    color: var(--layout-color-2);
+    background-color: transparent;
   }
 
   .new-messages > .container > & {
-    background-color: var(--folderpane-unread-new-count-background);
+    color: var(--selected-item-color);
+    background-color: transparent;
   }
 
   .unread.children.collapsed:has(ul > .unread) > .container > &,

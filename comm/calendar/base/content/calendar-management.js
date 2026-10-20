@@ -178,13 +178,19 @@ async function loadCalendarManager() {
 
     updateCalendarStatusIndicators(item);
 
+    // A disabled calendar shows as unticked; ticking it enables it again.
     const enableButton = item.querySelector(".calendar-enable-button");
     document.l10n.setAttributes(enableButton, "calendar-enable-button");
-    enableButton.hidden = forceDisabled || !calendar.getProperty("disabled");
+    enableButton.hidden = true;
 
     const displayedCheckbox = item.querySelector(".calendar-displayed");
-    displayedCheckbox.checked = calendar.getProperty("calendar-main-in-composite");
-    displayedCheckbox.hidden = calendar.getProperty("disabled");
+    displayedCheckbox.style.setProperty(
+      "--calendar-list-item-color",
+      `var(--calendar-${cssSafeId}-backcolor)`
+    );
+    displayedCheckbox.checked =
+      calendar.getProperty("calendar-main-in-composite") && !calendar.getProperty("disabled");
+    displayedCheckbox.disabled = forceDisabled;
     document.l10n.setAttributes(
       displayedCheckbox,
       displayedCheckbox.checked ? "show-calendar-title" : "hide-calendar-title",
@@ -214,6 +220,23 @@ async function loadCalendarManager() {
     Services.prefs.savePrefFile(null);
   }
 
+  /**
+   * Show or hide a calendar, enabling it first if it is disabled.
+   *
+   * @param {calICalendar} calendar
+   * @param {boolean} show
+   */
+  function setCalendarShown(calendar, show) {
+    if (show && calendar.getProperty("disabled")) {
+      calendar.setProperty("disabled", false);
+    }
+    if (show) {
+      compositeCalendar.addCalendar(calendar);
+    } else {
+      compositeCalendar.removeCalendar(calendar);
+    }
+  }
+
   calendarList.addEventListener("click", event => {
     if (event.target.matches(".calendar-enable-button")) {
       const calendar = cal.manager.getCalendarById(
@@ -233,11 +256,7 @@ async function loadCalendarManager() {
     const calendar = cal.manager.getCalendarById(calendarId);
 
     const displayedCheckbox = event.target;
-    if (displayedCheckbox.checked) {
-      compositeCalendar.addCalendar(calendar);
-    } else {
-      compositeCalendar.removeCalendar(calendar);
-    }
+    setCalendarShown(calendar, displayedCheckbox.checked);
     document.l10n.setAttributes(
       displayedCheckbox,
       displayedCheckbox.checked ? "show-calendar-title" : "hide-calendar-title",
@@ -282,11 +301,7 @@ async function loadCalendarManager() {
         break;
       case " ": {
         const displayedCheckbox = item.querySelector(".calendar-displayed");
-        if (displayedCheckbox.checked) {
-          compositeCalendar.removeCalendar(calendar);
-        } else {
-          compositeCalendar.addCalendar(calendar);
-        }
+        setCalendarShown(calendar, !displayedCheckbox.checked);
         document.l10n.setAttributes(
           displayedCheckbox,
           displayedCheckbox.checked ? "show-calendar-title" : "hide-calendar-title",
@@ -326,10 +341,8 @@ async function loadCalendarManager() {
       switch (name) {
         case "disabled": {
           item.toggleAttribute("calendar-disabled", value);
-          item.querySelector(".calendar-displayed").hidden = value;
-          // Update the "ENABLE" button.
-          const enableButton = item.querySelector(".calendar-enable-button");
-          enableButton.hidden = !value;
+          item.querySelector(".calendar-displayed").checked =
+            !value && calendar.getProperty("calendar-main-in-composite");
           // Update the color preview.
           const cssSafeId = cal.view.formatStringForCSSRule(calendar.id);
           const colorMarker = item.querySelector(".calendar-color");
@@ -347,7 +360,8 @@ async function loadCalendarManager() {
           }
           break;
         case "calendar-main-in-composite":
-          item.querySelector(".calendar-displayed").checked = value;
+          item.querySelector(".calendar-displayed").checked =
+            value && !calendar.getProperty("disabled");
           break;
         case "name":
           item.searchLabel = calendar.name;

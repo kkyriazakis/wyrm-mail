@@ -155,7 +155,7 @@ calendar-minimonth[readonly="true"] .minimonth-readonly-header {
 .minimonth-header-btn {
   background: inherit;
   border-color: transparent;
-  border-radius: 2px;
+  border-radius: var(--button-border-radius);
   stroke: var(--sidebar-color);
   inline-size: auto;
   min-inline-size: unset;

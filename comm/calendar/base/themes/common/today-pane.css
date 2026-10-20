@@ -368,7 +368,7 @@
 .agenda-listitem-details {
   display: flex;
   align-items: baseline;
-  border-radius: 3px;
+  border-radius: var(--border-radius-small);
 }
 
 .agenda-listitem-all-day .agenda-listitem-details {

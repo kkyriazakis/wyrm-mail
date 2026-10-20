@@ -300,6 +300,7 @@
 
 /* Rounded, Outlook-for-Mac style shapes. */
 :root {
+
   --border-radius-xsmall: 4px;
   --border-radius-small: 6px;
   --border-radius-medium: 10px;

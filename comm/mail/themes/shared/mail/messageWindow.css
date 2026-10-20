@@ -11,3 +11,9 @@ html {
   min-inline-size: 45rem !important;
   min-block-size: 35rem !important;
 }
+
+/* Same 8px gutter around the message cards as in the main window. */
+.printPreviewStack {
+  padding: 8px;
+  background-color: var(--window-background);
+}

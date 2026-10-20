@@ -705,6 +705,17 @@ threadpane-sort-header-count =
 threadpane-card-menu-button =
   .title = Message menu
 
+threadpane-card-external = [External]
+
+threadpane-card-delete-button =
+  .title = Delete
+
+threadpane-card-pin-button =
+  .title = Pin
+
+threadpane-card-unpin-button =
+  .title = Unpin
+
 message-list-placeholder-no-messages = No message found
 
 message-list-placeholder-multiple-folders = Multiple folders selected

@@ -13,7 +13,21 @@
   --lwt-additional-images: none;
   --lwt-background-alignment: right top;
   --lwt-background-tiling: no-repeat;
-  --toolbar-background-color: var(--layout-background-1);
+  /* The window surface behind the cards; translucent windows let the
+   * desktop show through it. Documents nested inside the window use the
+   * inner variant so the tint is not applied twice. */
+  --window-background: var(--layout-background-2);
+  --inner-window-background: var(--layout-background-2);
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media -moz-pref("wyrm.ui.translucent") {
+    --window-background: color-mix(in srgb, var(--layout-background-2) 82%, transparent);
+    --inner-window-background: transparent;
+  }
+
+  --toolbar-background-color: var(--window-background);
+  /* Hairline drawn around top level cards (panes, message cards). */
+  --card-outline: 1px solid light-dark(rgba(14, 21, 32, 0.1), rgba(255, 255, 255, 0.09));
   --toolbar-text-color: var(--layout-color-1);
   --panelui-subview-transition-duration: 150ms;
   --autocomplete-popup-highlight-background: var(--selected-item-color);
@@ -28,7 +42,7 @@
   --button-hover-background-color: light-dark(var(--layout-background-2), var(--layout-background-4));
   --button-active-background-color: light-dark(var(--layout-background-4), var(--layout-background-2));
   --button-border-color: light-dark(var(--layout-border-1), var(--layout-border-2));
-  --button-border-radius: 3px;
+  --button-border-radius: 8px;
   --button-border-size: 1px;
   --button-border: var(--button-border-size) solid var(--button-border-color);
   --button-text-color: var(--layout-color-1);
@@ -64,8 +78,8 @@
   --new-folder-color: light-dark(var(--color-blue-60), var(--color-blue-40));
   --lwt-header-image: none;
   --search-bar-color: inherit;
-  --search-bar-border-color: var(--color-gray-40);
-  --search-bar-background: var(--layout-background-0);
+  --search-bar-border-color: transparent;
+  --search-bar-background: color-mix(in srgb, currentColor 8%, transparent);
   --search-bar-focus-background: var(--layout-background-0);
   --search-field-placeholder: color-mix(in srgb, currentColor 50%, transparent);
   --search-outline-offset: -1px;
@@ -73,7 +87,7 @@
   --selected-item-text-color: var(--sidebar-highlight-text-color, AccentColorText);
   --sidebar-header-gap: 9px;
   --sidebar-header-spacing: 9px;
-  --sidebar-background-color: var(--layout-background-1);
+  --sidebar-background-color: var(--inner-window-background);
   --sidebar-text-color: var(--layout-color-1);
   --sidebar-border-color: var(--layout-border-0);
   --sidebar-background: var(--sidebar-background-color);
@@ -150,7 +164,7 @@
     --panel-background-color: var(--color-surface-subtle);
     --panel-text-color: var(--color-text-base);
     --panel-border-color: var(--color-surface-border-intense);
-    --panel-border-radius: 8px;
+    --panel-border-radius: 12px;
   }
 
   /* LW-themes enabled */

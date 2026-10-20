@@ -3,7 +3,7 @@
  * file, you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 :root {
-  --listbox-border-radius: 3px;
+  --listbox-border-radius: var(--button-border-radius);
   --listbox-selected-outline: none;
   --list-item-min-height: 26px;
   --list-item-buttons-size: 22px;
@@ -46,7 +46,7 @@
 
   @media not (forced-colors) {
     --tree-focus-outline: transparent;
-    --tree-pane-background: light-dark(var(--color-gray-05), var(--color-black)); /* REMOVE THIS! */
+    --tree-pane-background: var(--layout-background-1);
     --tree-card-background: var(--layout-background-0);
     --tree-card-border: var(--layout-border-0);
     --tree-card-border-hover: color-mix(in srgb, var(--selected-item-color) 70%, transparent);
@@ -91,7 +91,7 @@
     --listbox-focused-selected-color: var(--selected-item-text-color);
     --listbox-hover: color-mix(in srgb, var(--selected-item-color) 10%, transparent);
     --listbox-border-type: dashed;
-    --tree-view-bg: light-dark(var(--layout-background-1), var(--color-black));
+    --tree-view-bg: var(--layout-background-1);
     --tree-view-color: var(--layout-color-1);
     --tree-view-header-hover-bg: light-dark(var(--color-gray-20), var(--color-gray-70));
     --tree-view-header-hover-active-bg: light-dark(var(--color-gray-30), var(--color-gray-90));

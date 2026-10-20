@@ -402,8 +402,23 @@ context-menu-decrypt-to-folder2 =
 
 ## Message header pane
 
+account-menu-button =
+    .title = Account
+account-menu-add-account =
+    .label = Add account
+account-menu-settings =
+    .label = Settings
+account-menu-quit =
+    .label = Quit
+
 other-action-redirect-msg =
     .label = Redirect
+other-action-archive =
+    .label = Archive
+other-action-spam =
+    .label = Mark as Spam
+other-action-delete =
+    .label = Delete
 
 other-action-copy-message-link =
     .label = Copy Message Link
@@ -739,8 +754,8 @@ message-flag-starred = Starred
 # Grouped By Date thread pane titles
 message-group-today = Today
 message-group-yesterday = Yesterday
-message-group-last-seven-days = Last 7 Days
-message-group-last-fourteen-days = Last 14 Days
+message-group-last-seven-days = Last Week
+message-group-last-fourteen-days = This Month
 message-group-older = Older
 message-group-future-date = Future
 
@@ -822,6 +837,18 @@ attachment-view-attachment-count = {
 #    $origin - origin of the remote content to allow
 allow-remote-content-resource =
     .label = Allow remote content from { $origin }
+
+remote-content-show-button = Show content
+
+# Variables:
+#    $count - the number of blocked sites
+remote-content-allow-sites-button =
+    { $count ->
+        [one] Allow site
+       *[other] Allow { $count } sites
+    }
+
+remote-content-more-button = More
 
 # Variables:
 #    $count - the number of origins to allow

@@ -196,7 +196,7 @@ body {
   appearance: none;
   font-size: 1em;
   --panel-border-color: var(--border-color);
-  --panel-border-radius: 2px;
+  --panel-border-radius: var(--border-radius-small);
   --panel-background-color: var(--background-color-box);
   --panel-text-color: var(--color-text-base);
   --panel-padding: 3px 0;

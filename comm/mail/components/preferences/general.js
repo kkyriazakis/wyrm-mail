@@ -87,6 +87,7 @@ Preferences.addAll([
   { id: "mail.display_glyph", type: "bool" },
   { id: "font.language.group", type: "string" },
   { id: "intl.regional_prefs.use_os_locales", type: "bool" },
+  { id: "wyrm.threadpane.dateFormat", type: "string" },
   { id: "mailnews.database.global.indexer.enabled", type: "bool" },
   { id: "gloda.show_as_list_by_default", type: "bool" },
   { id: "mailnews.labels.color.1", type: "string" },

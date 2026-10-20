@@ -119,7 +119,7 @@ input::-moz-search-clear-button {
 .autocomplete-richlistitem[type^="gloda-"] {
   margin-inline: 2px;
   padding-inline-start: 12px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-small);
 
   &:hover {
     background-color: hsla(0, 0%, 80%, 0.3);

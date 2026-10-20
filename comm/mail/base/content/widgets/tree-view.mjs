@@ -212,6 +212,95 @@ export class BaseTreeView extends HTMLElement {
    * @protected
    * @returns {integer} - The number of visible or partly-visible rows.
    */
+  /**
+   * Sorted indices of the rows drawn at the row class's HEADER_ROW_HEIGHT
+   * instead of ROW_HEIGHT, cached until the rows are invalidated.
+   *
+   * @type {?{rowCount: integer, indices: integer[]}}
+   */
+  #headerRows = null;
+
+  /**
+   * @returns {integer[]} Sorted indices of the short header rows, if the row
+   *   class uses them.
+   */
+  #getHeaderRowIndices() {
+    const rowClass = this._rowElementClass;
+    const rowCount = this._view?.rowCount ?? 0;
+    if (!rowClass?.HEADER_ROW_HEIGHT || !rowClass.hasHeaderRows?.(this)) {
+      return [];
+    }
+    if (this.#headerRows?.rowCount != rowCount) {
+      const indices = [];
+      for (let i = 0; i < rowCount; i++) {
+        if (rowClass.isHeaderRow(this._view, i)) {
+          indices.push(i);
+        }
+      }
+      this.#headerRows = { rowCount, indices };
+    }
+    return this.#headerRows.indices;
+  }
+
+  /**
+   * @param {integer} index
+   * @returns {integer} The number of header rows before `index`.
+   */
+  #countHeaderRowsBefore(index) {
+    const indices = this.#getHeaderRowIndices();
+    let low = 0;
+    let high = indices.length;
+    while (low < high) {
+      const mid = (low + high) >> 1;
+      if (indices[mid] < index) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * @param {integer} index
+   * @returns {number} The offset of the top of the row at `index`; with
+   *   `index` equal to the row count, the height of all rows.
+   */
+  _rowTop(index) {
+    const rowHeight = this._rowElementClass.ROW_HEIGHT;
+    const headerHeight = this._rowElementClass.HEADER_ROW_HEIGHT ?? rowHeight;
+    return (
+      index * rowHeight -
+      this.#countHeaderRowsBefore(index) * (rowHeight - headerHeight)
+    );
+  }
+
+  /**
+   * @param {integer} index
+   * @returns {number} The height of the row at `index`.
+   */
+  _rowHeightAt(index) {
+    return this._rowTop(index + 1) - this._rowTop(index);
+  }
+
+  /**
+   * @param {number} offset
+   * @returns {integer} The index of the row covering `offset`.
+   */
+  _rowIndexAt(offset) {
+    let low = 0;
+    let high = Math.max((this._view?.rowCount ?? 0) - 1, 0);
+    while (low < high) {
+      const mid = (low + high + 1) >> 1;
+      if (this._rowTop(mid) <= offset) {
+        low = mid;
+      } else {
+        high = mid - 1;
+      }
+    }
+    return low;
+  }
+
   _calculateVisibleRowCount() {
     return Math.ceil(
       this.#calculateVisibleHeight() / this._rowElementClass.ROW_HEIGHT
@@ -369,6 +458,7 @@ export class BaseTreeView extends HTMLElement {
       this._view.selection = null;
     }
 
+    this.#headerRows = null;
     this._view = view;
     if (view) {
       try {
@@ -512,9 +602,7 @@ export class BaseTreeView extends HTMLElement {
     // scrolling. However, we don't always want to change the height of the top
     // spacer for the same reason.
     const rowCount = this._view?.rowCount ?? 0;
-    this.table.spacerBottom.setHeight(
-      rowCount * this._rowElementClass.ROW_HEIGHT
-    );
+    this.table.spacerBottom.setHeight(this._rowTop(rowCount));
   }
 
   /**
@@ -569,6 +657,7 @@ export class BaseTreeView extends HTMLElement {
    * @param {integer} endIndex
    */
   invalidateRange(startIndex, endIndex) {
+    this.#headerRows = null;
     const rowCount = this._view?.rowCount ?? 0;
     for (
       let index = Math.max(startIndex, this.#firstBufferRowIndex),
@@ -685,9 +774,7 @@ export class BaseTreeView extends HTMLElement {
 
       // Adjust the height of the top spacer to account for the new rows we've
       // added.
-      this.table.spacerTop.setHeight(
-        this.#firstBufferRowIndex * this._rowElementClass.ROW_HEIGHT
-      );
+      this.table.spacerTop.setHeight(this._rowTop(this.#firstBufferRowIndex));
 
       // If we haven't completed the work of filling the tolerance buffer,
       // schedule a new job to do so.
@@ -714,8 +801,7 @@ export class BaseTreeView extends HTMLElement {
       // Adjust the height of the bottom spacer to account for the new rows
       // we've added.
       this.table.spacerBottom.setHeight(
-        (rowCount - 1 - this.#lastBufferRowIndex) *
-          this._rowElementClass.ROW_HEIGHT
+        this._rowTop(rowCount) - this._rowTop(this.#lastBufferRowIndex + 1)
       );
 
       // If we haven't completed the work of filling the tolerance buffer,
@@ -772,17 +858,12 @@ export class BaseTreeView extends HTMLElement {
     // outside the boundaries. Finally, we recalculate the height of the spacers
     // which position the visible rows within the rendered area.
     ranges.visibleRows.first = Math.min(
-      Math.max(
-        Math.floor(this.scrollTop / this._rowElementClass.ROW_HEIGHT),
-        0
-      ),
+      Math.max(this._rowIndexAt(this.scrollTop), 0),
       dataRowCount - 1
     );
 
-    const lastPossibleVisibleRow = Math.ceil(
-      (this.scrollTop + this.#calculateVisibleHeight()) /
-        this._rowElementClass.ROW_HEIGHT
-    );
+    const lastPossibleVisibleRow =
+      this._rowIndexAt(this.scrollTop + this.#calculateVisibleHeight()) + 1;
 
     ranges.visibleRows.last = Math.max(
       ranges.visibleRows.first,
@@ -864,7 +945,7 @@ export class BaseTreeView extends HTMLElement {
       return;
     }
 
-    if (this.scrollTop > rowCount * this._rowElementClass.ROW_HEIGHT) {
+    if (this.scrollTop > this._rowTop(rowCount)) {
       // Beyond the end of the list. We're about to scroll anyway, so clear
       // everything out and wait for it to happen. Don't call `invalidate` here,
       // or you'll end up in an infinite loop.
@@ -963,13 +1044,10 @@ export class BaseTreeView extends HTMLElement {
 
     // Adjust the height of the spacers to ensure that visible rows fall within
     // the visible space and the overall scroll height is correct.
-    this.table.spacerTop.setHeight(
-      this.#firstBufferRowIndex * this._rowElementClass.ROW_HEIGHT
-    );
+    this.table.spacerTop.setHeight(this._rowTop(this.#firstBufferRowIndex));
 
     this.table.spacerBottom.setHeight(
-      (rowCount - this.#lastBufferRowIndex - 1) *
-        this._rowElementClass.ROW_HEIGHT
+      this._rowTop(rowCount) - this._rowTop(this.#lastBufferRowIndex + 1)
     );
 
     // The row buffer ideally contains some tolerance on either end to avoid
@@ -1020,7 +1098,7 @@ export class BaseTreeView extends HTMLElement {
       return;
     }
 
-    const topOfRow = this._rowElementClass.ROW_HEIGHT * index;
+    const topOfRow = this._rowTop(index);
     const scrollTop = this.scrollTop;
     const visibleHeight = this.#calculateVisibleHeight();
     const behavior = instant ? "instant" : "auto";
@@ -1032,7 +1110,7 @@ export class BaseTreeView extends HTMLElement {
     }
 
     // Scroll down to the row.
-    const bottomOfRow = topOfRow + this._rowElementClass.ROW_HEIGHT;
+    const bottomOfRow = topOfRow + this._rowHeightAt(index);
     if (bottomOfRow > scrollTop + visibleHeight) {
       this.scrollTo({ top: bottomOfRow - visibleHeight, behavior });
       return;
@@ -1091,7 +1169,7 @@ export class BaseTreeView extends HTMLElement {
     row.setAttribute("is", this._rowElementName);
     this.table.body.insertBefore(row, before);
 
-    row.style.height = `${this._rowElementClass.ROW_HEIGHT}px`;
+    row.style.height = `${this._rowHeightAt(index)}px`;
     row.index = index;
     if (fillImmediately) {
       row.fillRow();
@@ -1295,17 +1373,16 @@ export class BaseTreeView extends HTMLElement {
     dummyScrollNeeded = false,
     firstIndex = index
   ) {
-    const rowHeight = this._rowElementClass.ROW_HEIGHT;
     const visibleHeight = this.#calculateVisibleHeight();
-    const bottomOfLastRow =
-      rowHeight *
-        (index +
-          Math.min(
-            addedRows - index + firstIndex,
-            this._calculateVisibleRowCount() - 1
-          )) +
-      rowHeight;
-    const topOfFirstRow = rowHeight * index;
+    const bottomOfLastRow = this._rowTop(
+      index +
+        Math.min(
+          addedRows - index + firstIndex,
+          this._calculateVisibleRowCount() - 1
+        ) +
+        1
+    );
+    const topOfFirstRow = this._rowTop(index);
     if (bottomOfLastRow > this.scrollTop + visibleHeight) {
       if (dummyScrollNeeded) {
         // Expanding a thread near the bottom of the view right
@@ -1458,6 +1535,19 @@ export class TreeView extends BaseTreeView {
               bubbles: true,
               detail: {
                 isFlagged: row.dataset.properties.includes("flagged"),
+                index,
+              },
+            })
+          );
+          this.ensureCorrectFocus();
+          return;
+        }
+
+        if (event.target.classList.contains("tree-button-pin")) {
+          this.table.body.dispatchEvent(
+            new CustomEvent("toggle-pin", {
+              bubbles: true,
+              detail: {
                 index,
               },
             })

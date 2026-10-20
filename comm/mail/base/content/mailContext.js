@@ -396,8 +396,9 @@ var mailContextMenu = {
       .getSelectedMsgHdrs()
       .every(msg => msg.flags & Ci.nsMsgMessageFlags.IMAPDeleted);
 
-    setSingleSelection("mailContext-openNewTab", inThreadTree);
-    setSingleSelection("mailContext-openNewWindow", inThreadTree);
+    // Messages open in a popup window by double click only.
+    showItem("mailContext-openNewTab", false);
+    showItem("mailContext-openNewWindow", false);
     setSingleSelection(
       "mailContext-openContainingFolder",
       !onSpecialItem &&

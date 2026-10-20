@@ -31,9 +31,6 @@ body {
 #accountCentral {
   display: flex;
   flex-direction: column;
-  background-image: var(--bg-watermark);
-  background-position: bottom right;
-  background-repeat: no-repeat;
   color: var(--color-text-base);
   block-size: 100%;
 }
@@ -218,7 +215,7 @@ aside.settings-btn-container {
   block-size: 90px;
   padding: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--button-border-radius);
   margin-inline: 10px;
   margin-block-end: 10px;
   cursor: pointer;
@@ -350,7 +347,7 @@ aside.settings-btn-container {
     display: inline-block;
     background-color: var(--layout-background-2);
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: var(--border-radius-medium);
     box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.8);
   }
 

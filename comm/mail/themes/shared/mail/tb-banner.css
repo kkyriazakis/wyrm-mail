@@ -51,7 +51,7 @@
 
   padding: calc(var(--space-step) * 2) calc(var(--space-step) * 4);
   border: 1px solid;
-  border-radius: 3px;
+  border-radius: var(--border-radius-medium);
 
   .action-text[hidden],
   &:not([open]) .description {

@@ -241,10 +241,11 @@
   <menupopup id="remoteContentOptions" value=""
              onpopupshowing="onRemoteContentOptionsShowing(event);">
     <menuitem id="remoteContentOptionAllowForMsg"
+              hidden="true"
               label="&remoteContentOptionsAllowForMsg.label;"
               accesskey="&remoteContentOptionsAllowForMsg.accesskey;"
               oncommand="LoadMsgWithRemoteContent();"/>
-    <menuseparator id="remoteContentSettingsMenuSeparator"/>
+    <menuseparator id="remoteContentSettingsMenuSeparator" hidden="true"/>
     <menuitem id="editRemoteContentSettings"
 #ifdef XP_WIN
               label="&editRemoteContentSettings.label;"

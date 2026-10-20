@@ -17,7 +17,7 @@
     --menu-panel-button-width: calc(--menu-panel-width / 3 - 1.1px);
     /* Complement the .subviewbutton margin. */
     --panel-padding: 8px 0;
-    --panel-menuitem-border-radius: 3px;
+    --panel-menuitem-border-radius: 6px;
     --appmenu-button-border-color: light-dark(hsla(210, 4%, 10%, 0.14), rgba(249, 249, 250, 0.2));
     --appmenu-button-margin: 0 8px;
     --appmenu-button-padding: 6px;

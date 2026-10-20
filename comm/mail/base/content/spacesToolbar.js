@@ -158,8 +158,36 @@ var gSpacesToolbar = {
           detail: tabSpace,
         });
         gSpacesToolbar.element.dispatchEvent(spaceChangeEvent);
+
+        if (Services.prefs.getBoolPref("wyrm.ui.singleView", false)) {
+          // Defer so tabmail finishes the switch before tabs are closed.
+          setTimeout(() => gSpacesToolbar.closeOtherSpaces(newTabInfo));
+        }
       }
     },
+  },
+
+  /**
+   * In single view mode only the current space stays open. The first mail
+   * tab is kept in the background so the folder state survives switching.
+   *
+   * @param {TabInfo} currentTab - The tab that was switched to.
+   */
+  closeOtherSpaces(currentTab) {
+    const tabmail = document.getElementById("tabmail");
+    const keptMailTab = tabmail.tabInfo.find(
+      tabInfo => tabInfo.mode.name == "mail3PaneTab"
+    );
+    for (let i = tabmail.tabInfo.length - 1; i >= 0; i--) {
+      const tabInfo = tabmail.tabInfo[i];
+      if (
+        tabInfo != currentTab &&
+        tabInfo != keptMailTab &&
+        tabInfo.canClose
+      ) {
+        tabmail.closeTab(tabInfo, true);
+      }
+    }
   },
 
   /**

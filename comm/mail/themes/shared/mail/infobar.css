@@ -5,7 +5,7 @@
 @import url("chrome://messenger/skin/shared/contextMenu.css");
 
 :host(notification-message) {
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
   border-width: 0;
 
   --icon-size: 16px;
@@ -15,7 +15,7 @@
   --message-bar-background-color: var(--background-color-box-info);
   --message-bar-text-color: var(--color-text-base);
   --message-bar-icon-url: var(--icon-info);
-  --panel-border-radius: 3px;
+  --panel-border-radius: var(--border-radius-small);
 
   @media not (prefers-contrast) {
     --button-text-color: light-dark(#0c0c0d, #f9f9fa);
@@ -121,7 +121,7 @@ div.container {
   padding: 0;
   padding-inline: 8px;
   position: relative;
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
   /* Ensure that the message bar shadow dom elements are vertically aligned. */
   align-items: center;
   text-shadow: none;

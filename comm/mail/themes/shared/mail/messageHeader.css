@@ -345,7 +345,7 @@ mail-tagfield[collapsed] {
   margin: 0;
   margin-inline-end: -3px;
   padding: 2px 3px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-small);
 
   &:focus-visible {
     outline: var(--focus-outline);
@@ -683,7 +683,7 @@ html|header.message-security-header {
 }
 
 .other-key-row {
-  border-radius: 2px;
+  border-radius: var(--border-radius-small);
   padding: 3px 2px;
   border: 1px solid var(--button-border-color);
   background-color: rgba(215, 215, 219, 0.2);
@@ -1083,4 +1083,130 @@ button.email-action-flagged {
       translate: -20px;
     }
   }
+}
+
+/* Outlook-style message view: the subject, the sender with recipients and
+ * actions, and the body each sit in their own card on the window
+ * background. */
+#messagepanebox {
+  background-color: var(--inner-window-background);
+}
+
+.main-header-area {
+  background: none;
+}
+
+#messageHeader.message-header-container {
+  row-gap: 8px;
+  padding: 0;
+  background: none;
+}
+
+.message-header-card {
+  padding: 12px 16px;
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  background-color: var(--layout-background-0);
+}
+
+.message-header-details {
+  display: grid;
+  row-gap: 6px;
+}
+
+#headerSubjectCard #expandedsubjectBox {
+  font-weight: 600;
+}
+
+/* Reply, reply all, forward and the "more" menu are flat icon buttons; the
+ * other actions live in the "more" menu. */
+#hdrArchiveButton,
+#hdrJunkButton,
+#hdrTrashButton,
+#starMessageButton,
+#hdrReplyAllButton > .toolbarbutton-menubutton-dropmarker,
+#hdrReplyListButton > .toolbarbutton-menubutton-dropmarker,
+#hdrFollowupButton > .toolbarbutton-menubutton-dropmarker {
+  display: none;
+}
+
+#header-view-toolbar {
+  gap: 6px;
+}
+
+#messageHeader .toolbarbutton-1.message-header-view-button {
+  border: 1px solid var(--toolbarbutton-header-bordercolor);
+  border-radius: var(--button-border-radius);
+  background-color: transparent;
+  min-block-size: 32px;
+  padding-inline: 10px;
+  font-size: 1.05rem;
+  /* Size to the label instead of shrinking and cropping it. */
+  flex-shrink: 0;
+  min-inline-size: max-content;
+
+  & .toolbarbutton-icon {
+    inline-size: 18px;
+    block-size: 18px;
+  }
+
+  & .toolbarbutton-text {
+    display: inline;
+    padding-inline-start: 6px;
+  }
+
+  &:not([disabled]):hover,
+  &[open] {
+    background-color: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  &[is="toolbarbutton-menu-button"] {
+    padding-inline: 0;
+  }
+
+  & > .toolbarbutton-menubutton-button {
+    border: none;
+    border-radius: var(--button-border-radius);
+    padding-inline: 10px;
+    min-inline-size: max-content;
+  }
+
+  &.hdrMoreButton {
+    padding-inline: 7px;
+
+    & .toolbarbutton-text {
+      display: none;
+    }
+  }
+}
+
+#mail-notification-top {
+  border-block-end: none;
+}
+
+/* Notifications such as blocked remote content are cards too. */
+#mail-notification-top .notificationbox-stack {
+  background: none;
+}
+
+#mail-notification-top notification-message {
+  margin: 8px 0 0;
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+}
+
+#messagepane,
+#attachmentView {
+  margin-block-start: 8px;
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  overflow: clip;
+  background-color: var(--layout-background-0);
+}
+
+#attachment-splitter {
+  border: none;
 }

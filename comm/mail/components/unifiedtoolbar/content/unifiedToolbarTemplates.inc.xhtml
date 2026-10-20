@@ -29,7 +29,15 @@
                      class="button toolbar-button button-appmenu"
                      label="&appmenuButton.label;"
                      tooltiptext="&appmenuButton1.tooltip;"
+                     hidden="true"
                      tabindex="0" />
+      <html:button id="accountMenuButton"
+                   class="account-menu-button"
+                   type="button"
+                   aria-haspopup="menu"
+                   data-l10n-id="account-menu-button">
+        <html:span class="account-menu-avatar" aria-hidden="true"></html:span>
+      </html:button>
     </html:div>
 #include ../../../base/content/messenger-titlebar-items.inc.xhtml
   </html:div>

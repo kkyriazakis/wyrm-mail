@@ -12,6 +12,7 @@ ChromeUtils.defineESModuleGetters(lazy, {
 
 Preferences.addAll([
   { id: "mail.appearance.accentColor", type: "string" },
+  { id: "wyrm.ui.translucent", type: "bool" },
   { id: "mail.threadpane.listview", type: "int" },
   { id: "mail.threadpane.cardsview.rowcount", type: "int" },
   { id: "mailnews.default_view_flags", type: "int" },
@@ -33,11 +34,44 @@ const prefersContrast = window.matchMedia("(prefers-contrast)");
 export const appearancePane = {
   init() {
     this.addEventListeners();
+    this.initThemeMode();
     this.toggleExtraViewOptions();
     Preferences.get("mail.threadpane.listview").on(
       "change",
       this.toggleExtraViewOptions
     );
+  },
+
+  /**
+   * Light and dark mode override the system setting through
+   * ui.systemUsesDarkTheme; "system" clears the override.
+   */
+  initThemeMode() {
+    const menulist = document.getElementById("themeMode");
+    const sync = () => {
+      menulist.value = Services.prefs.prefHasUserValue("ui.systemUsesDarkTheme")
+        ? Services.prefs.getIntPref("ui.systemUsesDarkTheme")
+          ? "dark"
+          : "light"
+        : "system";
+    };
+    sync();
+    Services.prefs.addObserver("ui.systemUsesDarkTheme", sync);
+    window.addEventListener(
+      "unload",
+      () => Services.prefs.removeObserver("ui.systemUsesDarkTheme", sync),
+      { once: true }
+    );
+    menulist.addEventListener("command", () => {
+      if (menulist.value == "system") {
+        Services.prefs.clearUserPref("ui.systemUsesDarkTheme");
+      } else {
+        Services.prefs.setIntPref(
+          "ui.systemUsesDarkTheme",
+          menulist.value == "dark" ? 1 : 0
+        );
+      }
+    });
   },
 
   /**

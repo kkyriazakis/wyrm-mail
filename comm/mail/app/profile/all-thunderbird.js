@@ -625,7 +625,7 @@ pref("dom.disable_window_status_change",          true);
 // 0 - open it in a new window
 // 1 - open it in an existing window
 // 2 - open it in a new tab
-pref("mail.openMessageBehavior", 2);
+pref("mail.openMessageBehavior", 0);
 // If messages or folders are opened using the context menu or a middle click,
 // we open them in the background.
 pref("mail.tabs.loadInBackground", false);
@@ -642,6 +642,28 @@ pref("mail.tabs.drawInTitlebar", true);
 
 // Whether the window background is translucent, showing what is behind it.
 pref("wyrm.ui.translucent", false);
+
+// Show one space (mail, calendar, contacts...) at a time, without tabs.
+pref("wyrm.ui.singleView", true);
+
+// Show the address of a hovered link at the bottom of the window.
+pref("wyrm.ui.showLinkTarget", false);
+
+// No keyboard access keys: nothing is underlined in labels or menus and Alt
+// does not open the menu bar.
+pref("ui.key.menuAccessKey", 0);
+pref("ui.key.chromeAccess", 0);
+pref("ui.key.menuAccessKeyFocuses", false);
+
+// Date shown on message list cards: "weekday-time" (Mon 14:21), "smart"
+// (time today, weekday this week, date before), "date" or "date-time".
+pref("wyrm.threadpane.dateFormat", "weekday-time");
+
+// New folders list messages grouped by date (Today, Yesterday, ...) rather
+// than threaded, with every group expanded: kGroupBySort | kExpandAll.
+pref("mailnews.default_view_flags", 288);
+// Group existing folders by date the first time they are shown.
+pref("wyrm.threadpane.groupByDate", true);
 
 // The breakpad report server to link to in about:crashes
 pref("breakpad.reportURL", "https://crash-stats.mozilla.com/report/index/");
@@ -1590,13 +1612,13 @@ pref("mail.dark-reader.show-toggle", true);
 pref("mail.accounthub.addressbook.enabled", true);
 
 // Enable Thundermail ui in account hub.
-pref("mail.accounthub.thundermail.enabled", true);
+pref("mail.accounthub.thundermail.enabled", false);
 
 // Enable new manual config ui in account hub.
 pref("mail.accounthub.manualconfig.enabled", true);
 
 // Export to mobile enabled.
-pref("mail.qrexport.enabled", true);
+pref("mail.qrexport.enabled", false);
 
 // Export to mobile logging level.
 pref("mail.qrexport.loglevel", "Warn");

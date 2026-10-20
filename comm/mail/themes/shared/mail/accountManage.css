@@ -40,7 +40,7 @@ fieldset {
   appearance: none;
   font-size: 1em;
   --panel-border-color: var(--border-color);
-  --panel-border-radius: 2px;
+  --panel-border-radius: var(--border-radius-small);
   --panel-background-color: var(--background-color-box);
   --panel-text-color: var(--color-text-base);
   --panel-padding: 3px 0;
@@ -302,7 +302,7 @@ richlistitem[default="true"],
 #smtpServerInfoBox {
   padding: 9px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
   border-spacing: 0;
   background-color: rgba(215, 215, 219, 0.2);
 
@@ -475,7 +475,7 @@ richlistitem[default="true"],
 }
 
 .content-blocking-category {
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
   margin: 3px 0;
   padding: 9px;
   border: 1px solid var(--border-color-box-info);
@@ -580,7 +580,7 @@ richlistitem[default="true"],
 
 .content-blocking-warning {
   background-color: rgba(69, 161, 255, 0.2);
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
   padding: 10px 0;
   margin: 10px 0;
 
@@ -647,7 +647,7 @@ richlistitem[default="true"],
 .openpgp-key-details {
   margin-block-end: 18px;
   border: 1px solid var(--sidebar-border);
-  border-radius: 4px;
+  border-radius: var(--border-radius-medium);
   overflow: hidden;
   background-color: var(--color-surface-base);
 

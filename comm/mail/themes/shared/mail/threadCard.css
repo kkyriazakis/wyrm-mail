@@ -652,3 +652,191 @@
     }
   }
 }
+
+/* Outlook-style cards: sender line, subject line and a preview line, with the
+ * date centered in a trailing column. Delete, pin and flag appear on hover;
+ * pin and flag stay visible while set. */
+#threadTree[rows="thread-card"] .card-layout td .card-container {
+  grid-template-columns: auto 1fr auto;
+
+  & .thread-card-row {
+    justify-content: start;
+  }
+
+  & .external-tag {
+    flex: 0 0 auto;
+    padding-inline-start: 3px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: light-dark(var(--color-orange-60), var(--color-orange-30));
+  }
+
+  & .external-tag:not([hidden]) + .sender {
+    padding-inline-start: 0;
+  }
+
+  & .thread-card-dynamic-row {
+    grid-template: "button subject info" max-content / auto 1fr auto;
+  }
+
+  & .thread-card-subject-container {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .thread-card-preview {
+    min-block-size: 1lh;
+    padding-inline-start: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    color: var(--layout-color-2);
+  }
+
+  /* Pin and flag sit at the top right, the date centered below them. */
+  & .thread-card-trailing {
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    justify-items: end;
+    padding-inline: 8px 6px;
+  }
+
+  & .thread-card-date-row {
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  & .date {
+    font-size: 0.9rem;
+    color: var(--layout-color-2);
+    opacity: 1;
+  }
+
+  & .thread-card-quick-actions {
+    grid-row: 1;
+    align-self: start;
+    display: flex;
+    gap: 2px;
+  }
+
+  & :is(.tree-button-pin, .tree-button-flag, .tree-button-request-delete) {
+    appearance: none;
+    inline-size: 20px;
+    block-size: 20px;
+    min-inline-size: 0;
+    min-block-size: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--border-radius-small);
+    background-color: transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 14px;
+    -moz-context-properties: fill, stroke;
+    fill: transparent;
+    stroke: currentColor;
+    opacity: 0.75;
+    visibility: hidden;
+
+    &:hover {
+      background-color: transparent;
+      opacity: 1;
+    }
+  }
+
+  /* Hover only colors the icon, no box around it. */
+  & .tree-button-pin:hover {
+    stroke: var(--selected-item-color);
+  }
+
+  & .tree-button-flag:hover {
+    stroke: light-dark(var(--color-red-60), var(--color-red-40));
+  }
+
+  & .tree-button-request-delete:hover {
+    stroke: light-dark(var(--color-red-60), var(--color-red-40));
+  }
+
+  & .tree-button-pin {
+    background-image: var(--icon-pin);
+  }
+
+  & .tree-button-flag {
+    background-image: var(--icon-flag);
+  }
+
+  & .tree-button-request-delete {
+    display: none;
+    background-image: var(--icon-trash);
+  }
+}
+
+#threadTree[rows="thread-card"] .card-layout {
+  &:hover td .card-container {
+    & :is(.tree-button-pin, .tree-button-flag) {
+      visibility: visible;
+    }
+
+    & .tree-button-request-delete {
+      display: inline-block;
+      visibility: visible;
+    }
+  }
+
+  &.pinned td .card-container .tree-button-pin {
+    visibility: visible;
+    fill: color-mix(in srgb, var(--selected-item-color) 30%, transparent);
+    stroke: var(--selected-item-color);
+    opacity: 1;
+  }
+
+  &[data-properties~="flagged"] td .card-container .tree-button-flag {
+    visibility: visible;
+    fill: light-dark(var(--color-red-50), var(--color-red-40));
+    stroke: light-dark(var(--color-red-60), var(--color-red-40));
+    opacity: 1;
+  }
+
+  &[data-properties~="unread"] td .card-container .subject {
+    color: var(--selected-item-color);
+  }
+
+  &[data-properties~="dummy"] td .card-container :is(.thread-card-preview, .thread-card-trailing) {
+    display: none;
+  }
+}
+
+/* Date group rows (Today, Yesterday, ...) are plain section headings. */
+#threadTree[rows="thread-card"][data-show-grouped-by-sort~="true"] .card-layout[data-properties~="dummy"] {
+  --tree-card-background: transparent;
+  --tree-card-border: transparent;
+
+  & td .card-container {
+    align-content: end;
+    padding-block-end: 2px;
+
+    & .thread-card-dynamic-row {
+      grid-template: "subject sort button" max-content / auto 1fr auto;
+      align-items: baseline;
+      column-gap: 8px;
+    }
+
+    & .subject {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--layout-color-1);
+    }
+
+    & .sort-header-details {
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+  }
+}

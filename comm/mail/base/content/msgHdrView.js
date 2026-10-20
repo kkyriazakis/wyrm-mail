@@ -2822,6 +2822,7 @@ const gHeaderCustomize = {
       header.classList.add(
         "message-header-large-subject",
         "message-header-show-recipient-avatar",
+        "message-header-show-big-avatar",
         "message-header-show-sender-full-address",
         "message-header-hide-label-column"
       );
@@ -3649,8 +3650,9 @@ function UpdateReplyButtons() {
     const replyListButton = document.getElementById("hdrReplyListButton");
     const followupButton = document.getElementById("hdrFollowupButton");
 
-    replyButton.hidden = buttonToShow != "reply";
-    replyAllButton.hidden = buttonToShow != "replyAll";
+    // Reply and Reply All are always offered, like Outlook.
+    replyButton.hidden = buttonToShow == "followup";
+    replyAllButton.hidden = buttonToShow == "followup";
     replyListButton.hidden = buttonToShow != "replyList";
     followupButton.hidden = buttonToShow != "followup";
   }
@@ -3660,8 +3662,7 @@ function UpdateReplyButtons() {
     if (FeedUtils.isFeedMessage(gMessage)) {
       replyToSenderButton.hidden = true;
     } else if (smartReplyButton) {
-      replyToSenderButton.hidden =
-        buttonToShow == "reply" || buttonToShow == "followup";
+      replyToSenderButton.hidden = true;
     } else {
       replyToSenderButton.hidden = false;
     }
@@ -4012,26 +4013,6 @@ var gMessageNotificationBar = {
       [brandName]
     );
 
-    const buttonLabel = this.stringBundle.getString(
-      AppConstants.platform == "win"
-        ? "remoteContentPrefLabel"
-        : "remoteContentPrefLabelUnix"
-    );
-    const buttonAccesskey = this.stringBundle.getString(
-      AppConstants.platform == "win"
-        ? "remoteContentPrefAccesskey"
-        : "remoteContentPrefAccesskeyUnix"
-    );
-
-    const buttons = [
-      {
-        label: buttonLabel,
-        accessKey: buttonAccesskey,
-        popup: "remoteContentOptions",
-        callback() {},
-      },
-    ];
-
     // The popup value is a space separated list of all the blocked origins.
     const popup = document.getElementById("remoteContentOptions");
     const principal = Services.scriptSecurityManager.createContentPrincipal(
@@ -4043,6 +4024,39 @@ var gMessageNotificationBar = {
       origins.push(principal.origin);
     }
     popup.value = origins.join(" ");
+
+    const [showLabel, allowLabel, moreLabel] = await document.l10n.formatValues(
+      [
+        { id: "remote-content-show-button" },
+        {
+          id: "remote-content-allow-sites-button",
+          args: { count: origins.length },
+        },
+        { id: "remote-content-more-button" },
+      ]
+    );
+
+    // Showing this message and allowing the blocked sites get their own
+    // buttons; everything else stays in the menu.
+    const buttons = [
+      {
+        label: showLabel,
+        callback() {
+          LoadMsgWithRemoteContent();
+        },
+      },
+      {
+        label: allowLabel,
+        callback() {
+          allowBlockedRemoteContentOrigins();
+        },
+      },
+      {
+        label: moreLabel,
+        popup: "remoteContentOptions",
+        callback() {},
+      },
+    ];
 
     // Avoid duplication by avoiding any in-progress calls to `setRemoteContentMsg`.
     await this._remoteContentNotificationPromise;
@@ -4059,11 +4073,22 @@ var gMessageNotificationBar = {
         )
         .then(notification => {
           notification.buttonContainer.firstElementChild?.classList.add(
+            "button-primary"
+          );
+          notification.buttonContainer.lastElementChild?.classList.add(
             "button-menu-list"
           );
         }, console.warn);
       await this._remoteContentNotificationPromise;
       delete this._remoteContentNotificationPromise;
+    } else {
+      // A notification already showing gets the new site count.
+      const allowButton = this.msgNotificationBar.getNotificationWithValue(
+        "remoteContent"
+      ).buttonContainer.children[1];
+      if (allowButton) {
+        allowButton.label = allowLabel;
+      }
     }
   },
 
@@ -4301,7 +4326,8 @@ function onRemoteContentOptionsShowing(aEvent) {
     { count }
   );
 
-  document.getElementById("remoteContentOptionAllowAll").collapsed = count < 2;
+  // Allowing all sites has its own button on the notification.
+  document.getElementById("remoteContentOptionAllowAll").collapsed = true;
   document.getElementById("remoteContentOriginsMenuSeparator").collapsed =
     urlSepar.collapsed = count == 0;
 }
@@ -4322,6 +4348,17 @@ function allowRemoteContentForURI(aUriSpec, aReload = true) {
   if (aReload) {
     ReloadMessage();
   }
+}
+
+/**
+ * Allow remote content from every site blocked in the current message.
+ */
+function allowBlockedRemoteContentOrigins() {
+  const popup = document.getElementById("remoteContentOptions");
+  for (const origin of popup.value ? popup.value.split(" ") : []) {
+    allowRemoteContentForURI(origin, false);
+  }
+  ReloadMessage();
 }
 
 /**

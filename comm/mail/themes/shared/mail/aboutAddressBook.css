@@ -94,6 +94,15 @@ body {
     / minmax(var(--ab-pane-min-width), var(--booksSplitter-width)) min-content
     minmax(var(--ab-cards-pane-min-width), var(--sharedSplitter-width)) min-content
     minmax(var(--ab-details-pane-min-width), 1fr);
+  box-sizing: border-box;
+  padding: 8px;
+  background-color: var(--inner-window-background);
+
+  & > hr[is="pane-splitter"]:not(.splitter-collapsed) {
+    --splitter-content-size: 8px;
+    --splitter-occupy-size: 8px;
+    border-color: transparent;
+  }
   text-shadow: none;
   font-size: 1.1rem;
 
@@ -155,8 +164,11 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
   color: var(--sidebar-color);
-  background-color: var(--sidebar-background);
+  background-color: var(--layout-background-1);
 }
 
 .books-pane-bottom {
@@ -310,6 +322,9 @@ body {
   overflow-y: hidden;
   font-size: 1rem;
   background-color: var(--layout-background-1);
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
 }
 
 #cardsPaneHeader {
@@ -477,6 +492,10 @@ tr[is="ab-card-row"].selected .recipient-avatar.is-mail-list {
 
 #detailsPane {
   display: grid;
+  border-radius: var(--border-radius-large);
+  overflow: clip;
+  outline: var(--card-outline);
+  outline-offset: -1px;
   grid-template:
     "scroll-content" 1fr
     "footer" auto / 1fr;

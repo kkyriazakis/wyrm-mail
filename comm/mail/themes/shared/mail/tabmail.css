@@ -40,6 +40,11 @@
   color-scheme: light dark;
   padding-block-start: 3px;
   padding-inline: 3px;
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media -moz-pref("wyrm.ui.singleView") {
+    display: none;
+  }
 }
 
 #tabpanelcontainer {
@@ -449,7 +454,7 @@ button.tab-close-button {
   appearance: none;
   list-style-image: var(--icon-nav-back);
   border: 1px solid transparent;
-  border-radius: 2px;
+  border-radius: var(--button-border-radius);
   margin: 5px 2px;
   margin-inline-start: 2px;
   -moz-context-properties: stroke;

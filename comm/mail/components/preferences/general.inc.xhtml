@@ -325,6 +325,23 @@
                value="true"/>
                <!-- label and accesskey will be set dynamically -->
       </radiogroup>
+      <hbox align="center">
+        <label control="threadPaneDateFormat"
+               data-l10n-id="message-list-date-format-label"/>
+        <menulist id="threadPaneDateFormat"
+                  preference="wyrm.threadpane.dateFormat">
+          <menupopup>
+            <menuitem value="weekday-time"
+                      data-l10n-id="message-list-date-format-weekday-time"/>
+            <menuitem value="smart"
+                      data-l10n-id="message-list-date-format-smart"/>
+            <menuitem value="date"
+                      data-l10n-id="message-list-date-format-date"/>
+            <menuitem value="date-time"
+                      data-l10n-id="message-list-date-format-date-time"/>
+          </menupopup>
+        </menulist>
+      </hbox>
     </html:fieldset>
     </html:div>
 

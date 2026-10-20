@@ -67,7 +67,7 @@
   --calendar-nav-control-padding: 6px;
   --calendar-view-toggle-label-padding: 3px 15px;
   --calendar-view-toolbar-gap: 9px;
-  --button-border-radius: 3px;
+  --button-border-radius: 8px;
   --calendar-view-toggle-background: var(--layout-background-3);
   --calendar-view-toggle-hover-background: light-dark(
     var(--layout-background-2),
@@ -907,7 +907,7 @@ calendar-month-day-box {
 .calendar-color-box {
   /* FIXME: Is min-height needed? */
   min-block-size: 13px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-small);
   background-color: var(--item-backcolor);
   color: var(--item-forecolor);
   position: relative;
@@ -924,7 +924,7 @@ calendar-month-day-box calendar-month-day-box-item[allday="true"].calendar-color
   block-size: 1.2em;
   background-color: color-mix(in srgb, var(--viewDropshadowBackground) 30%, transparent);
   border: 2px dashed var(--viewDropshadowBackground);
-  border-radius: 3px;
+  border-radius: var(--border-radius-small);
 }
 
 :is(.gripbar-start, .gripbar-end) {

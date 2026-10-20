@@ -169,9 +169,9 @@
   padding-inline: 14px var(--calendar-list-item-dot-gap);
   align-items: center;
   margin-block: var(--calendar-list-item-margin);
-  margin-inline: 9px;
-  border-radius: 3px;
-  gap: var(--calendar-list-item-dot-gap);
+  margin-inline: 8px;
+  border-radius: var(--button-border-radius);
+  gap: 8px;
 }
 
 #calendar-list > li.selected {
@@ -246,14 +246,35 @@
   block-size: 16px;
 }
 
+/* Outlook-style tick box in the calendar's color: filled with a tick when
+ * the calendar is shown, an empty outline when hidden. It replaces the dot. */
 #calendar-list > li > .calendar-displayed {
-  background-image: var(--icon-hidden);
-  opacity: 0.7;
+  order: -1;
+  box-sizing: border-box;
+  border: 1.5px solid var(--calendar-list-item-color, currentColor);
+  border-style: solid !important;
+  border-radius: 4px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 12px;
+  -moz-context-properties: stroke;
+  stroke: #fff;
+  cursor: pointer;
+  opacity: 1 !important;
 }
 
 #calendar-list > li > .calendar-displayed:checked {
-  background-image: var(--icon-eye);
-  opacity: 0;
+  background-color: var(--calendar-list-item-color, currentColor) !important;
+  background-image: var(--icon-check);
+}
+
+#calendar-list > li > .calendar-displayed:disabled {
+  opacity: 0.4 !important;
+  cursor: default;
+}
+
+#calendar-list > li > .calendar-color {
+  display: none;
 }
 
 #calendar-list > li > .calendar-more-button {
@@ -263,7 +284,6 @@
   background-image: var(--icon-more);
 }
 
-#calendar-list > li > .calendar-displayed:is(:hover, :focus),
 #calendar-list > li > .calendar-more-button:is(:hover, :focus) {
   opacity: 0.9 !important;
 }
@@ -272,7 +292,6 @@
   outline-color: var(--sidebar-highlight-text-color, var(--sidebar-color));
 }
 
-#calendar-list > li:hover > .calendar-displayed:checked,
 #calendar-list > li:hover > .calendar-more-button {
   opacity: 0.7;
 }

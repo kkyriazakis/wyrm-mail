@@ -95,7 +95,7 @@ body {
 .popup-menuitem {
   font: menu;
   padding: 4px 10px;
-  border-radius: 3px;
+  border-radius: var(--panel-menuitem-border-radius);
 
   &:is(:hover, :focus) {
     background-color: var(--selected-item-color);
@@ -593,7 +593,7 @@ facet-boolean[disabled] {
   display: inline-block; /* to avoid splitting 'To' and 'Do' e.g. */
   margin-inline-start: 3px;
   padding: 0 0.5ex;
-  border-radius: 3px;
+  border-radius: var(--border-radius-small);
   border: 1px solid color-mix(in srgb, currentColor 50%, transparent);
 }
 

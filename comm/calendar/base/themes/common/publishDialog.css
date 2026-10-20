@@ -16,13 +16,13 @@ html|label {
   margin: 10px 4px;
   background-color: hsla(0, 0%, 60%, 0.2);
   border-style: none;
-  border-radius: 2px;
+  border-radius: var(--border-radius-circle);
 }
 
 #publish-progressmeter::-moz-progress-bar {
   appearance: none;
   background-color: var(--selected-item-color);
-  border-radius: 2px;
+  border-radius: var(--border-radius-circle);
 }
 
 #publish-progressmeter:indeterminate::-moz-progress-bar {

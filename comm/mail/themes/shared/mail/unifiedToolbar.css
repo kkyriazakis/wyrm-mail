@@ -46,7 +46,7 @@
 
 unified-toolbar {
   display: block;
-  border-block-end: 1px solid rgba(0, 0, 0, 0.15);
+  border-block-end: none;
 }
 
 #unifiedToolbarContainer {
@@ -302,5 +302,31 @@ unified-toolbar-tab {
     &:hover:active {
       background-color: color-mix(in srgb, #f2762e 78%, black);
     }
+  }
+}
+
+/* Account avatar that opens the account menu. */
+.account-menu-button {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  inline-size: 30px;
+  block-size: 30px;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin-inline: 6px;
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius-circle);
+  background: none;
+  -moz-window-dragging: no-drag;
+
+  &:hover .account-menu-avatar {
+    outline: 2px solid color-mix(in srgb, var(--selected-item-color) 45%, transparent);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: 2px;
   }
 }

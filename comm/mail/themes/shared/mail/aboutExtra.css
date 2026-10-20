@@ -104,7 +104,7 @@ panel-list {
 }
 
 panel-item::part(button) {
-  border-radius: 3px;
+  border-radius: var(--button-border-radius);
   background-position-x: 3px;
   --button-background-color-hover: var(--button-hover-background-color);
   --button-background-color-active: var(--button-active-background-color);

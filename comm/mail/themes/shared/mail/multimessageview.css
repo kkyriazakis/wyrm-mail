@@ -181,7 +181,7 @@ body {
   white-space: nowrap;
   padding: 2px 4px;
   line-height: 1em;
-  border-radius: 3px;
+  border-radius: var(--border-radius-small);
 }
 
 .count,

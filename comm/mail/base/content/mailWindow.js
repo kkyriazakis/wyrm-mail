@@ -413,6 +413,9 @@ nsMsgStatusFeedback.prototype = {
    * @param {string} url - The href to display.
    */
   setOverLink(url) {
+    if (!Services.prefs.getBoolPref("wyrm.ui.showLinkTarget", false)) {
+      url = "";
+    }
     if (url) {
       url = Services.textToSubURI.unEscapeURIForUI(url);
 

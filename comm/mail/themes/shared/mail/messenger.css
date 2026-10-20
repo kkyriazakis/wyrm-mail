@@ -36,6 +36,7 @@ body {
 body {
   display: flex;
   flex-direction: column;
+  background-color: var(--window-background);
 }
 
 #messengerWindow {
@@ -933,10 +934,14 @@ statuspanel {
 
 /* Status bar */
 
+/* The status bar is part of the window background, and keeps its content
+ * clear of the rounded window corners. */
 .statusbar {
-  background-color: var(--layout-background-1);
-  border-block-start: 1px solid var(--sidebar-border);
+  background-color: transparent;
+  border-block-start: none;
   min-block-size: 22px;
+  padding-inline: calc(var(--border-radius-xlarge) / 2 + 4px);
+  padding-block-end: 4px;
 }
 
 :root[lwtheme] #status-bar {
@@ -975,12 +980,12 @@ label.statusbarpanel {
   block-size: 4px;
   background-color: hsla(0, 0%, 60%, 0.2);
   border-style: none;
-  border-radius: 2px;
+  border-radius: var(--border-radius-circle);
 
   &::-moz-progress-bar {
     appearance: none;
     background-color: var(--selected-item-color);
-    border-radius: 2px;
+    border-radius: var(--border-radius-circle);
   }
 
   &:indeterminate::-moz-progress-bar {
@@ -1436,7 +1441,7 @@ panel[type="arrow"].panel-block-padding::part(content) {
 .notification-button {
   margin: 4px;
   border: 1px solid var(--button-border-color);
-  border-radius: 3px;
+  border-radius: var(--button-border-radius);
   color: var(--button-text-color);
   background-color: var(--button-background-color);
 
@@ -1535,4 +1540,81 @@ panel[type="arrow"].panel-block-padding::part(content) {
   margin: 0 !important;
   border: none;
   padding: 0;
+}
+
+/* Account menu */
+.account-menu-avatar {
+  display: grid;
+  place-items: center;
+  inline-size: 28px;
+  block-size: 28px;
+  border-radius: var(--border-radius-circle);
+  background-color: color-mix(in srgb, var(--selected-item-color) 22%, var(--layout-background-0));
+  color: var(--selected-item-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+#accountMenu {
+  --panel-padding: 6px;
+  min-inline-size: 240px;
+
+  & menuitem {
+    border-radius: var(--panel-menuitem-border-radius);
+  }
+}
+
+.account-menu-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+
+  & .account-menu-avatar {
+    inline-size: 36px;
+    block-size: 36px;
+    font-size: 1rem;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.account-menu-identity-text {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.account-menu-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-menu-email {
+  font-size: 0.9rem;
+  color: var(--layout-color-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:empty {
+    display: none;
+  }
+}
+
+#accountMenuAddAccount {
+  --menuitem-icon: var(--icon-add);
+}
+
+#accountMenuSettings {
+  --menuitem-icon: var(--icon-settings);
+}
+
+#accountMenuQuit {
+  --menuitem-icon: var(--icon-quit);
 }

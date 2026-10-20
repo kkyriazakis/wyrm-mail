@@ -47,7 +47,7 @@ menupopup {
     min-block-size: 24px;
     padding-inline: 8px;
     padding-block: var(--menu-item-padding);
-    border-radius: 3px;
+    border-radius: var(--panel-menuitem-border-radius);
     background-color: transparent;
 
     &:focus {

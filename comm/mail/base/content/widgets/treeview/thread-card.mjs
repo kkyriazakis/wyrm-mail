@@ -6,6 +6,180 @@ import { TreeViewTableRow } from "chrome://messenger/content/tree-view.mjs";
 // eslint-disable-next-line import/no-unassigned-import
 import "chrome://messenger/content/thread-card-tags.mjs";
 
+const { MailServices } = ChromeUtils.importESModule(
+  "resource:///modules/MailServices.sys.mjs"
+);
+
+const DATE_FORMAT_PREF = "wyrm.threadpane.dateFormat";
+const PINNED_KEYWORD = "$pinned";
+
+/**
+ * Domains of public mail providers. Mail between two people on these is not
+ * "external", since they share no organization.
+ */
+const PUBLIC_MAIL_DOMAINS = new Set([
+  "aol.com",
+  "gmail.com",
+  "gmx.com",
+  "googlemail.com",
+  "hotmail.com",
+  "icloud.com",
+  "live.com",
+  "me.com",
+  "msn.com",
+  "outlook.com",
+  "proton.me",
+  "protonmail.com",
+  "yahoo.com",
+]);
+
+/** @type {Map<string, Set<string>>} Organization domains by server key. */
+const orgDomainsByServer = new Map();
+
+/**
+ * @param {string} address
+ * @returns {string}
+ */
+function domainOf(address) {
+  return address.split("@").pop().toLowerCase();
+}
+
+/**
+ * Whether a message comes from outside the organization of the account that
+ * received it. Accounts on public mail providers have no organization.
+ *
+ * @param {nsIMsgDBHdr} message
+ * @returns {boolean}
+ */
+function isExternal(message) {
+  const server = message.folder?.server;
+  if (!server) {
+    return false;
+  }
+  let orgDomains = orgDomainsByServer.get(server.key);
+  if (!orgDomains) {
+    orgDomains = new Set(
+      MailServices.accounts
+        .getIdentitiesForServer(server)
+        .map(identity => domainOf(identity.email ?? ""))
+        .filter(domain => domain && !PUBLIC_MAIL_DOMAINS.has(domain))
+    );
+    orgDomainsByServer.set(server.key, orgDomains);
+  }
+  if (!orgDomains.size) {
+    return false;
+  }
+  const sender = MailServices.headerParser.parseDecodedHeader(
+    message.mime2DecodedAuthor
+  )[0]?.email;
+  return !!sender && !orgDomains.has(domainOf(sender));
+}
+
+let dateFormatters;
+
+/**
+ * Format a message date for the card, following the user's chosen format.
+ *
+ * @param {Date} date
+ * @returns {string}
+ */
+function formatCardDate(date) {
+  dateFormatters ??= {
+    time: new Services.intl.DateTimeFormat(undefined, { timeStyle: "short" }),
+    weekday: new Services.intl.DateTimeFormat(undefined, { weekday: "short" }),
+    weekdayTime: new Services.intl.DateTimeFormat(undefined, {
+      weekday: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    date: new Services.intl.DateTimeFormat(undefined, { dateStyle: "short" }),
+    dateTime: new Services.intl.DateTimeFormat(undefined, {
+      dateStyle: "short",
+      timeStyle: "short",
+    }),
+  };
+
+  switch (Services.prefs.getStringPref(DATE_FORMAT_PREF, "weekday-time")) {
+    case "smart": {
+      const now = new Date();
+      const startOfToday = new Date(now).setHours(0, 0, 0, 0);
+      if (date >= startOfToday) {
+        return dateFormatters.time.format(date);
+      }
+      if (now - date < 6 * 24 * 60 * 60 * 1000) {
+        return dateFormatters.weekday.format(date);
+      }
+      return dateFormatters.date.format(date);
+    }
+    case "date":
+      return dateFormatters.date.format(date);
+    case "date-time":
+      return dateFormatters.dateTime.format(date);
+    default:
+      return dateFormatters.weekdayTime.format(date);
+  }
+}
+
+Services.prefs.addObserver(DATE_FORMAT_PREF, invalidateThreadTree);
+window.addEventListener(
+  "unload",
+  () => Services.prefs.removeObserver(DATE_FORMAT_PREF, invalidateThreadTree),
+  { once: true }
+);
+
+function invalidateThreadTree() {
+  window.threadTree?.invalidate();
+}
+
+/** @type {Map<nsIMsgFolder, Set<nsMsgKey>>} Previews waiting to be fetched. */
+const pendingPreviews = new Map();
+/** @type {Set<string>} Messages whose preview was already requested. */
+const requestedPreviews = new Set();
+let previewTimer = null;
+
+const previewListener = {
+  QueryInterface: ChromeUtils.generateQI(["nsIUrlListener"]),
+  OnStartRunningUrl() {},
+  OnStopRunningUrl() {
+    invalidateThreadTree();
+  },
+};
+
+/**
+ * Ask the folder for a message's preview text. Requests are batched per
+ * folder and each message is only asked for once.
+ *
+ * @param {nsIMsgDBHdr} message
+ */
+function requestPreview(message) {
+  const id = `${message.folder.URI}#${message.messageKey}`;
+  if (requestedPreviews.has(id)) {
+    return;
+  }
+  requestedPreviews.add(id);
+  if (!pendingPreviews.has(message.folder)) {
+    pendingPreviews.set(message.folder, new Set());
+  }
+  pendingPreviews.get(message.folder).add(message.messageKey);
+  previewTimer ??= setTimeout(() => {
+    previewTimer = null;
+    let fetchedNow = false;
+    for (const [folder, keys] of pendingPreviews) {
+      try {
+        if (!folder.fetchMsgPreviewText([...keys], previewListener)) {
+          fetchedNow = true;
+        }
+      } catch (e) {
+        console.warn(`Could not fetch previews in ${folder.URI}`, e);
+      }
+    }
+    pendingPreviews.clear();
+    if (fetchedNow) {
+      invalidateThreadTree();
+    }
+  }, 100);
+}
+
 /**
  * The tr element row of the TreeView table for the cards view layout.
  * NOTE: The main child is a clone of the `#threadPaneCardTemplate` template.
@@ -15,6 +189,28 @@ import "chrome://messenger/content/thread-card-tags.mjs";
  */
 class ThreadCard extends TreeViewTableRow {
   static ROW_HEIGHT = 46;
+
+  /** Height of the date group headings when grouped by sort. */
+  static HEADER_ROW_HEIGHT = 34;
+
+  /**
+   * @param {TreeView} tree
+   * @returns {boolean} Whether the list may contain group heading rows.
+   */
+  static hasHeaderRows(tree) {
+    // nsMsgViewFlagsType.kGroupBySort
+    return !!(tree.view?.viewFlags & 0x100);
+  }
+
+  /**
+   * @param {nsIMsgDBView} view
+   * @param {integer} index
+   * @returns {boolean} Whether the row at `index` is a group heading.
+   */
+  static isHeaderRow(view, index) {
+    // MSG_VIEW_FLAG_DUMMY
+    return !!(view.getFlagsAt(index) & 0x20000000);
+  }
 
   connectedCallback() {
     if (this.hasConnected) {
@@ -41,6 +237,9 @@ class ThreadCard extends TreeViewTableRow {
     this.twistyButton = this.querySelector("button.twisty");
     this.sortHeaderDetails = this.querySelector(".sort-header-details");
     this.statusIndicator = this.querySelector(".read-status");
+    this.externalTag = this.querySelector(".external-tag");
+    this.previewLine = this.querySelector(".thread-card-preview");
+    this.pinButton = this.querySelector(".tree-button-pin");
   }
 
   fillRow() {
@@ -90,6 +289,11 @@ class ThreadCard extends TreeViewTableRow {
     }
     const propertiesSet = new Set(properties.value.split(" "));
     this.dataset.properties = properties.value.trim();
+    this.style.height = `${
+      propertiesSet.has("dummy")
+        ? ThreadCard.HEADER_ROW_HEIGHT
+        : ThreadCard.ROW_HEIGHT
+    }px`;
     this.#updateTwistyButton();
 
     this.subjectLine.textContent = data.subject;
@@ -122,9 +326,43 @@ class ThreadCard extends TreeViewTableRow {
       return;
     }
 
-    this.senderLine.textContent = data.sender;
+    this.senderLine.textContent = MailServices.headerParser
+      .parseDecodedHeader(data.sender)
+      .map(address => address.name || address.email)
+      .join(", ") || data.sender;
     this.senderLine.title = data.sender;
     this.dateLine.textContent = data.date;
+
+    let message = null;
+    try {
+      message = this.view.getMsgHdrAt(this._index);
+    } catch (e) {
+      // Not a real message, keep the column data.
+    }
+    if (message) {
+      this.dateLine.textContent = formatCardDate(new Date(message.date / 1000));
+      this.externalTag.hidden = !isExternal(message);
+
+      const preview = message.getStringProperty("preview").replace(/\s+/g, " ").trim();
+      this.previewLine.textContent = preview;
+      if (!preview) {
+        requestPreview(message);
+      }
+
+      const isPinned = message
+        .getStringProperty("keywords")
+        .split(" ")
+        .includes(PINNED_KEYWORD);
+      this.classList.toggle("pinned", isPinned);
+      document.l10n.setAttributes(
+        this.pinButton,
+        isPinned ? "threadpane-card-unpin-button" : "threadpane-card-pin-button"
+      );
+    } else {
+      this.externalTag.hidden = true;
+      this.previewLine.textContent = "";
+      this.classList.remove("pinned");
+    }
 
     this.threadCardTags.setAttribute("tags", data.tagKeys);
 

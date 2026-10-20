@@ -352,6 +352,7 @@ var gMailInit = {
     BondOpenPGP.init();
 
     PanelUI.init();
+    gAccountMenu.init();
     gExtensionsNotifications.init();
 
     SearchService.init();
@@ -1116,5 +1117,46 @@ var BrowserAddonUI = {
     if (remove) {
       await addon.uninstall(report);
     }
+  },
+};
+
+/**
+ * The avatar button at the end of the top bar, with the account menu that
+ * replaces the application menu.
+ */
+var gAccountMenu = {
+  init() {
+    this.popup = document.getElementById("accountMenu");
+    document
+      .getElementById("accountMenuButton")
+      ?.addEventListener("click", event => {
+        this.update();
+        this.popup.openPopup(event.currentTarget, "after_end", 0, 6);
+      });
+    this.update();
+  },
+
+  /**
+   * Show the default identity's initials, name and address.
+   */
+  update() {
+    const identity =
+      MailServices.accounts.defaultAccount?.defaultIdentity ??
+      MailServices.accounts.allIdentities[0];
+    const name = identity?.fullName || "";
+    const email = identity?.email || "";
+    const initials =
+      (name || email)
+        .split(/[\s@._-]+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part[0].toUpperCase())
+        .join("") || "?";
+    for (const avatar of document.querySelectorAll(".account-menu-avatar")) {
+      avatar.textContent = initials;
+    }
+    document.getElementById("accountMenuName").textContent = name || email;
+    document.getElementById("accountMenuEmail").textContent = name ? email : "";
+    document.getElementById("accountMenuIdentity").hidden = !identity;
   },
 };

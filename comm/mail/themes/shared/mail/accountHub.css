@@ -184,8 +184,22 @@ dialog {
       -moz-window-dragging: no-drag;
     }
 
-    & :is(.hub-window-controls, .hub-appearance-controls) {
+    &[open] :is(.hub-window-controls, .hub-appearance-controls) {
       display: flex;
+    }
+
+    /* Without the card, the busy overlay frosts the whole window instead of
+     * showing as a solid box. */
+    & .account-hub-view.spinner #loadingOverlay {
+      position: fixed;
+      border-radius: var(--border-radius-xlarge);
+      background-color: color-mix(in srgb, var(--color-surface-subtle) 45%, transparent);
+      backdrop-filter: blur(12px);
+      opacity: 1;
+
+      @media (prefers-reduced-motion: no-preference) {
+        animation: 0.3s ease-out 0s hub-reveal-frost;
+      }
     }
   }
 }
@@ -448,6 +462,12 @@ dialog {
 
   100% {
     opacity: 0.8;
+  }
+}
+
+@keyframes hub-reveal-frost {
+  from {
+    opacity: 0;
   }
 }
 

@@ -5,16 +5,16 @@
 :root {
   @media not (forced-colors) {
     --list-container-border: transparent;
-    --list-container-background-selected: color-mix(in srgb, var(--layout-background-3) 20%, transparent);
-    --list-container-border-selected: light-dark(var(--color-gray-40), var(--color-gray-60));
-    --list-container-background-selected-current: color-mix(in srgb, var(--layout-background-3) 40%, transparent);
-    --list-container-border-selected-current: light-dark(color-mix(in srgb, var(--layout-border-1) 80%, transparent), var(--layout-border-1));
-    --list-container-background-hover: color-mix(in srgb, var(--selected-item-color) 10%, transparent);
-    --list-container-border-hover: color-mix(in srgb, var(--selected-item-color) 60%, transparent);
-    --list-container-background-selected-focused: color-mix(in srgb, var(--selected-item-color) 7%, transparent);
-    --list-container-border-selected-focused: color-mix(in srgb, var(--selected-item-color) 30%, transparent);
-    --list-container-border-selected-current-focused: var(--selected-item-color);
-    --list-container-background-selected-current-focused: color-mix(in srgb, var(--selected-item-color) 15%, transparent);
+    --list-container-background-selected: color-mix(in srgb, var(--selected-item-color) 12%, transparent);
+    --list-container-border-selected: transparent;
+    --list-container-background-selected-current: color-mix(in srgb, var(--selected-item-color) 14%, transparent);
+    --list-container-border-selected-current: transparent;
+    --list-container-background-hover: color-mix(in srgb, currentColor 7%, transparent);
+    --list-container-border-hover: transparent;
+    --list-container-background-selected-focused: color-mix(in srgb, var(--selected-item-color) 18%, transparent);
+    --list-container-border-selected-focused: transparent;
+    --list-container-border-selected-current-focused: transparent;
+    --list-container-background-selected-current-focused: color-mix(in srgb, var(--selected-item-color) 22%, transparent);
   }
 
   @media (forced-colors) {
@@ -38,7 +38,7 @@
     align-items: center;
     position: relative;
     -moz-context-properties: fill;
-    margin-inline: 3px;
+    margin-inline: 8px;
     border: 1px solid var(--list-container-border);
     border-radius: var(--listbox-border-radius);
     fill: currentColor;

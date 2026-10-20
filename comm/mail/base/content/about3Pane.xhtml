@@ -301,17 +301,11 @@
           <div class="thread-card-column">
             <div class="thread-card-row">
               <span class="account-indicator"></span>
+              <span class="external-tag" data-l10n-id="threadpane-card-external" hidden="hidden"></span>
               <span class="sender"></span>
               <img class="state replied" src="" data-l10n-id="threadpane-message-replied" />
               <img class="state forwarded" src="" data-l10n-id="threadpane-message-forwarded" />
               <img class="state redirected" src="" data-l10n-id="threadpane-message-redirected" />
-              <span class="date"></span>
-              <button type="button"
-                      class="button icon-button icon-only tree-button-more"
-                      aria-hidden="hidden"
-                      data-l10n-id="threadpane-card-menu-button"
-                      tabindex="-1">
-              </button>
             </div>
             <div class="thread-card-dynamic-row">
               <span class="sort-header-details"></span>
@@ -335,11 +329,28 @@
                         aria-hidden="hidden"
                         tabindex="-1">
                 </button>
-                <button class="button-star tree-button-flag"
-                        aria-hidden="hidden"
-                        tabindex="-1">
-                </button>
               </div>
+            </div>
+            <div class="thread-card-preview"></div>
+          </div>
+          <div class="thread-card-trailing">
+            <div class="thread-card-quick-actions">
+              <button class="tree-button-pin"
+                      aria-hidden="hidden"
+                      tabindex="-1">
+              </button>
+              <button class="button-star tree-button-flag"
+                      aria-hidden="hidden"
+                      tabindex="-1">
+              </button>
+            </div>
+            <div class="thread-card-date-row">
+              <span class="date"></span>
+              <button class="tree-button-request-delete"
+                      data-l10n-id="threadpane-card-delete-button"
+                      aria-hidden="hidden"
+                      tabindex="-1">
+              </button>
             </div>
           </div>
         </div>

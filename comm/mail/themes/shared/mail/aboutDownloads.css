@@ -30,7 +30,7 @@ body {
   & > .download {
     min-block-size: 5em;
     border-block-end: 1px solid hsla(0, 0%, 50%, 0.3);
-    border-radius: 3px;
+    border-radius: var(--border-radius-small);
   }
 
   & > .download > vbox {
@@ -48,7 +48,7 @@ body {
 #clearDownloads {
   margin-inline-start: 0;
   padding: 0 12px;
-  border-radius: 3px;
+  border-radius: var(--button-border-radius);
   font-weight: 400;
 }
 

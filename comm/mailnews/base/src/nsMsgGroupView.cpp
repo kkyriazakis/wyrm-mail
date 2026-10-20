@@ -143,8 +143,11 @@ nsresult nsMsgGroupView::GetAgeBucketValue(nsIMsgDBHdr* aMsgHdr,
     else if (dateOfMsg >= mostRecentWeek)
       *aAgeBucket = 3;
     else {
-      int64_t lastTwoWeeks = mostRecentMidnight - PR_USEC_PER_DAY * 13;
-      *aAgeBucket = (dateOfMsg >= lastTwoWeeks) ? 4 : 5;
+      // Earlier this calendar month, otherwise older.
+      bool sameMonth =
+          currentExplodedTime.tm_year == explodedMsgTime.tm_year &&
+          currentExplodedTime.tm_month == explodedMsgTime.tm_month;
+      *aAgeBucket = sameMonth ? 4 : 5;
     }
   } else {
     // All that remains is a future date.
