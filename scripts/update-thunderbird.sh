@@ -37,4 +37,6 @@ git switch -q "$current"
 
 echo "Merging Thunderbird $version into $current..."
 git merge --no-edit upstream-thunderbird
-echo "Done. Run scripts/setup.sh to move firefox/ to the matching Firefox version."
+"$root/scripts/sync-packaging.sh"
+echo "Done. Run scripts/setup.sh to move firefox/ to the matching Firefox version,"
+echo "and commit the packaging/ changes, if any."

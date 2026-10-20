@@ -8,6 +8,8 @@ through Microsoft Graph, alongside Gmail and standard IMAP/SMTP accounts.
 ## Getting started
 
 See [docs/SETUP.md](docs/SETUP.md) for dependencies, building and running.
+To build installable packages for Fedora/RHEL (RPM) or Arch Linux (pacman),
+see [docs/PACKAGING.md](docs/PACKAGING.md).
 
 Short version:
 
@@ -27,6 +29,8 @@ cd firefox
 | `mozconfig` | Build configuration (branding, disabled Mozilla services, objdir). |
 | `scripts/setup.sh` | Fetches the matching Mozilla platform into `firefox/` and links `comm/` and `mozconfig` into it. |
 | `scripts/update-thunderbird.sh` | Imports a new upstream Thunderbird release and merges it. |
+| `packaging/` | RPM spec (Fedora/RHEL), Arch PKGBUILD and shared desktop integration. |
+| `scripts/make-source-tarball.sh`, `scripts/sync-packaging.sh` | Source tarball and version sync for the packages. |
 | `docs/` | Guides. |
 | `prototypes/gtk-mail-client/` | Earlier GTK4/libadwaita prototype, kept for reference. |
 | `firefox/` | Mozilla platform checkout. Not tracked; created by `scripts/setup.sh`. |

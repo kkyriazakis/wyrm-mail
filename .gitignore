@@ -24,3 +24,9 @@ __pycache__/
 *.swp
 *~
 .DS_Store
+
+# Arch package build output.
+/packaging/arch/src/
+/packaging/arch/pkg/
+/packaging/arch/*.tar.*
+/packaging/arch/mozbuild/

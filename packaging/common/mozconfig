@@ -1,0 +1,18 @@
+# Options shared by the RPM and Arch package builds. Each recipe appends this
+# file to the top-level mozconfig, then adds its distro-specific options.
+
+# Build with the distro's clang, rust, cbindgen and nodejs. Never download
+# toolchains: package builds run offline.
+ac_add_options --disable-bootstrap
+
+ac_add_options --prefix=/usr
+ac_add_options --enable-release
+ac_add_options --enable-hardening
+ac_add_options --enable-rust-simd
+ac_add_options --disable-tests
+
+# System libraries every supported distro ships in a compatible version.
+# NSS, NSPR, ICU and the codecs stay bundled: RHEL-family releases ship
+# versions too old for the pinned Gecko.
+ac_add_options --enable-system-ffi
+ac_add_options --with-system-zlib

@@ -1,0 +1,22 @@
+[Desktop Entry]
+Name=Fedora Email Client
+GenericName=Mail Client
+Comment=Read and write email, including Microsoft 365 and Gmail accounts
+Keywords=Email;E-mail;Mail;Outlook;Exchange;Calendar;Contacts;
+Exec=fedora-email-client %u
+Terminal=false
+Type=Application
+Icon=fedora-email-client
+Categories=Network;Email;
+MimeType=message/rfc822;x-scheme-handler/mailto;text/calendar;text/vcard;text/x-vcard;x-scheme-handler/webcal;x-scheme-handler/webcals;x-scheme-handler/mid;
+StartupNotify=true
+StartupWMClass=fedora-email-client
+Actions=ComposeMessage;OpenAddressBook;
+
+[Desktop Action ComposeMessage]
+Name=Write New Message
+Exec=fedora-email-client -compose
+
+[Desktop Action OpenAddressBook]
+Name=Open the Address Book
+Exec=fedora-email-client -addressbook

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.kkyriazakis.FedoraEmailClient</id>
+  <launchable type="desktop-id">fedora-email-client.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MPL-2.0</project_license>
+  <name>Fedora Email Client</name>
+  <summary>Outlook-first email client based on Thunderbird</summary>
+  <description>
+    <p>
+      A native email client for Linux, based on Thunderbird. It connects to
+      Microsoft 365 and Outlook accounts, including work accounts on custom
+      domains, through Microsoft Graph, alongside Gmail and standard IMAP and
+      SMTP accounts.
+    </p>
+  </description>
+  <developer id="io.github.kkyriazakis">
+    <name>Kleanthis Kyriazakis</name>
+  </developer>
+  <url type="homepage">https://github.com/kkyriazakis/wyrm-mail</url>
+  <categories>
+    <category>Network</category>
+    <category>Email</category>
+  </categories>
+  <provides>
+    <binary>fedora-email-client</binary>
+    <mediatype>message/rfc822</mediatype>
+    <mediatype>x-scheme-handler/mailto</mediatype>
+    <mediatype>text/calendar</mediatype>
+    <mediatype>text/vcard</mediatype>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="157.0.2" date="2026-10-08"/>
+  </releases>
+</component>

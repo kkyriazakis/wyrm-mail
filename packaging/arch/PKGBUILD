@@ -1,0 +1,94 @@
+# Arch Linux package. See docs/PACKAGING.md. pkgver and _gecko_tag are kept
+# in sync with comm/ by scripts/sync-packaging.sh.
+# Maintainer: Kleanthis Kyriazakis <kleanthis_kyriaz@hotmail.com>
+
+pkgname=fedora-email-client
+pkgver=157.0.2
+pkgrel=1
+_gecko_tag=FIREFOX_157_0_BUILD1
+pkgdesc="Outlook-first email client based on Thunderbird"
+arch=(x86_64)
+url="https://github.com/kkyriazakis/wyrm-mail"
+license=(MPL-2.0)
+depends=(
+  alsa-lib
+  dbus
+  gcc-libs
+  glibc
+  gtk3
+  hicolor-icon-theme
+  libffi
+  libpulse
+  libx11
+  libxcb
+  libxcomposite
+  libxdamage
+  libxext
+  libxfixes
+  libxrandr
+  libxt
+  mime-types
+  pango
+  ttf-font
+  zlib
+)
+makedepends=(
+  cbindgen
+  clang
+  diffutils
+  lld
+  llvm
+  nasm
+  nodejs
+  python
+  rust
+  unzip
+  wasi-compiler-rt
+  wasi-libc
+  wasi-libc++
+  wasi-libc++abi
+  zip
+)
+optdepends=(
+  'hunspell-en_us: spell checking (or another hunspell dictionary)'
+  'ffmpeg: audio and video in messages'
+  'libnotify: desktop notifications'
+  'networkmanager: online/offline detection'
+)
+options=(!debug !emptydirs !lto)
+source=(
+  "firefox-$_gecko_tag.tar.gz::https://github.com/mozilla-firefox/firefox/archive/refs/tags/$_gecko_tag.tar.gz"
+  # This repository; made by scripts/make-source-tarball.sh.
+  "$pkgname-$pkgver.tar.xz"
+)
+sha256sums=('SKIP'
+            'SKIP')
+
+prepare() {
+  cd "firefox-$_gecko_tag"
+  ln -sfn "../$pkgname-$pkgver/comm" comm
+  cat "../$pkgname-$pkgver/mozconfig" "../$pkgname-$pkgver/packaging/common/mozconfig" > mozconfig
+  cat >> mozconfig <<'EOF'
+ac_add_options --with-distribution-id=org.archlinux
+ac_add_options --with-wasi-sysroot=/usr/share/wasi-sysroot
+EOF
+}
+
+build() {
+  cd "firefox-$_gecko_tag"
+  export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
+  export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
+  export MOZ_NOSPAM=1
+  ulimit -n 4096
+  ./mach build
+}
+
+package() {
+  cd "firefox-$_gecko_tag"
+  export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
+  export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
+  DESTDIR="$pkgdir" ./mach install
+  "../$pkgname-$pkgver/packaging/common/install-extras.sh" \
+    "$pkgdir" "/usr/lib/$pkgname" org.archlinux "Arch Linux"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
