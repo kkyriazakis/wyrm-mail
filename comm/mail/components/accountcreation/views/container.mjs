@@ -48,6 +48,56 @@ class AccountHubContainer extends HTMLElement {
     this.placeholder.addEventListener("click", () =>
       this.#maximizeAccountHub()
     );
+    shadowRoot
+      .getElementById("hubWindowMinimize")
+      .addEventListener("click", () => window.minimize());
+    shadowRoot
+      .getElementById("hubWindowClose")
+      .addEventListener("click", () => window.close());
+    this.#setUpAppearanceSwitches(shadowRoot);
+  }
+
+  /**
+   * Wire the dark mode and translucency switches. Both store their state in
+   * prefs so the settings page can offer the same options.
+   *
+   * @param {ShadowRoot} shadowRoot
+   */
+  #setUpAppearanceSwitches(shadowRoot) {
+    const themeSwitch = shadowRoot.getElementById("hubThemeSwitch");
+    const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const syncTheme = () =>
+      themeSwitch.setAttribute("aria-checked", darkQuery.matches);
+    darkQuery.addEventListener("change", syncTheme);
+    syncTheme();
+    themeSwitch.addEventListener("click", () =>
+      Services.prefs.setIntPref(
+        "ui.systemUsesDarkTheme",
+        darkQuery.matches ? 0 : 1
+      )
+    );
+
+    const translucentSwitch = shadowRoot.getElementById(
+      "hubTranslucentSwitch"
+    );
+    const syncTranslucent = () =>
+      translucentSwitch.setAttribute(
+        "aria-checked",
+        Services.prefs.getBoolPref("wyrm.ui.translucent", false)
+      );
+    Services.prefs.addObserver("wyrm.ui.translucent", syncTranslucent);
+    window.addEventListener(
+      "unload",
+      () => Services.prefs.removeObserver("wyrm.ui.translucent", syncTranslucent),
+      { once: true }
+    );
+    syncTranslucent();
+    translucentSwitch.addEventListener("click", () =>
+      Services.prefs.setBoolPref(
+        "wyrm.ui.translucent",
+        !Services.prefs.getBoolPref("wyrm.ui.translucent", false)
+      )
+    );
   }
 
   #maximizeAccountHub() {

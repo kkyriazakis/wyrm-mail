@@ -44,7 +44,7 @@ dialog {
   --hub-manual-config-gap: calc(calc(4 * var(--space-step)) + var(--hub-input-error-message-font-size));
 
   --hub-input-height: 33px;
-  --hub-input-border-radius: 3px;
+  --hub-input-border-radius: 8px;
   --hub-input-border-color: color-mix(in srgb, currentColor 50%, transparent);
   --hub-input-error-message-font-size: 0.846rem;
   --hub-close-button-color: light-dark(#18181b, #eeeef0);
@@ -124,35 +124,207 @@ dialog {
     min-block-size: 0;
     margin: 0;
     border: none;
-    border-radius: 0;
-    box-shadow: none;
+    border-radius: var(--border-radius-xlarge);
     place-content: center;
     justify-items: center;
     overflow: auto;
-    background-color: var(--color-surface-subtle);
-    background-image: light-dark(radial-gradient(circle at 15% 0%, #e6f3fe, transparent 60%), radial-gradient(circle at 15% 0%, color-mix(in srgb, #4fb3f6 18%, #162132), transparent 60%));
-    background-position: center center;
-    background-size: cover;
+    /* Liquid glass: blurred Dragon Blue color fields under a frosted sheen.
+     * With wyrm.ui.translucent the tint lets the desktop show through; the
+     * frosting of what is behind comes from the compositor if it offers it. */
+    background-color: light-dark(#eef4fb, #0e1520);
+
+    /* stylelint-disable-next-line media-query-no-invalid */
+    @media -moz-pref("wyrm.ui.translucent") {
+      background-color: light-dark(rgba(238, 244, 251, 0.8), rgba(14, 21, 32, 0.8));
+    }
+
+    background-image:
+      linear-gradient(135deg, light-dark(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.06)), transparent 40%),
+      linear-gradient(light-dark(rgba(255, 255, 255, 0.18), rgba(14, 21, 32, 0.25)));
+    box-shadow: inset 0 0 0 1px light-dark(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.1));
     /* The rest of the window is inert, so let the empty area move it. */
     -moz-window-dragging: drag;
+
+    &::before {
+      content: "";
+      position: fixed;
+      inset: -120px;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 45% 40% at 15% 15%, light-dark(#4fb3f6, #1d6fd1), transparent 70%),
+        radial-gradient(ellipse 40% 45% at 85% 85%, light-dark(#0f4c9e, #0f4c9e), transparent 70%),
+        radial-gradient(ellipse 35% 30% at 80% 18%, light-dark(#a9d8fb, #2b8be0), transparent 70%),
+        radial-gradient(ellipse 35% 35% at 20% 90%, light-dark(#c7dcf5, #16365f), transparent 70%);
+      filter: blur(80px) saturate(1.2);
+      opacity: 0.55;
+
+      /* stylelint-disable-next-line media-query-no-invalid */
+      @media -moz-pref("wyrm.ui.translucent") {
+        opacity: 0.35;
+      }
+    }
 
     &::after {
       display: none;
     }
 
     &::backdrop {
-      background: var(--color-surface-subtle);
+      background: transparent;
     }
 
     & .account-hub-view {
       inline-size: 800px;
       max-inline-size: calc(100vw - 32px);
       min-block-size: 600px;
-      border-radius: var(--button-border-radius);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      border: none;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
       -moz-window-dragging: no-drag;
     }
+
+    & :is(.hub-window-controls, .hub-appearance-controls) {
+      display: flex;
+    }
   }
+}
+
+.hub-window-controls {
+  display: none;
+  position: fixed;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  z-index: 3;
+  gap: 12px;
+  -moz-window-dragging: no-drag;
+
+  @media not (-moz-platform: linux) {
+    display: none !important;
+  }
+}
+
+.hub-appearance-controls {
+  display: none;
+  position: fixed;
+  inset-block-start: 12px;
+  inset-inline-start: 14px;
+  z-index: 3;
+  gap: 10px;
+  -moz-window-dragging: no-drag;
+}
+
+.hub-switch {
+  --hub-switch-icon: url("chrome://messenger/skin/icons/new/sun-xs.svg");
+  appearance: none;
+  position: relative;
+  inline-size: 40px;
+  block-size: 22px;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--border-radius-circle);
+  background-color: color-mix(in srgb, var(--color-text-base) 10%, transparent);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 1px;
+    inset-inline-start: 1px;
+    inline-size: 18px;
+    block-size: 18px;
+    border-radius: var(--border-radius-circle);
+    background: var(--color-surface-base) var(--hub-switch-icon) center / 12px no-repeat;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    -moz-context-properties: fill, stroke;
+    fill: color-mix(in srgb, var(--color-primary-default) 30%, transparent);
+    stroke: var(--color-text-secondary);
+    transition: translate 0.2s ease;
+  }
+
+  &:hover {
+    border-color: var(--color-surface-border-intense);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  &[aria-checked="true"] {
+    border-color: var(--color-primary-default);
+    background-color: var(--color-primary-default);
+
+    &::before {
+      translate: 18px;
+      stroke: var(--color-primary-default);
+    }
+
+    &:dir(rtl)::before {
+      translate: -18px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &::before {
+      transition: none;
+    }
+  }
+}
+
+.hub-theme-switch[aria-checked="true"] {
+  --hub-switch-icon: url("chrome://messenger/skin/icons/new/moon-xs.svg");
+}
+
+.hub-translucent-switch {
+  --hub-switch-icon: url("chrome://messenger/skin/icons/new/translucent-xs.svg");
+}
+
+.hub-window-button {
+  appearance: none;
+  inline-size: 24px;
+  block-size: 24px;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius-circle);
+  color: var(--color-text-base);
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  -moz-context-properties: fill, stroke;
+  fill: currentColor;
+  stroke: currentColor;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: color-mix(in srgb, currentColor 15%, transparent);
+  }
+
+  &:hover:active {
+    background-color: color-mix(in srgb, currentColor 30%, transparent);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+  }
+}
+
+.hub-window-minimize {
+  background-image: -moz-symbolic-icon(window-minimize-symbolic);
+}
+
+.hub-window-close {
+  background-image: -moz-symbolic-icon(window-close-symbolic);
 }
 
 #accountHubPlaceholder:not([hidden]) {
@@ -681,7 +853,7 @@ header {
   block-size: 127px;
   cursor: pointer;
   box-shadow: 0 1px 2px rgba(0, 1, 2, 0.1);
-  border-radius: 8px;
+  border-radius: 12px;
   user-select: none;
 
   &:has(input:checked) {
@@ -706,7 +878,7 @@ header {
     block-size: 100%;
     overflow: hidden;
     border: 1px solid var(--color-primary-default);
-    border-radius: 8px;
+    border-radius: 12px;
     pointer-events: none;
   }
 
@@ -719,7 +891,7 @@ header {
     gap: var(--space-step);
     box-sizing: border-box;
     block-size: 57px;
-    border-radius: 8px 8px 0 0;
+    border-radius: 12px 12px 0 0;
     inline-size: calc(100% + 2px);
     min-inline-size: 0;
     padding-inline: 3px;
@@ -757,7 +929,7 @@ header {
     background: var(--color-surface-base);
     display: grid;
     place-items: center;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 12px 12px;
     box-sizing: border-box;
     inline-size: 100%;
     min-inline-size: 0;
@@ -776,7 +948,7 @@ header {
     transform: translateX(-50%);
     display: none;
     padding: 3px 6px;
-    border-radius: 3px;
+    border-radius: 6px;
     color: var(--color-surface-base);
     background-color: var(--color-primary-default);
     font-size: 0.769rem;
@@ -913,7 +1085,7 @@ header {
   background: var(--color-blue-50);
   background-image: linear-gradient(127deg, #4fb3f6, #0f4c9e);
   inset: -2px;
-  border-radius: 8px;
+  border-radius: 12px;
   filter: blur(10px);
   opacity: 0.6;
   z-index: -1;
@@ -1112,7 +1284,7 @@ header {
   gap: calc(var(--space-base) * 2);
 
   & button {
-    border-radius: 3px;
+    border-radius: 6px;
     background: transparent;
     border: 1px solid var(--color-primary-default);
     display: inline-flex;

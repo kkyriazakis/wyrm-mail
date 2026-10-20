@@ -35,6 +35,30 @@
 #include ../../../base/content/widgets/tb-banner.inc.xhtml
 <html:template id="accountHubDialog" xmlns="http://www.w3.org/1999/xhtml">
   <dialog class="account-hub-dialog">
+    <div class="hub-appearance-controls">
+      <button id="hubThemeSwitch"
+              class="hub-switch hub-theme-switch"
+              role="switch"
+              aria-checked="false"
+              data-l10n-id="account-hub-dark-mode-switch"
+              type="button"></button>
+      <button id="hubTranslucentSwitch"
+              class="hub-switch hub-translucent-switch"
+              role="switch"
+              aria-checked="false"
+              data-l10n-id="account-hub-translucent-switch"
+              type="button"></button>
+    </div>
+    <div class="hub-window-controls">
+      <button id="hubWindowMinimize"
+              class="hub-window-button hub-window-minimize"
+              data-l10n-id="account-hub-window-minimize-button"
+              type="button"></button>
+      <button id="hubWindowClose"
+              class="hub-window-button hub-window-close"
+              data-l10n-id="account-hub-window-close-button"
+              type="button"></button>
+    </div>
   </dialog>
   <button id="accountHubPlaceholder"
           class="button button button-flat icon button modal-close-button"
@@ -89,17 +113,17 @@
           data-l10n-id="account-hub-release-notes"
         ></a>
       </li>
-      <li>
+      <li id="accountHubDonate">
         <a
-          href="https://support.mozilla.org/products/thunderbird"
-          data-l10n-id="account-hub-support"
+          href="https://example.com/wyrm-mail/todo"
+          data-l10n-id="account-hub-donate"
           onclick="openLinkExternally(this.href);"
         ></a>
       </li>
-      <li id="accountHubDonate">
+      <li>
         <a
-          href="https://www.thunderbird.net/donate/?utm_source=thunderbird_account_hub&amp;utm_medium=referral&amp;utm_content=hub_footer"
-          data-l10n-id="account-hub-donate"
+          href="https://example.com/wyrm-mail/todo"
+          data-l10n-id="account-hub-issues"
           onclick="openLinkExternally(this.href);"
         ></a>
       </li>

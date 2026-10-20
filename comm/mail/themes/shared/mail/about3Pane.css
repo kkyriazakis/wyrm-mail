@@ -68,7 +68,10 @@ html {
 
 body {
   block-size: 100%;
+  box-sizing: border-box;
   margin: 0;
+  padding: 0 8px 8px;
+  background-color: var(--layout-background-2);
   text-shadow: none;
 
   display: grid;
@@ -120,6 +123,7 @@ body {
 /* Different layouts */
 
 #folderPane {
+  border-radius: var(--border-radius-large);
   grid-area: folders;
   box-sizing: border-box;
   /* Matches the collapse-width on the splitter. */
@@ -138,6 +142,7 @@ body {
 }
 
 #threadPane {
+  border-radius: var(--border-radius-large);
   container-name: threadPane;
   container-type: inline-size;
   grid-area: threads;
@@ -155,6 +160,7 @@ body {
 }
 
 #messagePane {
+  border-radius: var(--border-radius-large);
   grid-area: message;
   box-sizing: border-box;
   background-color: var(--layout-background-1);

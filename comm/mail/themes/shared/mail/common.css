@@ -9,12 +9,12 @@
 :root {
   --button-height: 2.2em;
   --border-color: color-mix(in srgb, currentColor 46%, transparent);
-  --button-border-radius: 3px;
+  --button-border-radius: 8px;
   --button-border-color-hover: color-mix(in srgb, currentColor 17%, transparent);
   --in-content-deemphasized-text: color-mix(in srgb, currentColor 60%, transparent);
   --size-sidebar: auto;
   --menu-item-margin: 0 3px;
-  --panel-border-radius: 9px;
+  --panel-border-radius: 12px;
 
   @media not (forced-colors) {
     --background-color-box-info: light-dark(var(--layout-background-1), var(--layout-background-2));

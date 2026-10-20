@@ -640,6 +640,9 @@ pref("mail.tabs.closeWindowWithLastTab", true);
 // Allow the tabs to be in the titlebar on supported systems
 pref("mail.tabs.drawInTitlebar", true);
 
+// Whether the window background is translucent, showing what is behind it.
+pref("wyrm.ui.translucent", false);
+
 // The breakpad report server to link to in about:crashes
 pref("breakpad.reportURL", "https://crash-stats.mozilla.com/report/index/");
 

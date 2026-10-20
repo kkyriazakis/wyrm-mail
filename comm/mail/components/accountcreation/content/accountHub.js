@@ -85,6 +85,9 @@ class AccountHubControllerClass {
     document.body.appendChild(element);
     this.#modal = element.modal;
     this.#placeholder = element.placeholder;
+    this.#modal.addEventListener("close", () =>
+      document.documentElement.removeAttribute("account-hub-first-run")
+    );
 
     // Listen from closing requests coming from child elements.
     this.#modal.addEventListener(
@@ -288,6 +291,10 @@ class AccountHubControllerClass {
     // experience if the state somehow changes mid flow.
     this.isFirstRun = isFirstRun();
     this.#modal.classList.toggle("account-hub-first-run", this.isFirstRun);
+    document.documentElement.toggleAttribute(
+      "account-hub-first-run",
+      this.isFirstRun
+    );
 
     for (const step of this.#modal.querySelectorAll(".account-hub-step")) {
       step.setAttribute("is-first-run", this.isFirstRun);
@@ -324,6 +331,10 @@ class AccountHubControllerClass {
   #toggle() {
     if (this.#minimized) {
       document.getElementById("tabmail").globalOverlay = true;
+      document.documentElement.toggleAttribute(
+        "account-hub-first-run",
+        this.isFirstRun
+      );
       this.#modal.showModal();
     } else {
       this.#modal.close();

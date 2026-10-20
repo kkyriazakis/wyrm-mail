@@ -19,7 +19,9 @@ account-hub-release-notes = Release notes
 
 account-hub-support = Support
 
-account-hub-donate = Donate
+account-hub-donate = TODO: donate
+
+account-hub-issues = TODO: issues
 
 ## Initial setup page
 
@@ -464,6 +466,20 @@ account-hub-minimize-button =
 
 account-hub-maximize-button =
   .title = Maximize Account Hub
+
+account-hub-dark-mode-switch =
+  .title = Dark mode
+  .aria-label = Dark mode
+
+account-hub-translucent-switch =
+  .title = Translucent window
+  .aria-label = Translucent window
+
+account-hub-window-minimize-button =
+  .title = Minimize
+
+account-hub-window-close-button =
+  .title = Close
 
 account-hub-email-manual-configuration = Manual configuration
 

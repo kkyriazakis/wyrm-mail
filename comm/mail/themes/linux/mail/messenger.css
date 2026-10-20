@@ -64,22 +64,31 @@
     background-color: transparent;
 
     &[sizemode="normal"]:not([tiled]) {
-      /* This takes care of drawing our window decorations on X11 */
-      -moz-default-appearance: -moz-window-decorations;
-      appearance: auto;
+      /* Our own window radius replaces the GTK decoration corners, which
+       * would otherwise show behind it at the theme's smaller radius. */
+      appearance: none;
 
       #navigation-toolbox,
       ::backdrop {
-        border-start-start-radius: env(-moz-gtk-csd-titlebar-radius);
-        border-start-end-radius: env(-moz-gtk-csd-titlebar-radius);
+        border-start-start-radius: var(--border-radius-xlarge);
+        border-start-end-radius: var(--border-radius-xlarge);
       }
 
-      /* stylelint-disable-next-line media-query-no-invalid */
-      @media -moz-pref("widget.gtk.rounded-bottom-corners.enabled") {
-        body {
-          border-end-start-radius: env(-moz-gtk-csd-titlebar-radius);
-          border-end-end-radius: env(-moz-gtk-csd-titlebar-radius);
-        }
+      body {
+        border-end-start-radius: var(--border-radius-xlarge);
+        border-end-end-radius: var(--border-radius-xlarge);
+      }
+    }
+
+    /* The first-run sign-in screen is translucent: hide the mail UI under
+     * it so the desktop shows through instead. */
+    &[account-hub-first-run] {
+      body {
+        background: transparent;
+      }
+
+      body > :not(account-hub-container) {
+        visibility: hidden;
       }
     }
 

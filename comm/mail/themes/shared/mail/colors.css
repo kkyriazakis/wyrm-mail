@@ -297,3 +297,21 @@
   --color-accent-blue-dark: var(--wyrm-sky-wing);
   --color-accent-orange-dark: var(--wyrm-fire-orange);
 }
+
+/* Rounded, Outlook-for-Mac style shapes. */
+:root {
+  --border-radius-xsmall: 4px;
+  --border-radius-small: 6px;
+  --border-radius-medium: 10px;
+  --border-radius-large: 14px;
+  --border-radius-xlarge: 20px;
+  --button-border-radius: 8px;
+  --panel-border-radius: 12px;
+  --popup-border-radius: 12px;
+  --panel-menuitem-border-radius: 6px;
+  --card-border-radius: 14px;
+  --card-border-radius-compact: 10px;
+  --input-text-border-radius: 8px;
+  --input-search-border-radius: 8px;
+  --toolbarbutton-border-radius: 8px;
+}
