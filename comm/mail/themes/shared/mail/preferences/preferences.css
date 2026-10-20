@@ -1445,7 +1445,9 @@ qr-code-wizard {
   align-items: center;
   margin-block: 18px;
 
-  & label {
+  /* Only the field labels; menu item labels inside the menulists stay
+   * start aligned. */
+  & > label {
     text-align: end;
   }
 }

@@ -648,3 +648,41 @@ tr[data-properties~="outgoing"].selected .correspondentcol-column {
 .is-unified tr:not([data-properties~="dummy"]) .accountcol-column::before {
   display: inline-flex;
 }
+
+/* Quick Filter is an icon button like its neighbours. */
+#threadPaneQuickFilterButton > span {
+  display: none;
+}
+
+/* Select-all checkbox before the folder name, shown in selection mode. */
+.thread-pane-select-all {
+  display: none;
+  appearance: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  inline-size: 18px;
+  block-size: 18px;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0 10px 0 9px;
+  padding: 0;
+  border: 1.5px solid color-mix(in srgb, currentColor 55%, transparent);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+
+  #threadPane:has(#threadTree[select-mode]) & {
+    display: block;
+  }
+
+  &[aria-pressed="true"] {
+    border-color: var(--selected-item-color);
+    background: var(--selected-item-color) var(--icon-check) center / 12px no-repeat;
+    -moz-context-properties: stroke;
+    stroke: var(--selected-item-text-color);
+  }
+
+  & + .list-header-title {
+    padding-inline-start: 0;
+  }
+}

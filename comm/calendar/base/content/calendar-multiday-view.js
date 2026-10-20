@@ -2193,15 +2193,8 @@
         }
         let minute = this.scrollMinute;
         if (event.deltaMode == event.DOM_DELTA_LINE) {
-          // We snap from the current hour to the next one.
-          let scrollHour = deltaTime < 0 ? Math.floor(minute / 60) : Math.ceil(minute / 60);
-          if (Math.abs(scrollHour * 60 - minute) < 10) {
-            // If the change in minutes would be less than 10 minutes, go to the
-            // next hour. This means that anything in the close neighbourhood of
-            // the hour line will scroll to the same hour.
-            scrollHour += Math.sign(deltaTime);
-          }
-          minute = scrollHour * 60;
+          // Scroll smoothly by minutes rather than snapping to whole hours.
+          minute += deltaTime * 8;
         } else if (event.deltaMode == event.DOM_DELTA_PIXEL) {
           const minDiff = deltaTime / this.pixelsPerMinute;
           minute += minDiff < 0 ? Math.floor(minDiff) : Math.ceil(minDiff);

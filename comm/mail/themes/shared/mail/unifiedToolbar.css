@@ -400,6 +400,20 @@ unified-toolbar-tab {
       margin: 0;
     }
 
+    /* The day number overlays the icon; keep the stack the icon's size so
+     * it centers in the circle. */
+    & > stack {
+      inline-size: 16px;
+      block-size: 16px;
+      overflow: visible;
+    }
+
+    & .toolbarbutton-icon-begin,
+    & .toolbarbutton-day-text {
+      margin: 0;
+      justify-self: center;
+    }
+
     &:hover {
       background-color: color-mix(in srgb, currentColor 12%, transparent);
     }

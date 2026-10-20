@@ -4231,10 +4231,23 @@ var threadPaneHeader = {
     this.selectButton.addEventListener("click", () =>
       setSelectMode(!tree.hasAttribute("select-mode"))
     );
+    const selectAll = document.getElementById("threadPaneSelectAll");
+    selectAll.addEventListener("click", () => {
+      if (selectAll.getAttribute("aria-pressed") == "true") {
+        gDBView?.selection.clearSelection();
+      } else {
+        commandController.doCommand("cmd_selectAll");
+      }
+    });
     tree.addEventListener("select", () => {
-      if ((gDBView?.numSelected ?? 0) > 1) {
+      const selected = gDBView?.numSelected ?? 0;
+      if (selected > 1) {
         setSelectMode(true);
       }
+      selectAll.setAttribute(
+        "aria-pressed",
+        selected > 0 && selected == gDBView.rowCount
+      );
     });
 
     this.displayButton = document.getElementById("threadPaneDisplayButton");

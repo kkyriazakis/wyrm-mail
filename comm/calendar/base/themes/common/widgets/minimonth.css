@@ -3,27 +3,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 calendar-minimonth {
-  --mmMainBackground: light-dark(var(--color-gray-05), var(--color-gray-70));
-  --mmMainBorderColor: light-dark(var(--color-gray-20), var(--color-gray-50));
-  --mmMainBorderRadius: 6px;
+  --mmMainBackground: var(--layout-background-0);
+  --mmMainBorderColor: transparent;
+  --mmMainBorderRadius: var(--border-radius-medium);
   --mmHighlightColor: var(--sidebar-highlight-text-color, var(--selected-item-text-color));
   --mmHighlightBackground: var(--sidebar-highlight-background-color, var(--selected-item-color));
   --mmHighlightBorderColor: var(--sidebar-highlight-background-color, var(--selected-item-color));
-  --mmBoxBackground: light-dark(var(--color-gray-20), var(--color-gray-50));
-  --mmBoxBorderColor: light-dark(var(--color-gray-20), var(--color-gray-40));
+  --mmBoxBackground: color-mix(in srgb, var(--selected-item-color) 10%, var(--layout-background-1));
+  --mmBoxBorderColor: transparent;
   --mmBoxPadding: 0;
-  --mmBoxItemColor: light-dark(var(--color-gray-30), var(--color-gray-40));
+  --mmBoxItemColor: color-mix(in srgb, currentColor 20%, transparent);
   --mmBoxItemBorderColor: transparent;
   --mmBoxItemPadding: 2px;
-  --mmDayColor: light-dark(var(--color-gray-70), var(--color-gray-10));
+  --mmDayColor: var(--layout-color-1);
   --mmDayBackground: transparent;
   --mmDayBorderColor: transparent;
-  --mmDayOtherColor: light-dark(var(--color-gray-40), var(--color-gray-50));
-  --mmDayWeekColor: light-dark(var(--color-ink-40), var(--color-ink-40));
+  --mmDayOtherColor: var(--layout-color-3);
+  --mmDayWeekColor: var(--layout-color-2);
   --mmDayOtherBackground: transparent;
   --mmDayOtherBorderColor: transparent;
-  --mmDayTodayColor: light-dark(var(--color-gray-90), var(--color-ink-10));
-  --mmDayTodayBackground: color-mix(in srgb, var(--color-ink-40) 20%, transparent);
+  --mmDayTodayColor: var(--selected-item-color);
+  --mmDayTodayBackground: color-mix(in srgb, var(--selected-item-color) 15%, transparent);
   --mmDayTodayBorderColor: transparent;
   --mmDaySelectedColor: var(--selected-item-color);
   --mmDaySelectedBackground: color-mix(in srgb, var(--selected-item-color) 40%, transparent);

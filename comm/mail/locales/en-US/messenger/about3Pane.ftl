@@ -14,6 +14,9 @@ thread-pane-header-display-button =
 thread-pane-select-button =
   .title = Select messages
 
+thread-pane-select-all =
+  .title = Select all
+
 # Variables:
 # $count (Number) - The number of messages in this folder.
 thread-pane-folder-message-count =

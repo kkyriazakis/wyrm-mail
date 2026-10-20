@@ -1642,3 +1642,9 @@ panel[type="arrow"].panel-block-padding::part(content) {
 #offline-status {
   visibility: visible;
 }
+
+#accountMenu .menu-icon {
+  -moz-context-properties: fill, stroke;
+  fill: color-mix(in srgb, currentColor 20%, transparent);
+  stroke: currentColor;
+}

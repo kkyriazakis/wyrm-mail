@@ -199,7 +199,7 @@ class ThreadCard extends TreeViewTableRow {
    */
   static hasHeaderRows(tree) {
     // nsMsgViewFlagsType.kGroupBySort
-    return !!(tree.view?.viewFlags & 0x100);
+    return !!(tree.view?.viewFlags & 0x40);
   }
 
   /**

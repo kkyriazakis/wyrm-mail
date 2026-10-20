@@ -653,6 +653,10 @@ pref("wyrm.ui.showLinkTarget", false);
 // address to gravatar.com.
 pref("wyrm.ui.avatar.gravatar", true);
 
+// Calendar day and week views show 12 hours at a time, so hour rows are
+// shorter.
+pref("calendar.view.visiblehours", 12);
+
 // GTK titlebars of dialogs and other windows match the app's window color
 // (layout-background-2 and layout-color-1).
 pref("widget.gtk.titlebar-css.dark", "headerbar, .titlebar, headerbar:backdrop, .titlebar:backdrop { background: #0e1520; color: #e8eef6; box-shadow: none; border-color: #0e1520; } headerbar button.titlebutton, .titlebar button.titlebutton { color: #e8eef6; }");
@@ -669,8 +673,9 @@ pref("ui.key.menuAccessKeyFocuses", false);
 pref("wyrm.threadpane.dateFormat", "weekday-time");
 
 // New folders list messages grouped by date (Today, Yesterday, ...) rather
-// than threaded, with every group expanded: kGroupBySort | kExpandAll.
-pref("mailnews.default_view_flags", 288);
+// than threaded: nsMsgViewFlagsType::kGroupBySort. Groups are expanded when
+// a folder is shown (threadPane.applyDefaultDateGrouping).
+pref("mailnews.default_view_flags", 64);
 // Group existing folders by date the first time they are shown.
 pref("wyrm.threadpane.groupByDate", true);
 

@@ -22,6 +22,10 @@
   /* stylelint-disable-next-line media-query-no-invalid */
   @media -moz-pref("wyrm.ui.translucent") {
     --window-background: color-mix(in srgb, var(--layout-background-2) 70%, transparent);
+
+    @media (prefers-color-scheme: dark) {
+      --window-background: color-mix(in srgb, var(--layout-background-2) 82%, transparent);
+    }
     --inner-window-background: transparent;
   }
 
