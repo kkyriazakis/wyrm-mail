@@ -879,4 +879,45 @@ conversation-view {
   &[data-action="flag"] { --ribbon-icon: var(--icon-flag); }
   &[data-action="print"] { --ribbon-icon: var(--icon-print); }
   &[data-action="undo"] { --ribbon-icon: var(--icon-undo); }
+  &[data-action="refresh"] { --ribbon-icon: var(--icon-cloud-download); }
+}
+
+/* Get Messages and New Message live in the actions card; only the folder
+ * pane's "more" menu stays, floating on the first (account) row. */
+#folderPane {
+  position: relative;
+}
+
+#folderPaneHeaderBar {
+  position: absolute;
+  /* Centered on the 28px account row, which starts 10px down. */
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
+  z-index: 1;
+  padding: 0;
+  border: none;
+  background: none;
+
+  & #folderPaneGetMessages,
+  & #folderPaneWriteMessage {
+    display: none;
+  }
+
+  & #folderPaneMoreButton {
+    inline-size: 24px;
+    block-size: 24px;
+    min-inline-size: 0;
+    min-block-size: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: var(--border-radius-small);
+  }
+}
+
+#folderTree > li:first-child > .container {
+  padding-inline-end: 32px;
+}
+
+#folderTree {
+  padding-block-start: 6px;
 }

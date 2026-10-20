@@ -115,6 +115,9 @@ var mailRibbon = {
       case "undo":
         top.goDoCommand("cmd_undo");
         break;
+      case "refresh":
+        top.MsgGetMessagesForAccount();
+        break;
     }
   },
 
