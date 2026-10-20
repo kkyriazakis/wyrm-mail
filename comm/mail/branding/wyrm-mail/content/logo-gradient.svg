@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="72 35 880 880" role="img" aria-label="dragon-email app icon: an envelope with dragon wings and a flame seal" xmlns:c2pa="http://c2pa.org/manifest">
+<path d="M380 430 C350 300 250 200 110 150 Q160 240 140 330 Q200 300 240 345 Q265 305 310 330 Q335 305 380 345 Z" fill="#4FB3F6" stroke="#0F4C9E" stroke-width="12" stroke-linejoin="round"></path>
+<path d="M644 430 C674 300 774 200 914 150 Q864 240 884 330 Q824 300 784 345 Q759 305 714 330 Q689 305 644 345 Z" fill="#4FB3F6" stroke="#0F4C9E" stroke-width="12" stroke-linejoin="round"></path>
+<path d="M260 230 L140 330 M260 230 L240 345 M260 230 L310 330" stroke="#0F4C9E" stroke-width="10" stroke-linecap="round" fill="none"></path>
+<path d="M764 230 L884 330 M764 230 L784 345 M764 230 L714 330" stroke="#0F4C9E" stroke-width="10" stroke-linecap="round" fill="none"></path>
+<rect x="212" y="382" width="600" height="420" rx="52" fill="#FFFFFF" stroke="#0F4C9E" stroke-width="14"></rect>
+<path d="M244 414 L512 620 L780 414" stroke="#C9DFF5" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+<circle cx="512" cy="620" r="82" fill="#4FB3F6"></circle>
+<path d="M512 556 C548 596 560 622 550 652 C542 676 482 678 474 652 C466 628 484 608 494 590 C500 608 510 614 518 602 C526 586 520 570 512 556 Z" fill="#FFFFFF"></path>
+</svg>

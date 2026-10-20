@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Packs the committed state of this repository (comm/, mozconfig,
-# packaging/, ...) into fedora-email-client-<version>.tar.xz, the second
+# packaging/, ...) into wyrm-mail-<version>.tar.xz, the second
 # source of the RPM spec and the Arch PKGBUILD.
 #
 # Usage: scripts/make-source-tarball.sh [output-dir]   (default: artifacts/)
@@ -9,7 +9,7 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 out="$(mkdir -p "${1:-$root/artifacts}" && cd "${1:-$root/artifacts}" && pwd)"
 version="$(cat "$root/comm/mail/config/version_display.txt")"
-name="fedora-email-client-$version"
+name="wyrm-mail-$version"
 
 if [ -n "$(git -C "$root" status --porcelain)" ]; then
   echo "Warning: uncommitted changes are not included; the tarball is built from HEAD." >&2

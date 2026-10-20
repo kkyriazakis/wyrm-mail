@@ -1,4 +1,4 @@
-# Fedora Email Client
+# Wyrm Mail
 
 A native, Outlook-first email client for Linux, based on Thunderbird.
 
@@ -43,9 +43,16 @@ cd firefox
 
 ## Changes from Thunderbird
 
-- Own branding and app identity: `fedora-email-client` binary, profile in
-  `~/.fedora-email-client/`
-  (`comm/mail/branding/fedora-email-client/`, `comm/mail/moz.configure`).
+- Own branding and app identity: `wyrm-mail` binary, profile in
+  `~/.wyrm-mail/`
+  (`comm/mail/branding/wyrm-mail/`, `comm/mail/moz.configure`). Icon
+  sources are in `in/`.
+- Dragon Blue palette (`in/dragon-email-colors.md`): token overrides at the
+  end of `comm/mail/themes/shared/mail/colors.css`, plus `layout.css`, the
+  top bar and Compose button in `unifiedToolbar.css`, and the "Dragon blue"
+  accent as the default.
+- Without an account, the app opens on a full-window sign-in screen instead
+  of the mail UI (`accountHub.css`).
 - Mozilla's updater, crash reporter, telemetry, start page and in-app
   notifications disabled.
 - Microsoft 365 mailboxes found through Exchange Autodiscover default to
@@ -57,9 +64,6 @@ cd firefox
 - Microsoft and Google OAuth still use Thunderbird's client IDs
   (`comm/mailnews/base/src/OAuth2Providers.sys.mjs`). Register our own before
   any release.
-- Icons are still Mozilla's "Daily" placeholders.
-- "Fedora" is a Red Hat trademark; the name needs permission or a change
-  before public release.
 
 ## License
 

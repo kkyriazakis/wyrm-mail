@@ -1,7 +1,7 @@
 # Setup guide
 
 How to go from a fresh clone of this repository to a running build of
-Fedora Email Client.
+Wyrm Mail.
 
 ## 1. Requirements
 
@@ -17,7 +17,7 @@ Disk use after a full build is roughly:
 - `firefox/` checkout: ~6 GB
 - `comm/`: ~0.7 GB
 - toolchains in `~/.mozbuild`: ~5 GB
-- build output in `firefox/obj-fedora-email-client/`: ~15–25 GB
+- build output in `firefox/obj-wyrm-mail/`: ~15–25 GB
 
 The only things to install by hand are `git`, `python3` and `curl`.
 `mach bootstrap` (step 4) installs everything else.
@@ -84,10 +84,10 @@ From `firefox/`:
 
 ```bash
 ./mach build        # first build: ~45–90 min; later builds are incremental
-./mach run          # starts Fedora Email Client
+./mach run          # starts Wyrm Mail
 ```
 
-The profile is stored in `~/.fedora-email-client/`, separate from any
+The profile is stored in `~/.wyrm-mail/`, separate from any
 installed Thunderbird.
 
 When you have changed only front-end files (JS, CSS, HTML, Fluent strings),

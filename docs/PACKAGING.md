@@ -1,6 +1,6 @@
 # Packaging guide
 
-How to build native packages of Fedora Email Client:
+How to build native packages of Wyrm Mail:
 
 - an RPM for Fedora and RHEL-family distros (RHEL, AlmaLinux, Rocky);
 - a pacman package for Arch Linux.
@@ -13,12 +13,12 @@ For a development build, see [SETUP.md](SETUP.md) instead.
 
 | Path | What it is |
 |---|---|
-| `packaging/rpm/fedora-email-client.spec` | RPM spec. |
+| `packaging/rpm/wyrm-mail.spec` | RPM spec. |
 | `packaging/arch/PKGBUILD` | Arch package recipe. |
 | `packaging/common/mozconfig` | Build options both packages add to the top-level `mozconfig`. |
 | `packaging/common/install-extras.sh` | Installs the desktop file, metainfo, icons, `vendor.js` and `distribution.ini`. |
 | `packaging/common/*.desktop`, `*.metainfo.xml`, `vendor.js` | Files that script installs. |
-| `scripts/make-source-tarball.sh` | Packs this repository into `fedora-email-client-<version>.tar.xz`. |
+| `scripts/make-source-tarball.sh` | Packs this repository into `wyrm-mail-<version>.tar.xz`. |
 | `scripts/sync-packaging.sh` | Sets the version and Firefox tag in both recipes from `comm/`. |
 
 Each package has two sources:
@@ -32,11 +32,11 @@ Each package has two sources:
 
 | | Fedora / RHEL | Arch |
 |---|---|---|
-| App | `/usr/lib64/fedora-email-client/` | `/usr/lib/fedora-email-client/` |
-| Launcher | `/usr/bin/fedora-email-client` | same |
-| Desktop file | `/usr/share/applications/fedora-email-client.desktop` | same |
-| AppStream | `/usr/share/metainfo/io.github.kkyriazakis.FedoraEmailClient.metainfo.xml` | same |
-| Icons | `/usr/share/icons/hicolor/*/apps/fedora-email-client.png` | same |
+| App | `/usr/lib64/wyrm-mail/` | `/usr/lib/wyrm-mail/` |
+| Launcher | `/usr/bin/wyrm-mail` | same |
+| Desktop file | `/usr/share/applications/wyrm-mail.desktop` | same |
+| AppStream | `/usr/share/metainfo/io.github.kkyriazakis.WyrmMail.metainfo.xml` | same |
+| Icons | `/usr/share/icons/hicolor/*/apps/wyrm-mail.png` | same |
 | Distribution id | `org.fedoraproject` | `org.archlinux` |
 
 The app uses the system's hunspell dictionaries (`/usr/share/hunspell`) and
@@ -58,11 +58,11 @@ sudo dnf install rpm-build rpmdevtools dnf-plugins-core
 rpmdev-setuptree
 
 scripts/make-source-tarball.sh ~/rpmbuild/SOURCES
-spectool -g -C ~/rpmbuild/SOURCES packaging/rpm/fedora-email-client.spec
-sudo dnf builddep packaging/rpm/fedora-email-client.spec
-rpmbuild -ba packaging/rpm/fedora-email-client.spec
+spectool -g -C ~/rpmbuild/SOURCES packaging/rpm/wyrm-mail.spec
+sudo dnf builddep packaging/rpm/wyrm-mail.spec
+rpmbuild -ba packaging/rpm/wyrm-mail.spec
 
-sudo dnf install ~/rpmbuild/RPMS/x86_64/fedora-email-client-*.rpm
+sudo dnf install ~/rpmbuild/RPMS/x86_64/wyrm-mail-*.rpm
 ```
 
 On RHEL, AlmaLinux and Rocky, enable EPEL first (`cbindgen` and `nasm` come
@@ -75,12 +75,12 @@ To publish a dnf repository, create a COPR project with the Fedora (and
 optionally EPEL 10) chroots, then upload a source RPM:
 
 ```bash
-rpmbuild -bs packaging/rpm/fedora-email-client.spec
-copr-cli build <project> ~/rpmbuild/SRPMS/fedora-email-client-*.src.rpm
+rpmbuild -bs packaging/rpm/wyrm-mail.spec
+copr-cli build <project> ~/rpmbuild/SRPMS/wyrm-mail-*.src.rpm
 ```
 
 Users then install with `sudo dnf copr enable <user>/<project>` and
-`sudo dnf install fedora-email-client`.
+`sudo dnf install wyrm-mail`.
 
 ## Arch Linux
 

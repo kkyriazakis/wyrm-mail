@@ -280,3 +280,27 @@ unified-toolbar-tab {
 #toolbarContextGetAllNewMessages {
   --menuitem-icon: var(--icon-cloud-download);
 }
+
+/* Wyrm Mail: Dragon Blue top bar and a Fire Orange compose button. */
+@media not (prefers-contrast) {
+  :root:not([lwtheme]) unified-toolbar {
+    background-color: light-dark(#0f4c9e, #162132);
+    color: light-dark(#ffffff, #e8eef6);
+    border-block-end-color: light-dark(#0b3c7e, #26344a);
+  }
+
+  :root:not([lwtheme]) unified-toolbar .write-message .unified-toolbar-button {
+    background-color: #f2762e;
+    border-color: transparent;
+    color: #ffffff;
+    fill-opacity: 1;
+
+    &:hover {
+      background-color: color-mix(in srgb, #f2762e 88%, black);
+    }
+
+    &:hover:active {
+      background-color: color-mix(in srgb, #f2762e 78%, black);
+    }
+  }
+}

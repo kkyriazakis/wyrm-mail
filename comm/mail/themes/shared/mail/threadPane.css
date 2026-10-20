@@ -21,9 +21,9 @@
   @media not (prefers-contrast) {
     --thread-pane-flag-fill: light-dark(var(--color-orange-30), var(--color-orange-40));
     --thread-pane-flag-stroke: light-dark(var(--color-orange-60), var(--color-orange-50));
-    --thread-pane-unread-fill: light-dark(var(--color-green-60), var(--color-green-50));
-    --thread-pane-unread-stroke: light-dark(var(--color-green-60), var(--color-green-50));
-    --thread-pane-spam-fill: light-dark(var(--color-red-50), var(--color-red-40));
+    --thread-pane-unread-fill: #4fb3f6;
+    --thread-pane-unread-stroke: light-dark(#0f4c9e, #4fb3f6);
+    --thread-pane-spam-fill: #d64545;
     --thread-pane-spam-stroke: light-dark(var(--color-red-70), var(--color-red-50));
   }
 }

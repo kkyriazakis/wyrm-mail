@@ -1331,7 +1331,7 @@ accent-color-os =
     .label = Follow operating system
 
 accent-color-thunderbird =
-    .label = Thunderbird blue
+    .label = Dragon blue
 
 accent-color-purple =
     .label = Purple

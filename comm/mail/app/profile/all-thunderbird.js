@@ -1618,4 +1618,4 @@ pref("widget.macos.native-anchored-menus", false);
 #endif
 
 // The color used to style primary buttons and elements.
-pref("mail.appearance.accentColor", "accent-color");
+pref("mail.appearance.accentColor", "thunderbird");

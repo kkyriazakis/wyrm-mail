@@ -1,0 +1,22 @@
+[Desktop Entry]
+Name=Wyrm Mail
+GenericName=Mail Client
+Comment=Read and write email, including Microsoft 365 and Gmail accounts
+Keywords=Email;E-mail;Mail;Outlook;Exchange;Calendar;Contacts;
+Exec=wyrm-mail %u
+Terminal=false
+Type=Application
+Icon=wyrm-mail
+Categories=Network;Email;
+MimeType=message/rfc822;x-scheme-handler/mailto;text/calendar;text/vcard;text/x-vcard;x-scheme-handler/webcal;x-scheme-handler/webcals;x-scheme-handler/mid;
+StartupNotify=true
+StartupWMClass=wyrm-mail
+Actions=ComposeMessage;OpenAddressBook;
+
+[Desktop Action ComposeMessage]
+Name=Write New Message
+Exec=wyrm-mail -compose
+
+[Desktop Action OpenAddressBook]
+Name=Open the Address Book
+Exec=wyrm-mail -addressbook

@@ -5,7 +5,7 @@
 #
 # Usage: install-extras.sh DESTDIR APPDIR DISTRO_ID DISTRO_NAME
 #   DESTDIR      package staging root ($RPM_BUILD_ROOT, $pkgdir)
-#   APPDIR       install dir of the app, e.g. /usr/lib64/fedora-email-client
+#   APPDIR       install dir of the app, e.g. /usr/lib64/wyrm-mail
 #   DISTRO_ID    reverse-DNS distro id, e.g. org.fedoraproject
 #   DISTRO_NAME  shown in the About dialog, e.g. "Fedora"
 set -euo pipefail
@@ -15,8 +15,8 @@ appdir="$2"
 distro_id="$3"
 distro_name="$4"
 
-name=fedora-email-client
-app_id=io.github.kkyriazakis.FedoraEmailClient
+name=wyrm-mail
+app_id=io.github.kkyriazakis.WyrmMail
 here="$(cd "$(dirname "$0")" && pwd)"
 branding="$here/../../comm/mail/branding/$name"
 datadir="$destdir/usr/share"
@@ -37,7 +37,7 @@ install -Dm644 /dev/stdin "$destdir$appdir/distribution/distribution.ini" <<EOF
 [Global]
 id=$distro_id
 version=1.0
-about=Fedora Email Client for $distro_name
+about=Wyrm Mail for $distro_name
 EOF
 
 # mach installs the launcher twice, as $name and $name-bin. Keep one copy.

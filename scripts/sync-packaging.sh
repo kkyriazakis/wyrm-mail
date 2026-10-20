@@ -4,7 +4,7 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
-spec="$root/packaging/rpm/fedora-email-client.spec"
+spec="$root/packaging/rpm/wyrm-mail.spec"
 pkgbuild="$root/packaging/arch/PKGBUILD"
 version="$(cat "$root/comm/mail/config/version_display.txt")"
 tag="$(sed -n 's/^GECKO_HEAD_REF: //p' "$root/comm/.gecko_rev.yml")"

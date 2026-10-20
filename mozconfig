@@ -1,9 +1,9 @@
-# Fedora Email Client: a Thunderbird fork.
+# Wyrm Mail: a Thunderbird fork.
 ac_add_options --enable-project=comm/mail
 
-# Our own branding. The app name, profile folder (~/.fedora-email-client)
+# Our own branding. The app name, profile folder (~/.wyrm-mail)
 # and vendor are set in comm/mail/moz.configure.
-ac_add_options --with-branding=comm/mail/branding/fedora-email-client
+ac_add_options --with-branding=comm/mail/branding/wyrm-mail
 
 # Mozilla's update server, crash reporter and telemetry are not ours to use.
 ac_add_options --disable-updater
@@ -12,4 +12,4 @@ ac_add_options MOZ_TELEMETRY_REPORTING=
 
 # Optimized build. Swap for --enable-debug when debugging.
 ac_add_options --enable-optimize
-mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-fedora-email-client
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-wyrm-mail

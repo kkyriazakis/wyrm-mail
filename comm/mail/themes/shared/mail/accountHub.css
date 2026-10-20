@@ -95,7 +95,7 @@ dialog {
     inset-block-end: -2px;
     inset-inline: calc(2 * var(--hub-blur-radius) + 5px);
     min-block-size: calc(3 * var(--hub-blur-radius));
-    background: linear-gradient(to right, rgba(159, 244, 240, 1), rgba(76, 177, 249, 1), rgba(168, 85, 247, 1));
+    background: linear-gradient(to right, #4fb3f6, #0f4c9e, #4fb3f6);
     filter: blur(var(--hub-blur-radius));
     z-index: -1;
   }
@@ -106,7 +106,7 @@ dialog {
 
   @media (prefers-color-scheme: dark) {
     &::after {
-      background: linear-gradient(to right, rgb(11, 140, 134, 1), rgba(28, 99, 149, 1));
+      background: linear-gradient(to right, #0f4c9e, #4fb3f6);
     }
   }
 
@@ -129,8 +129,8 @@ dialog {
     place-content: center;
     justify-items: center;
     overflow: auto;
-    background-color: var(--color-surface-base);
-    background-image: light-dark(url("chrome://messenger/skin/images/accounthub-bg-light.webp"), url("chrome://messenger/skin/images/accounthub-bg-dark.webp"));
+    background-color: var(--color-surface-subtle);
+    background-image: light-dark(radial-gradient(circle at 15% 0%, #e6f3fe, transparent 60%), radial-gradient(circle at 15% 0%, color-mix(in srgb, #4fb3f6 18%, #162132), transparent 60%));
     background-position: center center;
     background-size: cover;
     /* The rest of the window is inert, so let the empty area move it. */
@@ -141,7 +141,7 @@ dialog {
     }
 
     &::backdrop {
-      background: var(--color-surface-base);
+      background: var(--color-surface-subtle);
     }
 
     & .account-hub-view {
@@ -233,7 +233,7 @@ dialog {
   border: 1px solid var(--hub-border-color);
   /* Background color to better hide loading of the webp (>=100ms) */
   background-color: var(--color-surface-base);
-  background-image: light-dark(url("chrome://messenger/skin/images/accounthub-bg-light.webp"), url("chrome://messenger/skin/images/accounthub-bg-dark.webp"));
+  background-image: light-dark(linear-gradient(160deg, #e6f3fe, #ffffff 55%), linear-gradient(160deg, color-mix(in srgb, #4fb3f6 14%, #162132), #162132 55%));
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -911,7 +911,7 @@ header {
   content: "";
   position: absolute;
   background: var(--color-blue-50);
-  background-image: linear-gradient(127deg, var(--color-teal-50), var(--color-magenta-50));
+  background-image: linear-gradient(127deg, #4fb3f6, #0f4c9e);
   inset: -2px;
   border-radius: 8px;
   filter: blur(10px);

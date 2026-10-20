@@ -204,3 +204,96 @@
   --color-accent-pink: light-dark(var(--color-accent-pink-light), var(--color-accent-pink-dark));
   --color-accent-ink: light-dark(var(--color-accent-ink-light), var(--color-accent-ink-dark));
 }
+
+/*
+ * Wyrm Mail palette, built around the icon's Dragon Blue and Sky Wing.
+ * Overrides the upstream values above; keep upstream lines untouched so
+ * Thunderbird merges stay clean.
+ */
+:host,
+:root {
+  --wyrm-dragon-blue: #0f4c9e;
+  --wyrm-dragon-blue-hover: #0b3c7e;
+  --wyrm-sky-wing: #4fb3f6;
+  --wyrm-accent-tint: #e6f3fe;
+  --wyrm-fire-orange: #f2762e;
+  --wyrm-success: #1e9e6a;
+  --wyrm-warning: #e0a400;
+  --wyrm-error: #d64545;
+
+  --wyrm-light-background: #f5f8fc;
+  --wyrm-light-panel: #ffffff;
+  --wyrm-light-border: #dce4ee;
+  --wyrm-light-text: #1a2433;
+  --wyrm-light-text-secondary: #5b6b80;
+
+  --wyrm-dark-background: #0e1520;
+  --wyrm-dark-panel: #162132;
+  --wyrm-dark-border: #26344a;
+  --wyrm-dark-text: #e8eef6;
+  --wyrm-dark-text-secondary: #9aabc0;
+
+  --color-blue-10: var(--wyrm-accent-tint);
+  --color-blue-40: var(--wyrm-sky-wing);
+  --color-blue-50: var(--wyrm-sky-wing);
+  --color-blue-60: var(--wyrm-dragon-blue);
+  --color-blue-70: var(--wyrm-dragon-blue-hover);
+  --color-red-50: color-mix(in srgb, var(--wyrm-error) 85%, white);
+  --color-red-60: var(--wyrm-error);
+  --color-red-70: color-mix(in srgb, var(--wyrm-error) 80%, black);
+  --color-orange-30: color-mix(in srgb, var(--wyrm-fire-orange) 60%, white);
+  --color-orange-40: var(--wyrm-fire-orange);
+  --color-orange-50: var(--wyrm-fire-orange);
+  --color-orange-60: color-mix(in srgb, var(--wyrm-fire-orange) 80%, black);
+
+  --color-surface-base-light: var(--wyrm-light-panel);
+  --color-surface-raised-light: var(--wyrm-light-panel);
+  --color-surface-subtle-light: var(--wyrm-light-background);
+  --color-surface-lower-light: var(--wyrm-light-background);
+  --color-surface-deep-light: var(--wyrm-light-border);
+  --color-surface-border-light: var(--wyrm-light-border);
+  --color-surface-border-intense-light: var(--wyrm-dark-text-secondary);
+  --color-primary-soft-light: var(--wyrm-accent-tint);
+  --color-primary-default-light: var(--wyrm-dragon-blue);
+  --color-primary-hover-light: var(--wyrm-dragon-blue-hover);
+  --color-primary-pressed-light: var(--wyrm-dragon-blue-hover);
+  --color-success-default-light: var(--wyrm-success);
+  --color-success-hover-light: color-mix(in srgb, var(--wyrm-success) 85%, black);
+  --color-success-pressed-light: color-mix(in srgb, var(--wyrm-success) 70%, black);
+  --color-warning-default-light: var(--wyrm-warning);
+  --color-warning-hover-light: color-mix(in srgb, var(--wyrm-warning) 90%, black);
+  --color-warning-pressed-light: color-mix(in srgb, var(--wyrm-warning) 80%, black);
+  --color-critical-default-light: var(--wyrm-error);
+  --color-critical-hover-light: color-mix(in srgb, var(--wyrm-error) 85%, black);
+  --color-critical-pressed-light: color-mix(in srgb, var(--wyrm-error) 70%, black);
+  --color-text-base-light: var(--wyrm-light-text);
+  --color-text-secondary-light: var(--wyrm-light-text-secondary);
+  --color-text-muted-light: var(--wyrm-light-text-secondary);
+  --color-text-brand-light: var(--wyrm-dragon-blue);
+  --color-text-highlight-light: var(--wyrm-dragon-blue);
+  --color-text-critical-light: var(--wyrm-error);
+  --color-text-success-light: var(--wyrm-success);
+  --color-accent-blue-light: var(--wyrm-sky-wing);
+  --color-accent-orange-light: var(--wyrm-fire-orange);
+
+  --color-surface-base-dark: var(--wyrm-dark-panel);
+  --color-surface-raised-dark: var(--wyrm-dark-panel);
+  --color-surface-subtle-dark: var(--wyrm-dark-background);
+  --color-surface-lower-dark: var(--wyrm-dark-background);
+  --color-surface-deep-dark: var(--wyrm-dark-border);
+  --color-surface-border-dark: var(--wyrm-dark-border);
+  --color-surface-border-intense-dark: var(--wyrm-light-text-secondary);
+  --color-primary-soft-dark: color-mix(in srgb, var(--wyrm-sky-wing) 18%, var(--wyrm-dark-panel));
+  --color-primary-default-dark: var(--wyrm-sky-wing);
+  --color-primary-hover-dark: color-mix(in srgb, var(--wyrm-sky-wing) 80%, white);
+  --color-primary-pressed-dark: color-mix(in srgb, var(--wyrm-sky-wing) 65%, white);
+  --color-text-base-dark: var(--wyrm-dark-text);
+  --color-text-secondary-dark: var(--wyrm-dark-text-secondary);
+  --color-text-muted-dark: var(--wyrm-dark-text-secondary);
+  --color-text-brand-dark: var(--wyrm-sky-wing);
+  --color-text-highlight-dark: var(--wyrm-sky-wing);
+  --color-text-critical-dark: color-mix(in srgb, var(--wyrm-error) 70%, white);
+  --color-text-success-dark: color-mix(in srgb, var(--wyrm-success) 70%, white);
+  --color-accent-blue-dark: var(--wyrm-sky-wing);
+  --color-accent-orange-dark: var(--wyrm-fire-orange);
+}
