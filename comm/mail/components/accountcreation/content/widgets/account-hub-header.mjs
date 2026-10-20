@@ -91,6 +91,8 @@ class AccountHubHeader extends HTMLElement {
     }
     this.#setBrandingTitle();
     this.#closeButton.hidden = isFirstRun();
+    // Minimizing would reveal the mail UI, which needs an account first.
+    this.#minimizeButton.hidden = isFirstRun();
     this.clearNotifications();
   }
 
