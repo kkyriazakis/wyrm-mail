@@ -368,3 +368,50 @@ unified-toolbar-tab {
     block-size: 100%;
   }
 }
+
+/* The Today pane toggle, moved here from the status bar. */
+#calendar-show-todaypane-panel {
+  padding: 0;
+  margin: 0;
+  -moz-window-dragging: no-drag;
+
+  & #calendar-status-todaypane-button {
+    appearance: none;
+    min-inline-size: 0;
+    inline-size: 38px;
+    block-size: 38px;
+    min-block-size: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--border-radius-circle);
+    background: none;
+    color: inherit;
+    justify-content: center;
+
+    /* Icon only; the label stays as the tooltip and accessible name. */
+    & .toolbarbutton-text,
+    & .toolbarbutton-icon-end {
+      display: none;
+    }
+
+    & .toolbarbutton-icon,
+    & > stack {
+      margin: 0;
+    }
+
+    &:hover {
+      background-color: color-mix(in srgb, currentColor 12%, transparent);
+    }
+
+    &[checked="true"] {
+      background-color: color-mix(in srgb, var(--selected-item-color) 16%, transparent);
+      color: var(--selected-item-color);
+    }
+
+    &:focus-visible {
+      outline: var(--focus-outline);
+      outline-offset: 2px;
+    }
+  }
+}

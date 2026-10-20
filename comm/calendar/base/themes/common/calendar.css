@@ -325,6 +325,13 @@
   appearance: none;
   min-inline-size: 8px;
   inline-size: 8px;
+  margin: 0 !important;
   border: none;
   background: transparent;
+}
+
+/* The main view already leaves an 8px margin before the Today pane, so the
+ * splitter overlays that gap instead of adding another. */
+#today-splitter {
+  margin-inline-start: -8px !important;
 }

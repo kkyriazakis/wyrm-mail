@@ -1627,3 +1627,18 @@ panel[type="arrow"].panel-block-padding::part(content) {
   padding: 4px;
   border-radius: var(--border-radius-circle);
 }
+
+/* No status bar row: the Today pane toggle moved to the top bar. Its content
+ * stays in the document but is not shown; only the online indicator remains,
+ * in the spaces rail. */
+.statusbar {
+  visibility: hidden;
+  min-block-size: 0;
+  block-size: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+#offline-status {
+  visibility: visible;
+}

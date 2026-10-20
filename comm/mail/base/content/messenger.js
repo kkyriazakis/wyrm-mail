@@ -1127,9 +1127,16 @@ var BrowserAddonUI = {
 var gAccountMenu = {
   init() {
     this.popup = document.getElementById("accountMenu");
-    document
-      .getElementById("topSettingsButton")
-      ?.addEventListener("click", () => openPreferencesTab());
+    // The Today pane toggle lives in the top bar, left of Settings, instead
+    // of the status bar.
+    const todayPaneToggle = document.getElementById(
+      "calendar-show-todaypane-panel"
+    );
+    const settingsButton = document.getElementById("topSettingsButton");
+    if (todayPaneToggle && settingsButton) {
+      settingsButton.before(todayPaneToggle);
+    }
+    settingsButton?.addEventListener("click", () => openPreferencesTab());
     document
       .getElementById("accountMenuButton")
       ?.addEventListener("click", event => {
