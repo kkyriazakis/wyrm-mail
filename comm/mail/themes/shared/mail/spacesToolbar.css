@@ -26,11 +26,11 @@
   /* Density variations */
 
   --messenger-body-border: 1px;
-  --spaces-icon-size: 20px;
-  --spaces-padding: 7px;
-  --spaces-gap: 15px;
-  --spaces-container-gap: 15px;
-  --spaces-button-padding: 5px;
+  --spaces-icon-size: 24px;
+  --spaces-padding: 10px;
+  --spaces-gap: 18px;
+  --spaces-container-gap: 14px;
+  --spaces-button-padding: 8px;
   --spaces-pinned-button-margin: 5px;
   --spaces-button-badge-padding: 1px 6px;
   --spaces-button-badge-font: 0.9rem;
@@ -38,8 +38,8 @@
   --spaces-total-width: calc(2 * var(--spaces-padding) + var(--spaces-icon-size) + 2 * var(--spaces-button-padding) + var(--messenger-body-border));
 
   &[uidensity="compact"] {
-    --spaces-icon-size: 16px;
-    --spaces-padding: 6px;
+    --spaces-icon-size: 20px;
+    --spaces-padding: 8px;
     --spaces-gap: 9px;
     --spaces-container-gap: 9px;
     --spaces-button-padding: 4px;
@@ -50,8 +50,8 @@
   }
 
   &[uidensity="touch"] {
-    --spaces-icon-size: 24px;
-    --spaces-padding: 9px;
+    --spaces-icon-size: 28px;
+    --spaces-padding: 12px;
     --spaces-gap: 18px;
     --spaces-container-gap: 18px;
     --spaces-button-padding: 6px;

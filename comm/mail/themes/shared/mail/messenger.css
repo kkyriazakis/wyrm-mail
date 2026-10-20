@@ -1554,6 +1554,8 @@ panel[type="arrow"].panel-block-padding::part(content) {
   font-size: 0.85rem;
   font-weight: 700;
   line-height: 1;
+  background-position: center;
+  background-size: cover;
 }
 
 #accountMenu {
@@ -1611,10 +1613,6 @@ panel[type="arrow"].panel-block-padding::part(content) {
   --menuitem-icon: var(--icon-add);
 }
 
-#accountMenuSettings {
-  --menuitem-icon: var(--icon-settings);
-}
-
-#accountMenuQuit {
+#accountMenuLogOut {
   --menuitem-icon: var(--icon-quit);
 }

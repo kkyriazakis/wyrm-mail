@@ -82,6 +82,7 @@ body {
   /* Classic layout: folder tree on the left, thread tree and message browser on the right. */
   &.layout-classic {
     grid-template:
+      "ribbon ribbon ribbon" min-content
       "folders folderPaneSplitter threads" minmax(auto, 1fr)
       "folders folderPaneSplitter messagePaneSplitter" min-content
       "folders folderPaneSplitter message" minmax(auto, var(--messagePaneSplitter-height))
@@ -91,13 +92,15 @@ body {
   /* Vertical layout: three columns. */
   &.layout-vertical {
     grid-template:
-      "folders folderPaneSplitter threads messagePaneSplitter message" auto
+      "ribbon ribbon ribbon ribbon ribbon" min-content
+      "folders folderPaneSplitter threads messagePaneSplitter message" minmax(auto, 1fr)
       / minmax(auto, var(--folderPaneSplitter-width)) min-content minmax(auto, 1fr) min-content minmax(auto, var(--messagePaneSplitter-width));
   }
 
   /* Wide layout: folder tree and thread tree on the top, and message browser on the bottom. */
   &.layout-wide {
     grid-template:
+      "ribbon ribbon ribbon" min-content
       "folders folderPaneSplitter threads" minmax(auto, 1fr)
       "messagePaneSplitter messagePaneSplitter messagePaneSplitter" min-content
       "message message message" minmax(auto, var(--messagePaneSplitter-height))
@@ -107,7 +110,8 @@ body {
   /* If Account Central is shown, it overrides the layout setting. */
   &.account-central {
     grid-template:
-      "folders folderPaneSplitter account-central" auto
+      "ribbon ribbon ribbon" min-content
+      "folders folderPaneSplitter account-central" minmax(auto, 1fr)
       / minmax(auto, var(--folderPaneSplitter-width)) min-content minmax(auto, 1fr);
   }
 
@@ -730,4 +734,143 @@ conversation-view {
   > .container
   > .account-indicator {
   display: inline-flex;
+}
+
+/* Actions card (ribbon) */
+
+#mailRibbon {
+  grid-area: ribbon;
+  display: flex;
+  align-items: stretch;
+  margin-block-end: 8px;
+  padding: 6px 4px 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  background-color: var(--layout-background-1);
+  user-select: none;
+}
+
+.ribbon-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: 6px;
+  flex-shrink: 0;
+
+  & + & {
+    border-inline-start: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  }
+}
+
+.ribbon-group-buttons {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  flex: 1;
+}
+
+.ribbon-group-label {
+  margin-block-start: 2px;
+  font-size: 0.8rem;
+  color: var(--layout-color-2);
+}
+
+.ribbon-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-self: center;
+}
+
+.ribbon-button {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: 4px 8px;
+  border: none;
+  border-radius: var(--button-border-radius);
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  white-space: nowrap;
+
+  &::before {
+    content: "";
+    flex-shrink: 0;
+    inline-size: 16px;
+    block-size: 16px;
+    background: var(--ribbon-icon) center / contain no-repeat;
+    -moz-context-properties: fill, stroke;
+    fill: color-mix(in srgb, currentColor 15%, transparent);
+    stroke: currentColor;
+  }
+
+  &:not(:disabled):hover {
+    background-color: color-mix(in srgb, currentColor 10%, transparent);
+  }
+
+  &:not(:disabled):hover:active {
+    background-color: color-mix(in srgb, currentColor 18%, transparent);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: -2px;
+  }
+}
+
+/* Large buttons: icon above a label of up to two lines. */
+.ribbon-button-large {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+  min-inline-size: 52px;
+  max-inline-size: 76px;
+  padding: 6px 6px 4px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.15;
+
+  &::before {
+    inline-size: 24px;
+    block-size: 24px;
+  }
+
+  &[data-action="new-message"]::before {
+    fill: color-mix(in srgb, var(--selected-item-color) 25%, transparent);
+    stroke: var(--selected-item-color);
+  }
+}
+
+.ribbon-button {
+  &[data-action="new-message"] { --ribbon-icon: var(--icon-new-mail); }
+  &[data-action="new-event"] { --ribbon-icon: var(--icon-new-event); }
+  &[data-action="ignore"] { --ribbon-icon: var(--icon-thread-ignored); }
+  &[data-action="block"] { --ribbon-icon: var(--icon-block); }
+  &[data-action="delete"] { --ribbon-icon: var(--icon-trash); }
+  &[data-action="archive"] { --ribbon-icon: var(--icon-archive); }
+  &[data-action="report"] { --ribbon-icon: var(--icon-spam); }
+  &[data-action="reply"] { --ribbon-icon: var(--icon-reply); }
+  &[data-action="reply-all"] { --ribbon-icon: var(--icon-reply-all); }
+  &[data-action="forward"] { --ribbon-icon: var(--icon-forward); }
+  &[data-action="sweep"] { --ribbon-icon: var(--icon-sweep); }
+  &[data-action="move"] { --ribbon-icon: var(--icon-move); }
+  &[data-action="rules"] { --ribbon-icon: var(--icon-filter); }
+  &[data-action="mark-all-read"] { --ribbon-icon: var(--icon-mark-read); }
+  &[data-action="categorize"] { --ribbon-icon: var(--icon-tag); }
+  &[data-action="flag"] { --ribbon-icon: var(--icon-flag); }
+  &[data-action="print"] { --ribbon-icon: var(--icon-print); }
+  &[data-action="undo"] { --ribbon-icon: var(--icon-undo); }
 }

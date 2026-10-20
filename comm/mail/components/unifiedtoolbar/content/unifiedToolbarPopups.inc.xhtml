@@ -14,15 +14,10 @@
             class="menuitem-iconic"
             data-l10n-id="account-menu-add-account"
             oncommand="openAccountHub('MAIL');"/>
-  <menuitem id="accountMenuSettings"
+  <menuitem id="accountMenuLogOut"
             class="menuitem-iconic"
-            data-l10n-id="account-menu-settings"
-            oncommand="openPreferencesTab();"/>
-  <menuseparator/>
-  <menuitem id="accountMenuQuit"
-            class="menuitem-iconic"
-            data-l10n-id="account-menu-quit"
-            oncommand="goQuitApplication();"/>
+            data-l10n-id="account-menu-log-out"
+            oncommand="gAccountMenu.logOut();"/>
 </menupopup>
 <menupopup id="unifiedToolbarMenu" class="gutter-popup">
   <menuitem id="menuBarToggleVisible"

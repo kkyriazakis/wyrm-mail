@@ -60,8 +60,91 @@
   <script defer="defer" src="chrome://messenger/content/mailContext.js"></script>
   <script defer="defer" src="chrome://messenger/content/mailCommon.js"></script>
   <script defer="defer" src="chrome://messenger/content/about3Pane.js"></script>
+  <script defer="defer" src="chrome://messenger/content/mailRibbon.js"></script>
 </head>
 <body id="paneLayout" is="pane-layout" class="layout-classic">
+  <!-- Outlook-style actions card. Buttons run the action in data-action,
+       see mailRibbon in mailRibbon.js. -->
+  <div id="mailRibbon" role="toolbar" data-l10n-id="mail-ribbon">
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <button class="ribbon-button ribbon-button-large" data-action="new-message"
+                data-l10n-id="mail-ribbon-new-message" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="new-event"
+                data-l10n-id="mail-ribbon-new-event" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-new"></span>
+    </div>
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <div class="ribbon-stack">
+          <button class="ribbon-button" data-action="ignore"
+                  data-l10n-id="mail-ribbon-ignore" type="button"></button>
+          <button class="ribbon-button" data-action="block"
+                  data-l10n-id="mail-ribbon-block" type="button"></button>
+        </div>
+        <button class="ribbon-button ribbon-button-large" data-action="delete"
+                data-l10n-id="mail-ribbon-delete" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="archive"
+                data-l10n-id="mail-ribbon-archive" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-delete"></span>
+    </div>
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <button class="ribbon-button ribbon-button-large" data-action="report"
+                data-l10n-id="mail-ribbon-report" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-report"></span>
+    </div>
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <button class="ribbon-button ribbon-button-large" data-action="reply"
+                data-l10n-id="mail-ribbon-reply" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="reply-all"
+                data-l10n-id="mail-ribbon-reply-all" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="forward"
+                data-l10n-id="mail-ribbon-forward" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-respond"></span>
+    </div>
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <button class="ribbon-button ribbon-button-large" data-action="sweep"
+                data-l10n-id="mail-ribbon-sweep" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="move"
+                data-l10n-id="mail-ribbon-move" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="rules"
+                data-l10n-id="mail-ribbon-rules" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-move"></span>
+    </div>
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <button class="ribbon-button ribbon-button-large" data-action="mark-all-read"
+                data-l10n-id="mail-ribbon-mark-all-read" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="categorize"
+                data-l10n-id="mail-ribbon-categorize" type="button"></button>
+        <button class="ribbon-button ribbon-button-large" data-action="flag"
+                data-l10n-id="mail-ribbon-flag" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-tags"></span>
+    </div>
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <button class="ribbon-button ribbon-button-large" data-action="print"
+                data-l10n-id="mail-ribbon-print" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-print"></span>
+    </div>
+    <div class="ribbon-group">
+      <div class="ribbon-group-buttons">
+        <button class="ribbon-button ribbon-button-large" data-action="undo"
+                data-l10n-id="mail-ribbon-undo" type="button"></button>
+      </div>
+      <span class="ribbon-group-label" data-l10n-id="mail-ribbon-group-undo"></span>
+    </div>
+  </div>
   <div id="folderPane" class="collapsed-by-splitter" tabindex="-1">
     <img is="drop-indicator" id="dropIndicator" horizontal="horizontal" />
     <div id="folderPaneHeaderBar" class="sidebar-panel-header" hidden="hidden">
@@ -778,6 +861,20 @@
     <menuseparator id="separatorAfterItemGetAllNewMessages"/>
   </menupopup>
 #include mailContext.inc.xhtml
+  <menupopup is="folder-menupopup" id="mailRibbonMovePopup"
+             mode="filing"
+             showFileHereLabel="true"
+             showRecent="true"
+             showFavorites="true"/>
+  <menupopup id="mailRibbonRulesPopup">
+    <menuitem id="mailRibbonCreateRule" data-l10n-id="mail-ribbon-create-rule"/>
+    <menuitem id="mailRibbonManageRules" data-l10n-id="mail-ribbon-manage-rules"/>
+  </menupopup>
+  <menupopup id="mailRibbonTagPopup">
+    <menuitem id="mailRibbonAddTag" data-l10n-id="tags-add-new"/>
+    <menuitem id="mailRibbonManageTags" data-l10n-id="tags-manage"/>
+    <menuseparator id="mailRibbonTagSeparator"/>
+  </menupopup>
   <panel is="autocomplete-richlistbox-popup" id="PopupAutoComplete"
          type="autocomplete"
          role="group"

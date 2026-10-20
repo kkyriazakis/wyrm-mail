@@ -1210,3 +1210,22 @@ button.email-action-flagged {
 #attachment-splitter {
   border: none;
 }
+
+/* Keep the subject card's controls (dark message toggle, security badge)
+ * centered on the subject line. */
+#headerSubjectCard {
+  & #expandedButtonsBox {
+    align-self: center;
+    justify-content: center;
+  }
+
+  & #buttonsBox {
+    align-items: center;
+  }
+
+  & #darkReaderToggle label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+}

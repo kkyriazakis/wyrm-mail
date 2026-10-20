@@ -405,11 +405,11 @@ context-menu-decrypt-to-folder2 =
 account-menu-button =
     .title = Account
 account-menu-add-account =
-    .label = Add account
-account-menu-settings =
-    .label = Settings
-account-menu-quit =
-    .label = Quit
+    .label = Add email account
+account-menu-log-out =
+    .label = Log out of this email
+top-settings-button =
+    .title = Settings
 
 other-action-redirect-msg =
     .label = Redirect

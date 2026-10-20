@@ -830,6 +830,8 @@ var gSpacesToolbar = {
       return;
     }
 
+    // Wyrm Mail always shows the spaces toolbar.
+    isHidden = false;
     this.isHidden = isHidden;
 
     // The focused element, prior to toggling.

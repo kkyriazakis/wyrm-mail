@@ -753,3 +753,51 @@ folder-pane-context-compact =
 folder-pane-context-compact-all =
   .label = Compact All Folders
   .accesskey = F
+
+## Actions card (ribbon)
+
+mail-ribbon =
+  .aria-label = Message actions
+mail-ribbon-group-new = New
+mail-ribbon-group-delete = Delete
+mail-ribbon-group-report = Report
+mail-ribbon-group-respond = Respond
+mail-ribbon-group-move = Move
+mail-ribbon-group-tags = Tags
+mail-ribbon-group-print = Print
+mail-ribbon-group-undo = Undo
+mail-ribbon-new-message = New mail
+mail-ribbon-new-event = New event
+mail-ribbon-ignore = Ignore
+mail-ribbon-block = Block
+mail-ribbon-delete = Delete
+mail-ribbon-archive = Archive
+mail-ribbon-report = Report
+mail-ribbon-reply = Reply
+mail-ribbon-reply-all = Reply all
+mail-ribbon-forward = Forward
+mail-ribbon-sweep = Sweep
+mail-ribbon-move = Move
+mail-ribbon-rules = Rules
+mail-ribbon-mark-all-read = Mark all as read
+mail-ribbon-categorize = Categorize
+mail-ribbon-flag = Flag
+mail-ribbon-print = Print
+mail-ribbon-undo = Undo
+mail-ribbon-create-rule =
+  .label = Create rule…
+mail-ribbon-manage-rules =
+  .label = Manage rules
+mail-ribbon-block-title = Block sender
+# Variables:
+# $email (String) - The address being blocked.
+mail-ribbon-block-confirm = Delete this message and all future mail from { $email }?
+mail-ribbon-sweep-title = Sweep
+# Variables:
+# $count (Number) - Number of messages that will be deleted.
+# $email (String) - The sender's address.
+mail-ribbon-sweep-confirm =
+  { $count ->
+     [one] Delete the message from { $email } in this folder?
+    *[other] Delete all { $count } messages from { $email } in this folder?
+  }

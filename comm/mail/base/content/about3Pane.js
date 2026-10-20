@@ -5486,6 +5486,10 @@ var threadPane = {
    * Last Week, This Month, Older). Later changes by the user are kept.
    */
   applyDefaultDateGrouping() {
+    // Date groups always start expanded.
+    if (gViewWrapper?.showGroupedBySort) {
+      gDBView.doCommand(Ci.nsMsgViewCommandType.expandAll);
+    }
     if (
       !Services.prefs.getBoolPref("wyrm.threadpane.groupByDate", true) ||
       !gViewWrapper?.isSingleFolder ||

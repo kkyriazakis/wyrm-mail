@@ -128,6 +128,11 @@
   --icon-pencil: url("chrome://messenger/skin/icons/new/compact/pencil.svg");
   --icon-photo-ban: url("chrome://messenger/skin/icons/new/compact/photo-ban.svg");
   --icon-flag: url("chrome://messenger/skin/icons/new/compact/flag.svg");
+  --icon-block: url("chrome://messenger/skin/icons/new/compact/block.svg");
+  --icon-mark-read: url("chrome://messenger/skin/icons/new/compact/mark-read.svg");
+  --icon-move: url("chrome://messenger/skin/icons/new/compact/move.svg");
+  --icon-sweep: url("chrome://messenger/skin/icons/new/compact/sweep.svg");
+  --icon-undo: url("chrome://messenger/skin/icons/new/compact/undo.svg");
   --icon-pin: url("chrome://messenger/skin/icons/new/compact/pin.svg");
   --icon-print: url("chrome://messenger/skin/icons/new/compact/print.svg");
   --icon-priority: url("chrome://messenger/skin/icons/new/compact/priority.svg");

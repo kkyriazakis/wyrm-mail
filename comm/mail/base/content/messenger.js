@@ -1121,28 +1121,53 @@ var BrowserAddonUI = {
 };
 
 /**
- * The avatar button at the end of the top bar, with the account menu that
- * replaces the application menu.
+ * The settings button and the avatar button at the end of the top bar. The
+ * avatar opens a menu to add an account or log out of the shown one.
  */
 var gAccountMenu = {
   init() {
     this.popup = document.getElementById("accountMenu");
+    document
+      .getElementById("topSettingsButton")
+      ?.addEventListener("click", () => openPreferencesTab());
     document
       .getElementById("accountMenuButton")
       ?.addEventListener("click", event => {
         this.update();
         this.popup.openPopup(event.currentTarget, "after_end", 0, 6);
       });
+    MailServices.accounts.addIncomingServerListener(this);
+    window.addEventListener(
+      "unload",
+      () => MailServices.accounts.removeIncomingServerListener(this),
+      { once: true }
+    );
     this.update();
   },
 
+  onServerLoaded() {
+    this.update();
+  },
+  onServerUnloaded() {
+    this.update();
+  },
+  onServerChanged() {},
+
   /**
-   * Show the default identity's initials, name and address.
+   * @returns {?nsIMsgAccount} The account shown on the avatar.
+   */
+  get account() {
+    return (
+      MailServices.accounts.defaultAccount ??
+      MailServices.accounts.accounts.find(a => a.defaultIdentity)
+    );
+  },
+
+  /**
+   * Show the account's picture, or its initials, with its name and address.
    */
   update() {
-    const identity =
-      MailServices.accounts.defaultAccount?.defaultIdentity ??
-      MailServices.accounts.allIdentities[0];
+    const identity = this.account?.defaultIdentity;
     const name = identity?.fullName || "";
     const email = identity?.email || "";
     const initials =
@@ -1154,9 +1179,75 @@ var gAccountMenu = {
         .join("") || "?";
     for (const avatar of document.querySelectorAll(".account-menu-avatar")) {
       avatar.textContent = initials;
+      avatar.style.backgroundImage = "";
     }
     document.getElementById("accountMenuName").textContent = name || email;
     document.getElementById("accountMenuEmail").textContent = name ? email : "";
     document.getElementById("accountMenuIdentity").hidden = !identity;
+    document.getElementById("accountMenuLogOut").disabled = !this.account;
+    if (email) {
+      this.loadPicture(email);
+    }
+  },
+
+  /**
+   * Find a picture for the address: the user's own contact card first, then
+   * Gravatar (works for any provider the user registered there), if allowed.
+   *
+   * @param {string} email
+   */
+  async loadPicture(email) {
+    let url = MailServices.ab.cardForEmailAddress(email)?.photoURL;
+    if (!url && Services.prefs.getBoolPref("wyrm.ui.avatar.gravatar", false)) {
+      const digest = await crypto.subtle.digest(
+        "SHA-256",
+        new TextEncoder().encode(email.trim().toLowerCase())
+      );
+      const hash = Array.from(new Uint8Array(digest), b =>
+        b.toString(16).padStart(2, "0")
+      ).join("");
+      url = `https://gravatar.com/avatar/${hash}?s=96&d=404`;
+    }
+    if (!url) {
+      return;
+    }
+    // The window only shows data: images, so fetch the picture and inline it.
+    let dataURL;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        return;
+      }
+      const blob = await response.blob();
+      dataURL = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (e) {
+      return;
+    }
+    for (const avatar of document.querySelectorAll(".account-menu-avatar")) {
+      avatar.textContent = "";
+      avatar.style.backgroundImage = `url("${dataURL}")`;
+    }
+  },
+
+  /**
+   * Ask to remove the shown account from Wyrm Mail.
+   */
+  logOut() {
+    const account = this.account;
+    if (!account) {
+      return;
+    }
+    window.openDialog(
+      "chrome://messenger/content/removeAccount.xhtml",
+      "",
+      "chrome,modal,centerscreen,resizable=no",
+      { account, server: account.incomingServer, result: false }
+    );
+    this.update();
   },
 };

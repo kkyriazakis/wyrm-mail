@@ -649,6 +649,10 @@ pref("wyrm.ui.singleView", true);
 // Show the address of a hovered link at the bottom of the window.
 pref("wyrm.ui.showLinkTarget", false);
 
+// Look up the account picture on Gravatar. This sends a hash of the
+// address to gravatar.com.
+pref("wyrm.ui.avatar.gravatar", true);
+
 // No keyboard access keys: nothing is underlined in labels or menus and Alt
 // does not open the menu bar.
 pref("ui.key.menuAccessKey", 0);
@@ -917,7 +921,7 @@ pref("mail.taskbar.lists.enabled", true);
 pref("mail.taskbar.lists.tasks.enabled", true);
 #endif
 
-pref("mail.chat.enabled", true);
+pref("mail.chat.enabled", false);
 // Whether to show chat notifications or not.
 pref("mail.chat.show_desktop_notifications", true);
 // Decide how much information is to be shown in the notification.

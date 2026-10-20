@@ -1493,7 +1493,13 @@ export class TreeView extends BaseTreeView {
           return;
         }
 
-        if (this._view.isContainer(index) && event.target.closest(".twisty")) {
+        // Group heading rows toggle when clicked anywhere, not only on the
+        // twisty.
+        if (
+          this._view.isContainer(index) &&
+          (event.target.closest(".twisty") ||
+            row.dataset.properties?.split(" ").includes("dummy"))
+        ) {
           if (this._view.isContainerOpen(index)) {
             this.collapseRowAtIndex(index);
           } else {

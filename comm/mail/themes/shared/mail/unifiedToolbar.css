@@ -330,3 +330,34 @@ unified-toolbar-tab {
     outline-offset: 2px;
   }
 }
+
+.top-settings-button {
+  appearance: none;
+  inline-size: 30px;
+  block-size: 30px;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius-circle);
+  background: var(--icon-settings) center / 18px no-repeat;
+  -moz-context-properties: fill, stroke;
+  fill: color-mix(in srgb, currentColor 15%, transparent);
+  stroke: currentColor;
+  -moz-window-dragging: no-drag;
+
+  &:hover {
+    background-color: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: 2px;
+  }
+}
+
+/* A narrower search field, centered in the top bar. */
+#unifiedToolbarContent li.search-bar {
+  max-inline-size: 560px;
+}
