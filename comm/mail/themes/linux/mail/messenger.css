@@ -88,8 +88,7 @@
       }
 
       body {
-        border-end-start-radius: var(--border-radius-xlarge);
-        border-end-end-radius: var(--border-radius-xlarge);
+        border-radius: var(--border-radius-xlarge);
         overflow: clip;
       }
     }
@@ -107,13 +106,8 @@
     }
 
     &:not([lwtheme]) #navigation-toolbox {
-      background-color: ActiveCaption;
-      color: CaptionText;
-
-      &:-moz-window-inactive {
-        background-color: InactiveCaption;
-        color: InactiveCaptionText;
-      }
+      background-color: transparent;
+      color: inherit;
     }
 
     /* Make #tabs-toolbar transparent as we style underlying #navigation-toolbox
@@ -143,7 +137,7 @@
    * 3px of gap + 5px * 2 of padding = 13px / 2, see:
    * https://gitlab.gnome.org/GNOME/libadwaita/-/blob/fe21c3c823443a8f2333cf3cc09ba3d0fa753228/src/stylesheet/widgets/_header-bar.scss#L164
    * We want a contiguous hit region so we use 6.5px of padding instead. */
-  --titlebar-button-size: 24px;
+  --titlebar-button-size: 30px;
   --titlebar-button-spacing: 6.5px;
   --titlebar-button-end-spacing: 10px;
   @media (-moz-gtk-theme-family: breeze) {

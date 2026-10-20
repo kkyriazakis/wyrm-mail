@@ -139,3 +139,232 @@ toolbarbutton[is="toolbarbutton-menu-button"] {
 #runFiltersFolder {
   overflow: hidden;
 }
+
+/* macOS-style layout: header, a rule list card with its toolbar attached
+ * below, and a footer for running rules by hand. */
+
+#filterListDialog {
+  background-color: var(--layout-background-2);
+}
+
+#filterListDialog > body {
+  padding: 16px 18px 10px;
+  gap: 12px;
+}
+
+#filterHeader {
+  gap: 8px;
+
+  & #searchBox {
+    max-inline-size: 26ch;
+    border-radius: var(--input-text-border-radius);
+  }
+}
+
+#filterListCaption {
+  margin-block-end: 6px;
+  padding-inline: 2px;
+  color: var(--layout-color-2);
+  font-size: 0.9rem;
+
+  & label {
+    margin: 0;
+  }
+}
+
+#filterListCard {
+  position: relative;
+  min-block-size: 0;
+  border-radius: var(--border-radius-medium);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  background-color: var(--layout-background-0);
+  overflow: clip;
+}
+
+#filterList {
+  block-size: auto;
+  margin: 0;
+  border: none;
+  background: transparent;
+
+  & treecols {
+    border-block-end: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+    background: none;
+  }
+
+  & treecol {
+    padding-block: 6px;
+    padding-inline: 12px;
+    border: none;
+    background: none;
+    font-size: 0.85rem;
+    color: var(--layout-color-2);
+  }
+
+  & richlistitem {
+    margin-inline: 6px;
+    padding-block: 6px;
+    padding-inline: 6px;
+    border-radius: var(--panel-menuitem-border-radius);
+  }
+}
+
+/* Empty state, shown while the list has no rules. */
+#filterListEmpty {
+  display: none;
+  position: absolute;
+  inset: 36px 0 44px;
+  place-content: center;
+  text-align: center;
+  color: var(--layout-color-2);
+  pointer-events: none;
+}
+
+#filterListCard:not(:has(richlistitem)) #filterListEmpty {
+  display: grid;
+}
+
+/* Toolbar attached to the bottom of the list. */
+#filterActionButtons {
+  gap: 4px;
+  padding: 6px;
+  border-block-start: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  background-color: var(--layout-background-1);
+
+  & :is(button, toolbarbutton) {
+    margin: 0;
+    min-block-size: 28px;
+    border-radius: var(--button-border-radius);
+  }
+
+  & #newButton > .toolbarbutton-menubutton-button {
+    border-start-start-radius: var(--button-border-radius);
+    border-end-start-radius: var(--button-border-radius);
+  }
+
+  & #newButton > .toolbarbutton-menubutton-dropmarker {
+    border-start-end-radius: var(--button-border-radius);
+    border-end-end-radius: var(--button-border-radius);
+  }
+}
+
+/* Reordering uses compact icon buttons; the label stays as the accessible
+ * name and tooltip. */
+.filter-icon-button {
+  min-inline-size: 28px;
+  inline-size: 28px;
+  padding: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 14px;
+  -moz-context-properties: fill, stroke;
+  fill: transparent;
+  stroke: currentColor;
+
+  & .button-box {
+    display: none;
+  }
+}
+
+#reorderTopButton {
+  background-image: var(--icon-nav-up-sm);
+  box-shadow: inset 0 2px 0 -1px currentColor;
+}
+
+#reorderUpButton {
+  background-image: var(--icon-nav-up);
+}
+
+#reorderDownButton {
+  background-image: var(--icon-nav-down);
+}
+
+#reorderBottomButton {
+  background-image: var(--icon-nav-down-sm);
+  box-shadow: inset 0 -2px 0 -1px currentColor;
+}
+
+#filterFooter {
+  gap: 8px;
+
+  & label {
+    margin: 0;
+  }
+
+  & #filterLogButton {
+    margin: 0;
+  }
+}
+
+#statusbar {
+  min-block-size: 0;
+  border: none;
+  background: none;
+}
+
+#filterListCard > #filterList {
+  appearance: none;
+  background-color: transparent;
+  --richlist-button-background: transparent;
+
+  & treecols,
+  & treecol {
+    background-color: var(--layout-background-1);
+    appearance: none;
+    border: none;
+  }
+
+  & treecols {
+    border-block-end: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  }
+}
+
+/* "New" is a split button: the action and its menu share one rounded box. */
+#filterActionButtons #newButton {
+  padding: 0;
+  border: 1px solid var(--button-border-color, transparent);
+  border-radius: var(--button-border-radius);
+  background-color: var(--button-background-color);
+
+  & > .toolbarbutton-menubutton-button,
+  & > .toolbarbutton-menubutton-dropmarker {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  & > .toolbarbutton-menubutton-button {
+    align-items: center;
+    padding-inline: 12px 8px;
+    outline-offset: -2px;
+  }
+
+  & > .toolbarbutton-menubutton-dropmarker {
+    padding-inline: 6px;
+    border-inline-start: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  }
+
+  &:not([disabled]):hover {
+    background-color: var(--button-hover-background-color);
+  }
+}
+
+#filterListDialog > body {
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: 100%;
+  min-inline-size: 0;
+}
+
+#filterHeader,
+#filterFooter,
+#filterListBox {
+  min-inline-size: 0;
+}
+
+#serverMenu,
+#runFiltersFolder {
+  min-inline-size: 0;
+}

@@ -40,6 +40,7 @@
     <key keycode="VK_ESCAPE" oncommand="if (onFilterClose()) { window.close(); }"/>
   </keyset>
 
+  <!-- Account picker and search -->
   <hbox id="filterHeader" align="center">
     <label id="filtersForPrefix" data-l10n-id="filter-filters-for-prefix" control="serverMenu"/>
 
@@ -58,13 +59,14 @@
                 oninput="rebuildFilterList();"
                 data-l10n-id="filter-search-box"/>
   </hbox>
-  <separator class="thin"/>
-  <hbox id="filterListGrid" flex="1">
-    <vbox id="filterListBox" flex="1">
-      <hbox>
-        <label id="filterListLabel" control="filterList" flex="1" data-l10n-id="filter-header-label" />
-        <html:div id="countBox"></html:div>
-      </hbox>
+
+  <!-- The rule list card, with its toolbar attached below it -->
+  <vbox id="filterListBox" flex="1">
+    <hbox id="filterListCaption" align="center">
+      <label id="filterListLabel" control="filterList" flex="1" data-l10n-id="filter-header-label" />
+      <html:div id="countBox"></html:div>
+    </hbox>
+    <vbox id="filterListCard" flex="1">
       <richlistbox id="filterList" flex="1" onselect="updateButtons();"
                    seltype="multiple"
                    onkeypress="onFilterListKeyPress(event);">
@@ -73,68 +75,67 @@
           <treecol id="activeColumn" data-l10n-id="filter-active-column" style="width: 100px;"/>
         </treecols>
       </richlistbox>
-      <vbox>
-          <separator class="thin"/>
-          <hbox align="center">
-            <label id="folderPickerPrefix" data-l10n-id="filter-folder-picker-prefix"
-                   disabled="" control="runFiltersFolder"/>
-            <menulist id="runFiltersFolder" disabled="" flex="1"
-                      class="folderMenuItem"
-                      displayformat="verbose">
-              <menupopup is="folder-menupopup" id="runFiltersPopup"
-                         class="menulist-menupopup"
-                         showFileHereLabel="true"
-                         showAccountsFileHere="false"
-                         oncommand="setRunFolder(event.target._folder);"/>
-            </menulist>
-          <button id="runFiltersButton"
-                  data-l10n-id="filter-run-filters-button"
-                  oncommand="runSelectedFilters();" disabled=""/>
-          </hbox>
-        </vbox>
+      <html:div id="filterListEmpty" data-l10n-id="filter-list-empty"></html:div>
+      <hbox id="filterActionButtons" align="center">
+        <toolbarbutton is="toolbarbutton-menu-button" id="newButton"
+                       type="menu"
+                       data-l10n-id="filter-new-button"
+                       oncommand="onNewFilter();">
+          <menupopup id="newFilterMenupopup">
+            <menuitem data-l10n-id="filter-new-button"/>
+            <menuitem id="copyToNewButton"
+                      data-l10n-id="filter-new-copy-button"
+                      oncommand="onCopyToNewFilter(); event.stopPropagation();"/>
+          </menupopup>
+        </toolbarbutton>
+        <button id="editButton" data-l10n-id="filter-edit-button"
+                oncommand="onEditFilter();"/>
+        <button id="deleteButton"
+                data-l10n-id="filter-delete-button"
+                oncommand="onDeleteFilter();"/>
+        <spacer flex="1"/>
+        <button id="reorderTopButton"
+                class="filter-icon-button"
+                data-l10n-id="filter-reorder-top-button"
+                oncommand="onTop(event);"/>
+        <button id="reorderUpButton"
+                data-l10n-id="filter-reorder-up-button"
+                class="filter-icon-button up"
+                oncommand="onUp(event);"/>
+        <button id="reorderDownButton"
+                data-l10n-id="filter-reorder-down-button"
+                class="filter-icon-button down"
+                oncommand="onDown(event);"/>
+        <button id="reorderBottomButton"
+                class="filter-icon-button"
+                data-l10n-id="filter-reorder-bottom-button"
+                oncommand="onBottom(event);"/>
+      </hbox>
     </vbox>
-    <vbox id="filterActionButtons">
-      <label value=""/>
-      <toolbarbutton is="toolbarbutton-menu-button" id="newButton"
-                     type="menu"
-                     data-l10n-id="filter-new-button"
-                     oncommand="onNewFilter();">
-        <menupopup id="newFilterMenupopup">
-          <menuitem data-l10n-id="filter-new-button"/>
-          <menuitem id="copyToNewButton"
-                    data-l10n-id="filter-new-copy-button"
-                    oncommand="onCopyToNewFilter(); event.stopPropagation();"/>
-        </menupopup>
-      </toolbarbutton>
-      <button id="editButton" data-l10n-id="filter-edit-button"
-              oncommand="onEditFilter();"/>
-      <button id="deleteButton"
-              data-l10n-id="filter-delete-button"
-              oncommand="onDeleteFilter();"/>
-      <separator class="thin"/>
-      <button id="reorderTopButton"
-              data-l10n-id="filter-reorder-top-button"
-              oncommand="onTop(event);"/>
-      <button id="reorderUpButton"
-              data-l10n-id="filter-reorder-up-button"
-              class="up"
-              oncommand="onUp(event);"/>
-      <button id="reorderDownButton"
-              data-l10n-id="filter-reorder-down-button"
-              class="down"
-              oncommand="onDown(event);"/>
-      <button id="reorderBottomButton"
-              data-l10n-id="filter-reorder-bottom-button"
-              oncommand="onBottom(event);"/>
-      <vbox flex="1" pack="end">
-        <button id="filterLogButton"
-                data-l10n-id="filter-view-log-button"
-                oncommand="viewLog();"/>
-      </vbox>
-    </vbox>
-  </hbox>
+  </vbox>
 
-  <separator class="thin"/>
+  <!-- Running rules by hand, and the log -->
+  <hbox id="filterFooter" align="center">
+    <label id="folderPickerPrefix" data-l10n-id="filter-folder-picker-prefix"
+           disabled="" control="runFiltersFolder"/>
+    <menulist id="runFiltersFolder" disabled="" flex="1"
+              class="folderMenuItem"
+              displayformat="verbose">
+      <menupopup is="folder-menupopup" id="runFiltersPopup"
+                 class="menulist-menupopup"
+                 showFileHereLabel="true"
+                 showAccountsFileHere="false"
+                 oncommand="setRunFolder(event.target._folder);"/>
+    </menulist>
+    <button id="runFiltersButton"
+            data-l10n-id="filter-run-filters-button"
+            oncommand="runSelectedFilters();" disabled=""/>
+    <spacer flex="1"/>
+    <button id="filterLogButton"
+            class="link-button"
+            data-l10n-id="filter-view-log-button"
+            oncommand="viewLog();"/>
+  </hbox>
 
   <hbox id="statusbar" role="status">
     <label id="statusText" flex="1" crop="end"/>

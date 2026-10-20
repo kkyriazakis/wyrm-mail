@@ -626,6 +626,17 @@ tr[data-properties~="outgoing"].selected .correspondentcol-column {
   margin: 0;
 }
 
+#threadPaneSelectButton {
+  background-image: var(--icon-checkbox);
+  margin: 0;
+  flex-shrink: 0;
+
+  &[aria-pressed="true"] {
+    color: var(--selected-item-color);
+    background-color: color-mix(in srgb, var(--selected-item-color) 15%, transparent);
+  }
+}
+
 #threadPaneDisplayButton {
   background-image: var(--icon-display-options);
   margin: 0;

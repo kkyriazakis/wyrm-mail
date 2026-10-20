@@ -11,6 +11,9 @@ quick-filter-button-label = Quick Filter
 thread-pane-header-display-button =
   .title = Message list display options
 
+thread-pane-select-button =
+  .title = Select messages
+
 # Variables:
 # $count (Number) - The number of messages in this folder.
 thread-pane-folder-message-count =

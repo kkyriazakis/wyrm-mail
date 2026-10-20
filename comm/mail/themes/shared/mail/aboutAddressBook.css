@@ -965,3 +965,10 @@ input[type="number"] {
 menu.dialog-menu-container {
   padding: 0;
 }
+
+/* Let a translucent window show through around the cards. A color-scheme
+ * of its own would make the page paint an opaque canvas. */
+:root {
+  color-scheme: normal;
+  background-color: var(--inner-window-background);
+}

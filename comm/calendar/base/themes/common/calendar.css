@@ -37,7 +37,7 @@
 
 #calendarDisplayBox {
   overflow: auto;
-  margin: 0 8px 8px 0;
+  margin: 8px 8px 8px 0;
   border-radius: var(--border-radius-large);
   outline: var(--card-outline);
   outline-offset: -1px;
@@ -299,12 +299,32 @@
   }
 
   #today-splitter {
-    border-inline-end: 1px solid var(--sidebar-border);
-    margin-inline-start: -5px;
+    border: none;
+    margin-inline-start: 0;
     position: relative;
   }
 
   :root[lwtheme] #today-splitter.calendar-sidebar-splitter {
     background-image: none;
   }
+}
+
+/* Calendar and Tasks: the sidebar and the main view are cards with an 8px
+ * gutter, like the mail view. */
+#calSidebar {
+  margin: 8px 0 8px 8px;
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  background-color: var(--layout-background-1);
+  overflow: clip;
+}
+
+#calsidebar_splitter,
+#today-splitter {
+  appearance: none;
+  min-inline-size: 8px;
+  inline-size: 8px;
+  border: none;
+  background: transparent;
 }

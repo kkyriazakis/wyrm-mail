@@ -86,6 +86,8 @@ var addressBookTabType = {
       "addressBookTabBrowser" + this.lastBrowserId
     );
     aTab.browser.setAttribute("autocompletepopup", "PopupAutoComplete");
+    // Let a translucent window show through the page.
+    aTab.browser.setAttribute("transparent", "true");
     aTab.browser.addEventListener("DOMLinkAdded", DOMLinkHandler);
 
     aTab.findbar = document.createXULElement("findbar");

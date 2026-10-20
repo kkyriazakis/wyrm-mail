@@ -17,3 +17,14 @@
 #messagepane {
   flex: 1;
 }
+
+/* Let a translucent window show through around the cards. */
+:root {
+  background-color: var(--inner-window-background);
+}
+
+/* messenger.css paints the window tint on body; inside the message view
+ * that would tint twice. */
+body {
+  background-color: var(--inner-window-background);
+}

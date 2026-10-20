@@ -131,10 +131,12 @@ filter-reorder-top-button =
 filter-reorder-up-button =
     .label = Move Up
     .accesskey = U
+    .tooltiptext = Move Up
 
 filter-reorder-down-button =
     .label = Move Down
     .accesskey = D
+    .tooltiptext = Move Down
 
 filter-reorder-bottom-button =
     .label = Move to Bottom
@@ -143,6 +145,8 @@ filter-reorder-bottom-button =
 
 filter-header-label =
     .value = Enabled filters are run automatically in the order shown below.
+
+filter-list-empty = No rules yet. Use New to create one.
 
 filter-filters-for-prefix =
     .value = Filters for:

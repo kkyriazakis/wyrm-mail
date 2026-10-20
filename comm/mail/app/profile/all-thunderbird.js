@@ -653,6 +653,11 @@ pref("wyrm.ui.showLinkTarget", false);
 // address to gravatar.com.
 pref("wyrm.ui.avatar.gravatar", true);
 
+// GTK titlebars of dialogs and other windows match the app's window color
+// (layout-background-2 and layout-color-1).
+pref("widget.gtk.titlebar-css.dark", "headerbar, .titlebar, headerbar:backdrop, .titlebar:backdrop { background: #0e1520; color: #e8eef6; box-shadow: none; border-color: #0e1520; } headerbar button.titlebutton, .titlebar button.titlebutton { color: #e8eef6; }");
+pref("widget.gtk.titlebar-css.light", "headerbar, .titlebar, headerbar:backdrop, .titlebar:backdrop { background: #ecf1f7; color: #1a2433; box-shadow: none; border-color: #ecf1f7; } headerbar button.titlebutton, .titlebar button.titlebutton { color: #1a2433; }");
+
 // No keyboard access keys: nothing is underlined in labels or menus and Alt
 // does not open the menu bar.
 pref("ui.key.menuAccessKey", 0);

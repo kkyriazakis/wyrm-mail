@@ -482,3 +482,11 @@ button.tab-close-button {
 .forward-btn:-moz-locale-dir(ltr) {
   list-style-image: var(--icon-nav-forward);
 }
+
+/* stylelint-disable-next-line media-query-no-invalid */
+@media -moz-pref("wyrm.ui.translucent") {
+  #tabpanelcontainer {
+    appearance: none;
+    background-color: transparent;
+  }
+}

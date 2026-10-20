@@ -1546,8 +1546,8 @@ panel[type="arrow"].panel-block-padding::part(content) {
 .account-menu-avatar {
   display: grid;
   place-items: center;
-  inline-size: 28px;
-  block-size: 28px;
+  inline-size: 34px;
+  block-size: 34px;
   border-radius: var(--border-radius-circle);
   background-color: color-mix(in srgb, var(--selected-item-color) 22%, var(--layout-background-0));
   color: var(--selected-item-color);
@@ -1615,4 +1615,15 @@ panel[type="arrow"].panel-block-padding::part(content) {
 
 #accountMenuLogOut {
   --menuitem-icon: var(--icon-quit);
+}
+
+/* The online/offline indicator sits at the bottom of the spaces rail. */
+#offline-status {
+  position: fixed;
+  inset-inline-start: calc((var(--spaces-total-width) - 28px) / 2);
+  inset-block-end: 10px;
+  z-index: 3;
+  margin: 0;
+  padding: 4px;
+  border-radius: var(--border-radius-circle);
 }

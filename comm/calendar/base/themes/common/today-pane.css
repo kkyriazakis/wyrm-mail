@@ -449,3 +449,24 @@
 .agenda-listitem-overlap:not([src]) {
   display: none;
 }
+
+/* The Today pane (Events and Tasks) is a card beside the main view. */
+#today-pane-panel {
+  margin: 8px 8px 8px 0;
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  background-color: var(--layout-background-1);
+  overflow: clip;
+}
+
+#today-pane-splitter {
+  appearance: none;
+  min-block-size: 8px;
+  border: none;
+  background: transparent;
+}
+
+#agenda {
+  background-color: transparent;
+}

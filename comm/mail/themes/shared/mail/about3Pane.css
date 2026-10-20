@@ -66,6 +66,11 @@ html {
   block-size: 100%;
 }
 
+/* Let a translucent window show through around the cards. */
+:root {
+  background-color: var(--inner-window-background);
+}
+
 body {
   block-size: 100%;
   box-sizing: border-box;
@@ -156,8 +161,9 @@ body > hr[is="pane-splitter"]:not(.splitter-collapsed) {
 
 #threadPane {
   border-radius: var(--border-radius-large);
-  outline: var(--card-outline);
-  outline-offset: -1px;
+  /* A border, not an outline: the scrolling list would paint over an inset
+   * outline. */
+  border: var(--card-outline);
   container-name: threadPane;
   container-type: inline-size;
   grid-area: threads;

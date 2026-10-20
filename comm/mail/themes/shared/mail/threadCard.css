@@ -702,7 +702,7 @@
     display: grid;
     grid-template-rows: 1fr auto 1fr;
     justify-items: end;
-    padding-inline: 8px 6px;
+    padding-inline: 8px 0;
   }
 
   & .thread-card-date-row {
@@ -775,6 +775,13 @@
   & .tree-button-request-delete {
     display: none;
     background-image: var(--icon-trash);
+    margin-inline-end: -2px;
+  }
+
+  & :is(.tree-button-pin, .tree-button-flag) {
+    inline-size: 22px;
+    block-size: 22px;
+    background-size: 16px;
   }
 }
 
@@ -838,5 +845,36 @@
       font-size: 0.9rem;
       font-weight: 400;
     }
+  }
+}
+
+/* Selection mode: a checkbox in place of the read dot on every card,
+ * ticked for selected messages. */
+#threadTree[rows="thread-card"] .card-container .card-select-checkbox {
+  display: none;
+  box-sizing: border-box;
+  inline-size: 16px;
+  block-size: 16px;
+  margin-block-start: 2px;
+  margin-inline-end: 8px;
+  border: 1.5px solid color-mix(in srgb, currentColor 55%, transparent);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#threadTree[rows="thread-card"][select-mode] .card-layout:not([data-properties~="dummy"]) {
+  & .card-container .read-status {
+    display: none;
+  }
+
+  & .card-container .card-select-checkbox {
+    display: block;
+  }
+
+  &.selected .card-container .card-select-checkbox {
+    border-color: var(--selected-item-color);
+    background: var(--selected-item-color) var(--icon-check) center / 12px no-repeat;
+    -moz-context-properties: stroke;
+    stroke: var(--selected-item-text-color);
   }
 }

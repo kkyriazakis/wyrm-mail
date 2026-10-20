@@ -21,7 +21,7 @@
 
   /* stylelint-disable-next-line media-query-no-invalid */
   @media -moz-pref("wyrm.ui.translucent") {
-    --window-background: color-mix(in srgb, var(--layout-background-2) 82%, transparent);
+    --window-background: color-mix(in srgb, var(--layout-background-2) 70%, transparent);
     --inner-window-background: transparent;
   }
 
@@ -78,8 +78,8 @@
   --new-folder-color: light-dark(var(--color-blue-60), var(--color-blue-40));
   --lwt-header-image: none;
   --search-bar-color: inherit;
-  --search-bar-border-color: transparent;
-  --search-bar-background: color-mix(in srgb, currentColor 8%, transparent);
+  --search-bar-border-color: light-dark(rgba(14, 21, 32, 0.12), rgba(255, 255, 255, 0.1));
+  --search-bar-background: var(--layout-background-0);
   --search-bar-focus-background: var(--layout-background-0);
   --search-field-placeholder: color-mix(in srgb, currentColor 50%, transparent);
   --search-outline-offset: -1px;

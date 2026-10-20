@@ -4220,6 +4220,23 @@ var threadPaneHeader = {
     window.addEventListener("qfbtoggle", this);
     this.onQuickFilterToggle();
 
+    // Selection mode shows a checkbox on every message card. It turns on by
+    // itself as soon as more than one message is selected.
+    this.selectButton = document.getElementById("threadPaneSelectButton");
+    const tree = document.getElementById("threadTree");
+    const setSelectMode = enabled => {
+      tree.toggleAttribute("select-mode", enabled);
+      this.selectButton.setAttribute("aria-pressed", enabled);
+    };
+    this.selectButton.addEventListener("click", () =>
+      setSelectMode(!tree.hasAttribute("select-mode"))
+    );
+    tree.addEventListener("select", () => {
+      if ((gDBView?.numSelected ?? 0) > 1) {
+        setSelectMode(true);
+      }
+    });
+
     this.displayButton = document.getElementById("threadPaneDisplayButton");
     this.displayContext = document.getElementById("threadPaneDisplayContext");
     this.displayButton.addEventListener("click", event => {

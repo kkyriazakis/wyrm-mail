@@ -283,10 +283,11 @@ unified-toolbar-tab {
 
 /* Wyrm Mail: Dragon Blue top bar and a Fire Orange compose button. */
 @media not (prefers-contrast) {
+  /* The top bar is part of the window surface, like Outlook's. */
   :root:not([lwtheme]) unified-toolbar {
-    background-color: light-dark(#0f4c9e, #162132);
-    color: light-dark(#ffffff, #e8eef6);
-    border-block-end-color: light-dark(#0b3c7e, #26344a);
+    background-color: var(--window-background);
+    color: var(--layout-color-1);
+    border-block-end-color: transparent;
   }
 
   :root:not([lwtheme]) unified-toolbar .write-message .unified-toolbar-button {
@@ -310,8 +311,8 @@ unified-toolbar-tab {
   appearance: none;
   display: grid;
   place-items: center;
-  inline-size: 30px;
-  block-size: 30px;
+  inline-size: 38px;
+  block-size: 38px;
   min-inline-size: 0;
   min-block-size: 0;
   margin-inline: 6px;
@@ -333,15 +334,15 @@ unified-toolbar-tab {
 
 .top-settings-button {
   appearance: none;
-  inline-size: 30px;
-  block-size: 30px;
+  inline-size: 38px;
+  block-size: 38px;
   min-inline-size: 0;
   min-block-size: 0;
   margin: 0;
   padding: 0;
   border: none;
   border-radius: var(--border-radius-circle);
-  background: var(--icon-settings) center / 18px no-repeat;
+  background: var(--icon-settings) center / 20px no-repeat;
   -moz-context-properties: fill, stroke;
   fill: color-mix(in srgb, currentColor 15%, transparent);
   stroke: currentColor;
@@ -360,4 +361,10 @@ unified-toolbar-tab {
 /* A narrower search field, centered in the top bar. */
 #unifiedToolbarContent li.search-bar {
   max-inline-size: 560px;
+  block-size: 38px;
+
+  & .live-content,
+  & global-search-bar {
+    block-size: 100%;
+  }
 }
