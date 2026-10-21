@@ -19,6 +19,9 @@ ChromeUtils.defineLazyGetter(
     new Localization(["messenger/accountcreation/accountCreation.ftl"], true)
 );
 
+// Implicit TLS ports to try when a login over a plain port failed.
+const SECURE_FALLBACK_PORTS = { imap: 993, pop3: 995 };
+
 /**
  * @implements {nsIUrlListener}
  * @implements {nsIInterfaceRequestor}
@@ -41,6 +44,7 @@ export class ConfigVerifier {
   constructor(msgWindow, abortSignal) {
     this.msgWindow = msgWindow;
     this._triedBothUsernames = false;
+    this._triedSecureFallback = false;
     this._log = console.createInstance({
       prefix: "mail.setup",
       maxLogLevel: "Warn",
@@ -202,6 +206,28 @@ export class ConfigVerifier {
         this.config.outgoing.auth = this.config.incoming.auth;
       }
       this._log.debug(`Trying next auth method: ${this.server.authMethod}`);
+      this._triedBothUsernames = false;
+      this.verifyLogon();
+      return;
+    }
+
+    // The server might only accept logins over a secure connection, even if
+    // the guessed config found it on a plain port. A certificate error here
+    // lets the user add an exception, and the logon is then retried.
+    const secure = SECURE_FALLBACK_PORTS[this.config.incoming.type];
+    if (
+      !this._triedSecureFallback &&
+      secure &&
+      this.server.socketType != Ci.nsMsgSocketType.SSL
+    ) {
+      this._log.debug(`Trying secure connection on port ${secure}`);
+      this._triedSecureFallback = true;
+      this.config.incoming.port = secure;
+      this.config.incoming.socketType = Ci.nsMsgSocketType.SSL;
+      this.config.incoming.auth = Ci.nsMsgAuthMethod.passwordCleartext;
+      this.server.port = secure;
+      this.server.socketType = Ci.nsMsgSocketType.SSL;
+      this.server.authMethod = this.config.incoming.auth;
       this._triedBothUsernames = false;
       this.verifyLogon();
       return;

@@ -21,15 +21,13 @@
           data-l10n-id="account-hub-email-setup-header"
         ></h1>
       </div>
-      <div class="input-control">
+      <div class="input-control" hidden="hidden">
         <input id="realName"
                type="text"
                class="input-field animated"
                aria-invalid="false"
                aria-errormessage="nameErrorMessage"
-               placeholder=""
-               autofocus="autofocus"
-               required="required" />
+               placeholder="" />
         <label for="realName"
                class="animated"
                data-l10n-id="account-hub-name-label"
@@ -55,6 +53,7 @@
                 aria-errormessage="emailErrorMessage"
                 type="email"
                 placeholder=""
+                autofocus="autofocus"
                 required="required" />
           <label for="email"
                 class="animated"

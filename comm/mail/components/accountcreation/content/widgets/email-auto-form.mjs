@@ -110,10 +110,6 @@ class EmailAutoForm extends AccountHubStep {
     this.#currentConfig = {};
     this.#touchedInputs = new WeakSet();
 
-    if ("@mozilla.org/userinfo;1" in Cc) {
-      const userInfo = Cc["@mozilla.org/userinfo;1"].getService(Ci.nsIUserInfo);
-      this.#realName.value = userInfo.fullname;
-    }
     this.checkValidEmailForm({ showErrors: false });
   }
 
@@ -122,8 +118,7 @@ class EmailAutoForm extends AccountHubStep {
    * field when this view is either loaded or is revisited by going back.
    */
   setState() {
-    const focusedInput = this.#realName.value ? this.#email : this.#realName;
-    focusedInput.focus();
+    this.#email.focus();
   }
 
   /**
@@ -135,18 +130,15 @@ class EmailAutoForm extends AccountHubStep {
    *   be exposed visually.
    */
   checkValidEmailForm({ showErrors = true } = {}) {
-    const nameValidity = this.#realName.checkValidity();
     const emailValidity = this.#email.checkValidity();
 
-    this.#realName.setAttribute(
-      "aria-invalid",
-      !nameValidity && (showErrors || this.#touchedInputs.has(this.#realName))
-    );
+    // The name is not asked for, it is taken from the part before the @.
+    this.#realName.value = EmailAutoForm.nameFromEmail(this.#email.value);
     this.#email.setAttribute(
       "aria-invalid",
       !emailValidity && (showErrors || this.#touchedInputs.has(this.#email))
     );
-    const completed = nameValidity && emailValidity;
+    const completed = emailValidity;
 
     // TODO: Check for domain extension when validating email address.
 
@@ -162,6 +154,22 @@ class EmailAutoForm extends AccountHubStep {
         detail: { completed },
       })
     );
+  }
+
+  /**
+   * Make a display name out of the local part of an email address, so
+   * "jane.doe@example.com" gives "Jane Doe".
+   *
+   * @param {string} email
+   * @returns {string}
+   */
+  static nameFromEmail(email) {
+    const localPart = email.split("@")[0].split("+")[0];
+    return localPart
+      .split(/[._-]+/)
+      .filter(Boolean)
+      .map(word => word[0].toUpperCase() + word.slice(1))
+      .join(" ");
   }
 
   /**
