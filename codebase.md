@@ -87,6 +87,8 @@ See `in/outlook-macos/DESIGN-RULES.md`. Summary of what is implemented:
 | `wyrm.ui.showLinkTarget` | Show hovered link address (off). |
 | `wyrm.ui.avatar.gravatar` | Look up account picture on Gravatar. |
 | `wyrm.threadpane.dateFormat` | Message list date format. |
+| `mail.closeToTray` | Linux too (on): closing the last main window hides it; the app keeps running with a tray icon (`comm/rust/sys_tray`, `BackgroundWindows.sys.mjs`). |
+| `mail.closeToTray.startInTray` | Start with the main window hidden. |
 | `widget.gtk.titlebar-css.dark/light` | GTK CSS for window titlebars. |
 | Changed defaults | `mail.chat.enabled`, `mail.qrexport.enabled`, `mail.accounthub.thundermail.enabled` off; `ui.key.menuAccessKey`/`chromeAccess` 0 (no access keys); `mail.openMessageBehavior` 0; `mailnews.default_view_flags` 64 (grouped by sort; the Settings "Default Threading" choice, applied to new folders). |
 

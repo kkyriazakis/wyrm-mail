@@ -59,7 +59,7 @@ messenger.jar:
     content/messenger/messenger.js                  (content/messenger.js)
 *   content/messenger/messenger.xhtml               (content/messenger.xhtml)
     content/messenger/webextensions.css             (content/webextensions.css)
-#ifdef XP_WIN
+#if defined(XP_WIN) || defined(XP_LINUX)
     content/messenger/closeToTray.mjs               (content/closeToTray.mjs)
 #endif
     content/messenger/migrationProgress.js          (content/migrationProgress.js)

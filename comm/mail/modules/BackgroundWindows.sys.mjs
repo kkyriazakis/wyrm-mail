@@ -4,6 +4,9 @@
 
 import { AppConstants } from "resource://gre/modules/AppConstants.sys.mjs";
 
+// nsIBaseWindow.visibility always reads as true, so remember what we hid.
+const hiddenWindows = new WeakSet();
+
 /**
  * Keeps the app running with its main window hidden, so mail keeps being
  * checked and notified while the tray icon shows the app is open.
@@ -32,6 +35,7 @@ export const BackgroundWindows = {
       return;
     }
     baseWindow.visibility = false;
+    hiddenWindows.add(win);
   },
 
   /**
@@ -42,11 +46,10 @@ export const BackgroundWindows = {
    */
   showMainWindow() {
     for (const win of Services.wm.getEnumerator("mail:3pane")) {
-      const baseWindow = win.docShell.treeOwner.QueryInterface(
-        Ci.nsIBaseWindow
-      );
-      if (!baseWindow.visibility) {
-        baseWindow.visibility = true;
+      if (hiddenWindows.has(win)) {
+        hiddenWindows.delete(win);
+        win.docShell.treeOwner.QueryInterface(Ci.nsIBaseWindow).visibility =
+          true;
       }
     }
 

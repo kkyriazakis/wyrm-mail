@@ -191,7 +191,7 @@
 #ifdef XP_MACOSX
   <script defer="defer" src="chrome://global/content/macWindowMenu.js"></script>
 #endif
-#ifdef XP_WIN
+#if defined(XP_WIN) || defined(XP_LINUX)
   <script type="module" src="chrome://messenger/content/closeToTray.mjs"></script>
 #endif
   <!-- calendar-management.js also needed for multiple calendar support and today pane -->
