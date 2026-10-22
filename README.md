@@ -21,6 +21,52 @@ cd firefox
 ./mach run
 ```
 
+## Building per distribution
+
+All builds need about 30 GB of free disk and plenty of RAM; a full build takes
+from tens of minutes to a few hours.
+
+### Arch Linux (pacman package)
+
+```bash
+sudo pacman -S --needed base-devel
+scripts/make-source-tarball.sh packaging/arch
+cd packaging/arch
+makepkg -si
+```
+
+### Fedora / RHEL / AlmaLinux / Rocky (RPM package)
+
+On RHEL-family systems enable EPEL first (use the latest RHEL 10 minor).
+
+```bash
+sudo dnf install rpm-build rpmdevtools dnf-plugins-core
+rpmdev-setuptree
+scripts/make-source-tarball.sh ~/rpmbuild/SOURCES
+spectool -g -C ~/rpmbuild/SOURCES packaging/rpm/wyrm-mail.spec
+sudo dnf builddep packaging/rpm/wyrm-mail.spec
+rpmbuild -ba packaging/rpm/wyrm-mail.spec
+sudo dnf install ~/rpmbuild/RPMS/x86_64/wyrm-mail-*.rpm
+```
+
+### Debian / Ubuntu (from source, no .deb yet)
+
+There is no Debian package yet, so build from source with Mozilla's
+bootstrap, which installs the needed toolchain with apt:
+
+```bash
+sudo apt install git python3 python3-pip curl
+scripts/setup.sh
+cd firefox
+./mach --no-interactive bootstrap --application-choice "Firefox for Desktop"
+./mach build
+./mach run          # run from the build tree
+```
+
+The result lives in `firefox/obj-wyrm-mail/dist/bin/`. The same steps work on
+any distribution. See [docs/SETUP.md](docs/SETUP.md) and
+[docs/PACKAGING.md](docs/PACKAGING.md) for details.
+
 ## Repository layout
 
 | Path | What it is |
