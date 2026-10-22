@@ -198,10 +198,9 @@ body > hr[is="pane-splitter"]:not(.splitter-collapsed) {
 #accountCentralBrowser {
   grid-area: account-central;
   box-sizing: border-box;
+  /* The page draws its own cards on the window surface. */
   border-radius: var(--border-radius-large);
   overflow: clip;
-  outline: var(--card-outline);
-  outline-offset: -1px;
   min-inline-size: 400px;
 }
 

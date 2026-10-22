@@ -24,15 +24,24 @@ body {
   overflow: auto;
   margin: 0;
   block-size: 100vh;
-  background-color: var(--layout-background-0);
+  /* The cards sit on the window surface, like the other panes. */
+  background-color: var(--inner-window-background);
   text-shadow: none;
 }
 
 #accountCentral {
   display: flex;
   flex-direction: column;
+  gap: 8px;
   color: var(--color-text-base);
-  block-size: 100%;
+}
+
+.account-central-card {
+  border-radius: var(--border-radius-large);
+  outline: var(--card-outline);
+  outline-offset: -1px;
+  overflow: clip;
+  background-color: var(--layout-background-0);
 }
 
 #brandLogo {
@@ -45,7 +54,6 @@ body {
 .account-central-header {
   display: flex;
   align-items: center;
-  background-color: var(--layout-background-1);
   padding: 20px 30px;
 
   &.summary-header {
@@ -158,14 +166,10 @@ aside.settings-btn-container {
   &.setup-section {
     padding-block-end: 30px;
   }
-
-  &.zebra {
-    background-color: var(--layout-background-1);
-  }
 }
 
 #accountFeaturesSection {
-  margin-block-start: 20px;
+  padding-block-start: 0;
 }
 
 .section-title {
@@ -356,33 +360,6 @@ aside.settings-btn-container {
   }
 }
 
-/* Custom link style */
-.donation-link {
-  color: var(--color-primary-default);
-  font-style: italic;
-  font-weight: 600;
-  transition: color 0.2s;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color-primary-hover);
-  }
-
-  &:focus-visible:not(:hover) {
-    outline: var(--focus-outline);
-    outline-offset: var(--focus-outline-offset);
-  }
-}
-
-/* stylelint-disable-next-line media-query-no-invalid */
-@media not -moz-pref("mail.community_features.enabled") {
-  #donationParagraph,
-  #involvedLink,
-  #developerLink {
-    display: none;
-  }
-}
-
 /* stylelint-disable-next-line media-query-no-invalid */
 @media not -moz-pref("mail.chat.enabled") {
   #setupChat {
@@ -416,24 +393,7 @@ aside.settings-btn-container {
   }
 }
 
-.resource-link {
-  color: var(--color-primary-default);
-  -moz-context-properties: fill, stroke, stroke-opacity;
-  fill: color-mix(in srgb, currentColor 20%, transparent);
-  stroke: currentColor;
-  margin-block-end: 10px;
-  margin-inline: 10px 30px;
-  transition: color 0.2s;
-  cursor: pointer;
-
-  &:focus-visible:not(:hover) {
-    outline: var(--focus-outline);
-    outline-offset: var(--focus-outline-offset);
-  }
-}
-
-.btn-link::before,
-.resource-link::before {
+.btn-link::before {
   position: relative;
   display: inline-block;
   content: "";
@@ -447,23 +407,6 @@ aside.settings-btn-container {
 .btn-link:hover {
   color: inherit;
   background-color: var(--panel-background-color-dimmed) !important;
-}
-
-.resource-link:hover {
-  color: var(--color-primary-hover) !important;
-  background-color: transparent !important;
-}
-
-#supportLink::before {
-  background-image: var(--icon-question);
-}
-
-#involvedLink::before {
-  background-image: var(--icon-handshake);
-}
-
-#developerLink::before {
-  background-image: var(--icon-tools);
 }
 
 #accountSettingsButton {
