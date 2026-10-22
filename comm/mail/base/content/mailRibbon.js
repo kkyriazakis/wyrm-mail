@@ -116,9 +116,40 @@ var mailRibbon = {
         top.goDoCommand("cmd_undo");
         break;
       case "refresh":
-        top.MsgGetMessagesForAccount();
+        this.refresh(button);
         break;
     }
+  },
+
+  /**
+   * Get new messages, spinning the button until the check finishes.
+   *
+   * @param {HTMLButtonElement} button
+   */
+  refresh(button) {
+    if (button.classList.contains("busy")) {
+      return;
+    }
+    button.classList.add("busy");
+    top.MsgGetMessagesForAccount();
+
+    // The window's status feedback spins while mail is being fetched.
+    const feedback = top.MsgStatusFeedback;
+    const started = Date.now();
+    let seenBusy = false;
+    const timer = setInterval(() => {
+      const busy =
+        feedback?._meteorsSpinning || !!feedback?._startTimeoutID;
+      seenBusy ||= busy;
+      const elapsed = Date.now() - started;
+      if (
+        elapsed > 120000 ||
+        (elapsed > 600 && !busy && (seenBusy || elapsed > 3000))
+      ) {
+        clearInterval(timer);
+        button.classList.remove("busy");
+      }
+    }, 200);
   },
 
   /**

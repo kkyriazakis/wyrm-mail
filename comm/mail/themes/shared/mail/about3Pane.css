@@ -879,6 +879,24 @@ conversation-view {
   &[data-action="print"] { --ribbon-icon: var(--icon-print); }
   &[data-action="undo"] { --ribbon-icon: var(--icon-undo); }
   &[data-action="refresh"] { --ribbon-icon: var(--icon-cloud-download); }
+
+  /* While new mail is fetched the Refresh icon becomes a spinner. */
+  &[data-action="refresh"].busy::before {
+    box-sizing: border-box;
+    background: none;
+    border: 2px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-block-start-color: var(--selected-item-color);
+    border-radius: 50%;
+    @media (prefers-reduced-motion: no-preference) {
+      animation: ribbon-refresh-spin 0.8s linear infinite;
+    }
+  }
+}
+
+@keyframes ribbon-refresh-spin {
+  to {
+    rotate: 360deg;
+  }
 }
 
 /* Get Messages and New Message live in the actions card; only the folder

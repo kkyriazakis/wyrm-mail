@@ -7,6 +7,8 @@ html {
 }
 
 :root {
+  /* Let the window surface show between the cards. */
+  background-color: transparent;
   --bg-watermark: light-dark(url("chrome://messenger/skin/images/account-watermark.png"), url("chrome://messenger/skin/images/account-watermark-light.png"));
 }
 
