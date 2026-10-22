@@ -87,9 +87,8 @@ See `in/outlook-macos/DESIGN-RULES.md`. Summary of what is implemented:
 | `wyrm.ui.showLinkTarget` | Show hovered link address (off). |
 | `wyrm.ui.avatar.gravatar` | Look up account picture on Gravatar. |
 | `wyrm.threadpane.dateFormat` | Message list date format. |
-| `wyrm.threadpane.groupByDate` | Group folders by date on first open. |
 | `widget.gtk.titlebar-css.dark/light` | GTK CSS for window titlebars. |
-| Changed defaults | `mail.chat.enabled`, `mail.qrexport.enabled`, `mail.accounthub.thundermail.enabled` off; `ui.key.menuAccessKey`/`chromeAccess` 0 (no access keys); `mail.openMessageBehavior` 0; `mailnews.default_view_flags` 288 (grouped, expanded). |
+| Changed defaults | `mail.chat.enabled`, `mail.qrexport.enabled`, `mail.accounthub.thundermail.enabled` off; `ui.key.menuAccessKey`/`chromeAccess` 0 (no access keys); `mail.openMessageBehavior` 0; `mailnews.default_view_flags` 64 (grouped by sort; the Settings "Default Threading" choice, applied to new folders). |
 
 Dark mode and its sign-in switch use `ui.systemUsesDarkTheme`.
 
@@ -111,7 +110,7 @@ Dark mode and its sign-in switch use `ui.systemUsesDarkTheme`.
   support in `widgets/tree-view.mjs` (`_rowTop`, group headings are 34px).
   Date groups (Today, Yesterday, Last Week, This Month, Older):
   `mailnews/base/src/nsMsgGroupView.cpp` (C++) and
-  `threadPane.applyDefaultDateGrouping()`.
+  `threadPane.expandDateGroups()`.
 - **Message view**: `base/content/msgHdrView.inc.xhtml` / `msgHdrView.js`
   (subject card, details card, remote-content bar buttons),
   `themes/shared/mail/messageHeader.css`.

@@ -1665,7 +1665,7 @@ panel[type="arrow"].panel-block-padding::part(content) {
 
   @starting-style {
     opacity: 0;
-    translate: 0 -6px;
+    translate: var(--toggle-slide);
   }
 }
 
@@ -1676,21 +1676,56 @@ panel[type="arrow"].panel-block-padding::part(content) {
 #sidePanelNewEvent[hidden],
 #sidePanelNewTask[hidden] {
   opacity: 0;
-  translate: 0 -6px;
+  translate: var(--toggle-slide);
 }
 
 /* Views swapped in place fade in; the one being left goes away at once so
  * both never take up space together. */
 #calendar-view-box,
 #calendar-task-box {
-  transition: opacity var(--toggle-duration, 140ms) ease-out;
+  transition:
+    opacity var(--toggle-duration, 140ms) ease-out,
+    translate var(--toggle-duration, 140ms) ease-out;
 
   @starting-style {
     opacity: 0;
+    translate: var(--toggle-slide);
   }
 }
 
 #calendar-view-box[collapsed],
 #calendar-task-box[collapsed] {
   opacity: 0;
+  translate: var(--toggle-slide);
+}
+
+/* Each panel slides in from the side of the window it sits on: the Today
+ * pane from the right, the spaces rail from the left, bars from the top and
+ * the main calendar views up from below. */
+#tabs-toolbar,
+#sidePanelNewEvent,
+#sidePanelNewTask {
+  --toggle-slide: 0 calc(-1 * var(--toggle-slide-distance-small));
+}
+
+#today-pane-panel,
+#today-splitter {
+  --toggle-slide: var(--toggle-slide-distance) 0;
+
+  &:dir(rtl) {
+    --toggle-slide: calc(-1 * var(--toggle-slide-distance)) 0;
+  }
+}
+
+#spacesToolbar {
+  --toggle-slide: calc(-1 * var(--toggle-slide-distance)) 0;
+
+  &:dir(rtl) {
+    --toggle-slide: var(--toggle-slide-distance) 0;
+  }
+}
+
+#calendar-view-box,
+#calendar-task-box {
+  --toggle-slide: 0 var(--toggle-slide-distance-small);
 }

@@ -938,7 +938,7 @@ conversation-view {
 
   @starting-style {
     opacity: 0;
-    translate: 0 -6px;
+    translate: var(--toggle-slide);
   }
 }
 
@@ -947,11 +947,39 @@ conversation-view {
 #folderPaneHeaderBar[hidden],
 #threadPaneHeaderBar[hidden] {
   opacity: 0;
-  translate: 0 -6px;
+  translate: var(--toggle-slide);
 }
 
 :is(#quick-filter-bar, #folderPaneHeaderBar, #threadPaneHeaderBar).toggle-hiding {
   opacity: 0;
-  translate: 0 -6px;
+  translate: var(--toggle-slide);
   pointer-events: none;
+}
+
+/* Each panel slides in from the side of the window it sits on. */
+#quick-filter-bar,
+#folderPaneHeaderBar,
+#threadPaneHeaderBar,
+#threadPaneNotificationBox > * {
+  --toggle-slide: 0 calc(-1 * var(--toggle-slide-distance-small));
+}
+
+#folderPane {
+  --toggle-slide: calc(-1 * var(--toggle-slide-distance)) 0;
+
+  &:dir(rtl) {
+    --toggle-slide: var(--toggle-slide-distance) 0;
+  }
+}
+
+#messagePane {
+  --toggle-slide: var(--toggle-slide-distance) 0;
+
+  &:dir(rtl) {
+    --toggle-slide: calc(-1 * var(--toggle-slide-distance)) 0;
+  }
+
+  :is(.layout-classic, .layout-wide) > & {
+    --toggle-slide: 0 var(--toggle-slide-distance);
+  }
 }

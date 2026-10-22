@@ -673,11 +673,10 @@ pref("ui.key.menuAccessKeyFocuses", false);
 pref("wyrm.threadpane.dateFormat", "weekday-time");
 
 // New folders list messages grouped by date (Today, Yesterday, ...) rather
-// than threaded: nsMsgViewFlagsType::kGroupBySort. Groups are expanded when
-// a folder is shown (threadPane.applyDefaultDateGrouping).
+// than threaded: nsMsgViewFlagsType::kGroupBySort. This is the "Default
+// Threading" setting; groups are expanded when a folder is shown
+// (threadPane.expandDateGroups).
 pref("mailnews.default_view_flags", 64);
-// Group existing folders by date the first time they are shown.
-pref("wyrm.threadpane.groupByDate", true);
 
 // The breakpad report server to link to in about:crashes
 pref("breakpad.reportURL", "https://crash-stats.mozilla.com/report/index/");

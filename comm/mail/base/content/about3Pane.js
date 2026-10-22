@@ -2917,7 +2917,7 @@ var folderPane = {
       // At this point `dbViewWrapperListener.onCreatedView` gets called,
       // setting up gDBView and scrolling threadTree to the right end.
 
-      threadPane.applyDefaultDateGrouping();
+      threadPane.expandDateGroups();
 
       threadPane.updateListRole(
         !gViewWrapper?.showThreaded && !gViewWrapper?.showGroupedBySort
@@ -5516,34 +5516,12 @@ var threadPane = {
   },
 
   /**
-   * The first time a folder is shown, group it by date (Today, Yesterday,
-   * Last Week, This Month, Older). Later changes by the user are kept.
+   * Date groups always start expanded.
    */
-  applyDefaultDateGrouping() {
-    // Date groups always start expanded.
+  expandDateGroups() {
     if (gViewWrapper?.showGroupedBySort) {
       gDBView.doCommand(Ci.nsMsgViewCommandType.expandAll);
     }
-    if (
-      !Services.prefs.getBoolPref("wyrm.threadpane.groupByDate", true) ||
-      !gViewWrapper?.isSingleFolder ||
-      gFolder.getStringProperty("wyrmGroupedByDate")
-    ) {
-      return;
-    }
-    gFolder.setStringProperty("wyrmGroupedByDate", "1");
-    if (
-      gViewWrapper.showGroupedBySort &&
-      gViewWrapper.primarySortColumnId == "dateCol"
-    ) {
-      return;
-    }
-    gViewWrapper.beginViewUpdate();
-    gViewWrapper.showGroupedBySort = true;
-    gViewWrapper.endViewUpdate();
-    gViewWrapper.sort("dateCol", Ci.nsMsgViewSortOrder.descending);
-    gDBView.doCommand(Ci.nsMsgViewCommandType.expandAll);
-    threadPane.updateListRole(false);
   },
 
   /**

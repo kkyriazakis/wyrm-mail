@@ -31,6 +31,9 @@
 
   /* Showing and hiding panels fades and slides them over this time. */
   --toggle-duration: 140ms;
+  /* How far a panel slides in from its own edge of the window. */
+  --toggle-slide-distance: 24px;
+  --toggle-slide-distance-small: 12px;
 
   @media (prefers-reduced-motion: reduce) {
     --toggle-duration: 0s;

@@ -1241,15 +1241,19 @@ button.email-action-flagged {
 /* Views swapped in place fade in; the one being left goes away at once so
  * both never take up space together. */
 #attachmentView {
-  transition: opacity var(--toggle-duration, 140ms) ease-out;
+  transition:
+    opacity var(--toggle-duration, 140ms) ease-out,
+    translate var(--toggle-duration, 140ms) ease-out;
 
   @starting-style {
     opacity: 0;
+    translate: var(--toggle-slide);
   }
 }
 
 #attachmentView[collapsed] {
   opacity: 0;
+  translate: var(--toggle-slide);
 }
 
 /* Panels that are shown and hidden fade and slide in and out. The element
@@ -1263,13 +1267,13 @@ button.email-action-flagged {
 
   @starting-style {
     opacity: 0;
-    translate: 0 -4px;
+    translate: var(--toggle-slide);
   }
 }
 
 #attachmentView:not(.list-expanded) #attachmentList > :nth-child(n + 4) {
   opacity: 0;
-  translate: 0 -4px;
+  translate: var(--toggle-slide);
 }
 
 /* Panels that are shown and hidden fade and slide in and out. The element
@@ -1283,11 +1287,19 @@ button.email-action-flagged {
 
   @starting-style {
     opacity: 0;
-    translate: 0 -6px;
+    translate: var(--toggle-slide);
   }
 }
 
 #mail-notification-top > [hidden] {
   opacity: 0;
-  translate: 0 -6px;
+  translate: var(--toggle-slide);
+}
+
+/* The attachment card, its items and the message notifications drop in from
+ * the top. */
+#attachmentView,
+#attachmentView #attachmentList > .attachmentItem,
+#mail-notification-top > * {
+  --toggle-slide: 0 calc(-1 * var(--toggle-slide-distance-small));
 }
