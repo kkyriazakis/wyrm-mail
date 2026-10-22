@@ -328,19 +328,17 @@
       <hbox align="center">
         <label control="threadPaneDateFormat"
                data-l10n-id="message-list-date-format-label"/>
-        <menulist id="threadPaneDateFormat"
-                  preference="wyrm.threadpane.dateFormat">
-          <menupopup>
-            <menuitem value="weekday-time"
-                      data-l10n-id="message-list-date-format-weekday-time"/>
-            <menuitem value="smart"
-                      data-l10n-id="message-list-date-format-smart"/>
-            <menuitem value="date"
-                      data-l10n-id="message-list-date-format-date"/>
-            <menuitem value="date-time"
-                      data-l10n-id="message-list-date-format-date-time"/>
-          </menupopup>
-        </menulist>
+        <radiogroup id="threadPaneDateFormat" class="segmented"
+          preference="wyrm.threadpane.dateFormat">
+          <radio value="weekday-time"
+            data-l10n-id="message-list-date-format-weekday-time"/>
+          <radio value="smart"
+            data-l10n-id="message-list-date-format-smart"/>
+          <radio value="date"
+            data-l10n-id="message-list-date-format-date"/>
+          <radio value="date-time"
+            data-l10n-id="message-list-date-format-date-time"/>
+        </radiogroup>
       </hbox>
     </html:fieldset>
     </html:div>
@@ -662,24 +660,20 @@
         <hbox id="displayText" class="indent" align="center" role="group">
           <label data-l10n-id="style-label" control="mailQuotedStyle"/>
           <hbox>
-            <menulist id="mailQuotedStyle" preference="mail.quoted_style">
-              <menupopup>
-                <menuitem value="0" data-l10n-id="regular-style-item"/>
-                <menuitem value="1" data-l10n-id="bold-style-item"/>
-                <menuitem value="2" data-l10n-id="italic-style-item"/>
-                <menuitem value="3" data-l10n-id="bold-italic-style-item"/>
-              </menupopup>
-            </menulist>
+            <radiogroup id="mailQuotedStyle" class="segmented" preference="mail.quoted_style">
+              <radio value="0" data-l10n-id="regular-style-item"/>
+              <radio value="1" data-l10n-id="bold-style-item"/>
+              <radio value="2" data-l10n-id="italic-style-item"/>
+              <radio value="3" data-l10n-id="bold-italic-style-item"/>
+            </radiogroup>
           </hbox>
           <label data-l10n-id="size-label" control="mailQuotedSize"/>
           <hbox>
-            <menulist id="mailQuotedSize" preference="mail.quoted_size">
-              <menupopup>
-                <menuitem value="0" data-l10n-id="regular-size-item"/>
-                <menuitem value="1" data-l10n-id="bigger-size-item"/>
-                <menuitem value="2" data-l10n-id="smaller-size-item"/>
-              </menupopup>
-            </menulist>
+            <radiogroup id="mailQuotedSize" class="segmented" preference="mail.quoted_size">
+              <radio value="0" data-l10n-id="regular-size-item"/>
+              <radio value="1" data-l10n-id="bigger-size-item"/>
+              <radio value="2" data-l10n-id="smaller-size-item"/>
+            </radiogroup>
           </hbox>
           <label data-l10n-id="quoted-text-color" control="citationmenu"/>
           <html:input type="color" id="citationmenu" preference="mail.citation_color"/>
@@ -795,12 +789,10 @@
 
       <hbox align="center" pack="start">
         <label control="recentSortOrder" data-l10n-id="recent-sort-order-label"/>
-        <menulist id="recentSortOrder" preference="mail.folder_widget.recent_sort_order">
-          <menupopup>
-            <menuitem data-l10n-id="recent-sort-order-mru" value="0"/>
-            <menuitem data-l10n-id="recent-sort-order-alphabetic" value="1"/>
-          </menupopup>
-        </menulist>
+        <radiogroup id="recentSortOrder" class="segmented" preference="mail.folder_widget.recent_sort_order">
+          <radio data-l10n-id="recent-sort-order-mru" value="0"/>
+          <radio data-l10n-id="recent-sort-order-alphabetic" value="1"/>
+        </radiogroup>
       </hbox>
 
       <hbox align="center" pack="start">
@@ -1120,17 +1112,15 @@
         <hbox align="center">
           <label control="storeTypeMenulist" data-l10n-id="store-type-label"/>
           <hbox>
-            <menulist id="storeTypeMenulist"
-                      oncommand="gGeneralPane.updateDefaultStore(this.selectedItem.value)">
-              <menupopup id="storeTypeMenupopup">
-                <menuitem id="mboxStore"
-                          data-l10n-id="mbox-store-label"
-                          value="@mozilla.org/msgstore/berkeleystore;1"/>
-                <menuitem id="maildirStore"
-                          data-l10n-id="maildir-store-label"
-                          value="@mozilla.org/msgstore/maildirstore;1"/>
-              </menupopup>
-            </menulist>
+            <radiogroup id="storeTypeMenulist" class="segmented"
+              onselect="gGeneralPane.updateDefaultStore(this.selectedItem.value)">
+              <radio id="mboxStore"
+                data-l10n-id="mbox-store-label"
+                value="@mozilla.org/msgstore/berkeleystore;1"/>
+              <radio id="maildirStore"
+                data-l10n-id="maildir-store-label"
+                value="@mozilla.org/msgstore/maildirstore;1"/>
+            </radiogroup>
           </hbox>
         </hbox>
         <hbox>

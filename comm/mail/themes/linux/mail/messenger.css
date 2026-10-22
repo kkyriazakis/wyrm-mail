@@ -67,29 +67,37 @@
     background-image: linear-gradient(transparent, transparent);
 
     &[sizemode="normal"]:not([tiled]) {
-      /* Our own window radius replaces the GTK decoration corners, which
-       * would otherwise show behind it at the theme's smaller radius. */
-      appearance: none;
+      /* This takes care of drawing our window decorations on X11 */
+      -moz-default-appearance: -moz-window-decorations;
+      appearance: auto;
 
       #navigation-toolbox,
       ::backdrop {
-        border-start-start-radius: var(--border-radius-xlarge);
-        border-start-end-radius: var(--border-radius-xlarge);
-      }
-
-      #navigation-toolbox {
-        overflow: clip;
+        border-start-start-radius: env(-moz-gtk-csd-titlebar-radius);
+        border-start-end-radius: env(-moz-gtk-csd-titlebar-radius);
       }
 
       /* The rail is fixed positioned, so the body does not clip it. */
       #spacesToolbar {
-        border-start-start-radius: var(--border-radius-xlarge);
-        border-end-start-radius: var(--border-radius-xlarge);
+        border-start-start-radius: env(-moz-gtk-csd-titlebar-radius);
       }
 
       body {
-        border-radius: var(--border-radius-xlarge);
+        border-start-start-radius: env(-moz-gtk-csd-titlebar-radius);
+        border-start-end-radius: env(-moz-gtk-csd-titlebar-radius);
         overflow: clip;
+      }
+
+      /* stylelint-disable-next-line media-query-no-invalid */
+      @media -moz-pref("widget.gtk.rounded-bottom-corners.enabled") {
+        #spacesToolbar {
+          border-end-start-radius: env(-moz-gtk-csd-titlebar-radius);
+        }
+
+        body {
+          border-end-start-radius: env(-moz-gtk-csd-titlebar-radius);
+          border-end-end-radius: env(-moz-gtk-csd-titlebar-radius);
+        }
       }
     }
 

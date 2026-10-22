@@ -437,6 +437,80 @@ checkbox {
   margin-inline: 0;
 }
 
+/* Single checkboxes are drawn as on/off switches; the workweek day picker
+ * keeps its checkboxes. */
+
+checkbox:not(.dayOffCheckbox) {
+  --switch-width: 32px;
+  --switch-height: 18px;
+  --switch-margin: 10px;
+  --switch-thumb-size: 12px;
+  --switch-thumb-gap: 3px;
+}
+
+checkbox:not(.dayOffCheckbox) > .checkbox-check {
+  appearance: none;
+  -moz-theme: none;
+  flex: none;
+  box-sizing: border-box;
+  inline-size: var(--switch-width);
+  block-size: var(--switch-height);
+  min-inline-size: var(--switch-width);
+  margin-inline-end: var(--switch-margin);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--border-radius-circle);
+  background-color: color-mix(in srgb, var(--color-text-base) 14%, transparent);
+  background-image: radial-gradient(
+    circle,
+    var(--color-white, #fff) calc(var(--switch-thumb-size) / 2 - 0.5px),
+    transparent calc(var(--switch-thumb-size) / 2)
+  );
+  background-size: var(--switch-thumb-size) var(--switch-thumb-size);
+  background-repeat: no-repeat;
+  background-position: var(--switch-thumb-gap) center;
+  transition:
+    background-color 0.2s ease,
+    background-position 0.2s ease,
+    border-color 0.2s ease;
+
+  &:dir(rtl) {
+    background-position: calc(100% - var(--switch-thumb-gap)) center;
+  }
+
+  &[checked] {
+    border-color: var(--selected-item-color);
+    background-color: var(--selected-item-color);
+    background-position: calc(100% - var(--switch-thumb-gap)) center;
+
+    &:dir(rtl) {
+      background-position: var(--switch-thumb-gap) center;
+    }
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+checkbox:not(.dayOffCheckbox):hover:not([disabled]) > .checkbox-check:not([checked]) {
+  border-color: var(--color-surface-border-intense, currentColor);
+}
+
+checkbox:not(.dayOffCheckbox):focus-visible > .checkbox-check {
+  outline: 2px solid var(--selected-item-color);
+  outline-offset: 2px;
+}
+
+/* Captions under a switch line up with its label. */
+checkbox ~ .indent,
+checkbox + .indent {
+  margin-inline-start: calc(var(--switch-width, 32px) + var(--switch-margin, 10px));
+}
+
 treechildren::-moz-tree-row(selected) {
   background-color: var(--selected-item-color) !important;
   border-color: transparent;
@@ -1348,88 +1422,122 @@ qr-code-wizard {
 
 /* Appearance Tab */
 
-#accentColor {
-  flex: 1;
+/* Segmented control: a radio group drawn as a row of buttons. */
 
-  &::part(icon) {
-    block-size: 12px;
+.segmented-setting {
+  align-items: start;
+  gap: 6px;
+  margin-block-end: 12px;
+}
+
+radiogroup.segmented {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 3px;
+  inline-size: max-content;
+  max-inline-size: 100%;
+  border: 1px solid var(--color-surface-border);
+  border-radius: 10px;
+  background-color: var(--color-surface-subtle);
+
+  & radio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+    padding: 4px 14px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    color: var(--color-text-base);
+    white-space: nowrap;
+
+    & .radio-check {
+      display: none;
+    }
+
+    & .radio-label-box {
+      margin: 0;
+      padding: 0;
+    }
+
+    & .radio-label {
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+    }
+
+    &:hover:not([selected], [disabled]) {
+      background-color: color-mix(in srgb, currentColor 8%, transparent);
+    }
+
+    &[selected] {
+      color: var(--selected-item-color);
+      font-weight: 600;
+      background-color: var(--color-surface-base);
+      border-color: var(--selected-item-color);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--selected-item-color);
+      outline-offset: 1px;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  &[disabled] {
+    opacity: 0.6;
+  }
+}
+
+/* Accent color swatches. */
+
+#accentColor radio {
+  --swatch-color: AccentColor;
+
+  &::before {
+    content: "";
+    flex: none;
     inline-size: 12px;
+    block-size: 12px;
     border-radius: 6px;
-    background-color: AccentColor;
+    background-color: var(--swatch-color);
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
   }
 
-  &[value="thunderbird"]::part(icon) {
-    background-color: light-dark(var(--color-blue-60), var(--color-accent-blue-dark));
+  &.accent-color-thunderbird {
+    --swatch-color: light-dark(var(--color-blue-60), var(--color-accent-blue-dark));
   }
 
-  &[value="purple"]::part(icon) {
-    background-color: light-dark(var(--color-purple-80), var(--color-accent-purple-light));
+  &.accent-color-purple {
+    --swatch-color: light-dark(var(--color-purple-80), var(--color-accent-purple-light));
   }
 
-  &[value="orange"]::part(icon) {
-    background-color: light-dark(var(--color-accent-orange-light), var(--color-accent-orange-dark));
+  &.accent-color-orange {
+    --swatch-color: light-dark(var(--color-accent-orange-light), var(--color-accent-orange-dark));
   }
 
-  &[value="pink"]::part(icon) {
-    background-color: light-dark(var(--color-accent-pink-light), var(--color-accent-pink-dark));
+  &.accent-color-pink {
+    --swatch-color: light-dark(var(--color-accent-pink-light), var(--color-accent-pink-dark));
   }
 
-  &[value="ink"]::part(icon) {
-    background-color: light-dark(var(--color-accent-ink-light), var(--color-accent-ink-dark));
+  &.accent-color-ink {
+    --swatch-color: light-dark(var(--color-accent-ink-light), var(--color-accent-ink-dark));
   }
 
-  &[value="teal"]::part(icon) {
-    background-color: light-dark(var(--color-accent-teal-light), var(--color-accent-teal-dark));
+  &.accent-color-teal {
+    --swatch-color: light-dark(var(--color-accent-teal-light), var(--color-accent-teal-dark));
   }
 
   @media (prefers-contrast) {
-    &::part(icon) {
-      background-color: SelectedItem !important;
-    }
-  }
-
-  menuitem {
-    &::before {
-      display: inline-block;
-      content: "";
-      inline-size: 12px;
-      block-size: 12px;
-      border-radius: 6px;
-      margin-inline-end: 6px;
-      padding-inline: 0;
-      background-color: AccentColor;
-      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
-      visibility: visible;
-    }
-
-    &.accent-color-thunderbird::before {
-      background-color: light-dark(var(--color-blue-60), var(--color-accent-blue-dark));
-    }
-
-    &.accent-color-purple::before {
-      background-color: light-dark(var(--color-purple-80), var(--color-accent-purple-light));
-    }
-
-    &.accent-color-orange::before {
-      background-color: light-dark(var(--color-accent-orange-light), var(--color-accent-orange-dark));
-    }
-
-    &.accent-color-pink::before {
-      background-color: light-dark(var(--color-accent-pink-light), var(--color-accent-pink-dark));
-    }
-
-    &.accent-color-ink::before {
-      background-color: light-dark(var(--color-accent-ink-light), var(--color-accent-ink-dark));
-    }
-
-    &.accent-color-teal::before {
-      background-color: light-dark(var(--color-accent-teal-light), var(--color-accent-teal-dark));
-    }
-
-    @media (-moz-platform: macos) {
-      padding-inline-start: 6px;
-    }
+    --swatch-color: SelectedItem !important;
   }
 }
 

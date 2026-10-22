@@ -921,3 +921,37 @@ conversation-view {
 #folderTree {
   padding-block-start: 6px;
 }
+
+/* Panels that are shown and hidden fade and slide in and out. The element
+ * keeps its display until the fade ends. */
+#messagePane,
+#folderPane,
+#quick-filter-bar,
+#folderPaneHeaderBar,
+#threadPaneHeaderBar,
+#threadPaneNotificationBox > * {
+  transition:
+    opacity var(--toggle-duration, 140ms) ease-out,
+    translate var(--toggle-duration, 140ms) ease-out,
+    display var(--toggle-duration, 140ms) allow-discrete,
+    visibility var(--toggle-duration, 140ms) allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+
+:is(#messagePane, #folderPane).collapsed-by-splitter,
+#quick-filter-bar[hidden],
+#folderPaneHeaderBar[hidden],
+#threadPaneHeaderBar[hidden] {
+  opacity: 0;
+  translate: 0 -6px;
+}
+
+:is(#quick-filter-bar, #folderPaneHeaderBar, #threadPaneHeaderBar).toggle-hiding {
+  opacity: 0;
+  translate: 0 -6px;
+  pointer-events: none;
+}

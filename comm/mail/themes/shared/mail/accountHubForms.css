@@ -500,6 +500,27 @@ div:has(legend) {
     color: light-dark(var(--color-primary-pressed-light), var(--color-primary-default-dark));
     border-color: var(--color-primary-default);
   }
+
+  /* The soft tints are opaque, which shows as a solid box over the
+   * translucent window while the notification is up. */
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media -moz-pref("wyrm.ui.translucent") {
+    &.error {
+      background-color: color-mix(in srgb, var(--color-critical-soft) 45%, transparent);
+    }
+
+    &.warning {
+      background-color: color-mix(in srgb, var(--color-warning-soft) 45%, transparent);
+    }
+
+    &.success {
+      background-color: color-mix(in srgb, var(--color-success-soft) 45%, transparent);
+    }
+
+    &.info {
+      background-color: color-mix(in srgb, var(--color-primary-soft) 45%, transparent);
+    }
+  }
 }
 
 .input-warning {

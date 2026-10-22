@@ -509,10 +509,18 @@ button.email-action-button {
   overflow: hidden;
   flex: 0 1 auto;
 
-  &.list-expanded {
-    /* By design, attachmentView should not take up more than 1/4 of the message
-       pane space. */
-    max-block-size: min(var(--preferred-height), 25%);
+  /* The card sits above the message body and lists at most three items until
+   * expanded. Without more than three, there is nothing to toggle. */
+  &:not(.list-expanded) #attachmentList > :nth-child(n + 4) {
+    display: none;
+  }
+
+  &:not(.has-more) #attachmentToggle {
+    display: none;
+  }
+
+  &.has-more #attachmentBar {
+    cursor: pointer;
   }
 }
 
@@ -1208,7 +1216,7 @@ button.email-action-flagged {
 }
 
 #attachment-splitter {
-  border: none;
+  display: none;
 }
 
 /* Keep the subject card's controls (dark message toggle, security badge)
@@ -1228,4 +1236,58 @@ button.email-action-flagged {
     align-items: center;
     margin: 0;
   }
+}
+
+/* Views swapped in place fade in; the one being left goes away at once so
+ * both never take up space together. */
+#attachmentView {
+  transition: opacity var(--toggle-duration, 140ms) ease-out;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+#attachmentView[collapsed] {
+  opacity: 0;
+}
+
+/* Panels that are shown and hidden fade and slide in and out. The element
+ * keeps its display until the fade ends. */
+#attachmentView #attachmentList > .attachmentItem {
+  transition:
+    opacity var(--toggle-duration, 140ms) ease-out,
+    translate var(--toggle-duration, 140ms) ease-out,
+    display var(--toggle-duration, 140ms) allow-discrete,
+    visibility var(--toggle-duration, 140ms) allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+
+#attachmentView:not(.list-expanded) #attachmentList > :nth-child(n + 4) {
+  opacity: 0;
+  translate: 0 -4px;
+}
+
+/* Panels that are shown and hidden fade and slide in and out. The element
+ * keeps its display until the fade ends. */
+#mail-notification-top > * {
+  transition:
+    opacity var(--toggle-duration, 140ms) ease-out,
+    translate var(--toggle-duration, 140ms) ease-out,
+    display var(--toggle-duration, 140ms) allow-discrete,
+    visibility var(--toggle-duration, 140ms) allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+
+#mail-notification-top > [hidden] {
+  opacity: 0;
+  translate: 0 -6px;
 }

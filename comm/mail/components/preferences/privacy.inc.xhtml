@@ -94,13 +94,11 @@
           <label id="acceptThirdPartyLabel" control="acceptThirdPartyMenu"
                  data-l10n-id="third-party-label"/>
           <hbox>
-            <menulist id="acceptThirdPartyMenu" preference="network.cookie.cookieBehavior">
-              <menupopup>
-                <menuitem data-l10n-id="third-party-always" value="always"/>
-                <menuitem data-l10n-id="third-party-visited" value="visited"/>
-                <menuitem data-l10n-id="third-party-never" value="never"/>
-              </menupopup>
-            </menulist>
+            <radiogroup id="acceptThirdPartyMenu" class="segmented" preference="network.cookie.cookieBehavior">
+              <radio data-l10n-id="third-party-always" value="always"/>
+              <radio data-l10n-id="third-party-visited" value="visited"/>
+              <radio data-l10n-id="third-party-never" value="never"/>
+            </radiogroup>
           </hbox>
         </hbox>
         <hbox flex="1"/>

@@ -20,12 +20,10 @@
       <hbox align="center">
         <label data-l10n-id="forward-label" control="forwardMessageMode"/>
         <hbox>
-          <menulist id="forwardMessageMode" preference="mail.forward_message_mode">
-            <menupopup>
-              <menuitem value="2" data-l10n-id="inline-label"/>
-              <menuitem value="0" data-l10n-id="as-attachment-label"/>
-            </menupopup>
-          </menulist>
+          <radiogroup id="forwardMessageMode" class="segmented" preference="mail.forward_message_mode">
+            <radio value="2" data-l10n-id="inline-label"/>
+            <radio value="0" data-l10n-id="as-attachment-label"/>
+          </radiogroup>
         </hbox>
         <separator orient="vertical" class="thin"/>
         <checkbox id="addExtension" preference="mail.forward_add_extension"
@@ -123,16 +121,14 @@
 
             <label control="fontSizeSelect" data-l10n-id="font-size-label"/>
             <hbox>
-              <menulist id="fontSizeSelect" preference="msgcompose.font_size" value="3">
-                <menupopup>
-                  <menuitem value="1" label="&size-tinyCmd.label;"/>
-                  <menuitem value="2" label="&size-smallCmd.label;"/>
-                  <menuitem value="3" label="&size-mediumCmd.label;"/>
-                  <menuitem value="4" label="&size-largeCmd.label;"/>
-                  <menuitem value="5" label="&size-extraLargeCmd.label;"/>
-                  <menuitem value="6" label="&size-hugeCmd.label;"/>
-                </menupopup>
-              </menulist>
+              <radiogroup id="fontSizeSelect" class="segmented" preference="msgcompose.font_size" value="3">
+                <radio value="1" label="&size-tinyCmd.label;"/>
+                <radio value="2" label="&size-smallCmd.label;"/>
+                <radio value="3" label="&size-mediumCmd.label;"/>
+                <radio value="4" label="&size-largeCmd.label;"/>
+                <radio value="5" label="&size-extraLargeCmd.label;"/>
+                <radio value="6" label="&size-hugeCmd.label;"/>
+              </radiogroup>
             </hbox>
           </hbox>
 

@@ -1899,6 +1899,7 @@ async function displayAttachmentsForExpandedView() {
       });
     }
 
+    attachmentView.classList.toggle("has-more", numAttachments > 3);
     toggleAttachmentList(false);
 
     for (const attachment of currentAttachments) {
@@ -2227,16 +2228,19 @@ function toggleAttachmentList(expanded, updateFocus) {
   var attachmentBar = document.getElementById("attachmentBar");
   var attachmentToggle = document.getElementById("attachmentToggle");
   var attachmentList = document.getElementById("attachmentList");
-  var attachmentSplitter = document.getElementById("attachment-splitter");
   var bundle = document.getElementById("bundle_messenger");
 
   if (expanded === undefined) {
+    if (!attachmentView.classList.contains("has-more")) {
+      return;
+    }
     expanded = !attachmentToggle.checked;
   }
 
+  // The list is always shown, up to three items. Expanding shows the rest.
   attachmentToggle.checked = expanded;
   attachmentBar.setAttribute("aria-expanded", String(expanded));
-  attachmentList.collapsed = !expanded;
+  attachmentList.collapsed = false;
   attachmentView.classList.toggle("list-expanded", expanded);
 
   const attachmentToggleLabel = bundle.getString(
@@ -2246,31 +2250,10 @@ function toggleAttachmentList(expanded, updateFocus) {
   attachmentBar.setAttribute("tooltiptext", attachmentToggleLabel);
 
   if (expanded) {
-    if (!attachmentView.collapsed) {
-      attachmentSplitter.collapsed = false;
-    }
-
     attachmentList.setOptimumWidth();
-
-    // Calculate the preferred height (the height that would allow us to fit
-    // everything without scrollbars) of the attachmentView. Add 2px to account
-    // for item's margin.
-    attachmentView.style.setProperty(
-      "--preferred-height",
-      attachmentList.scrollHeight + attachmentBar.scrollHeight + 2 + "px"
-    );
 
     if (updateFocus) {
       attachmentList.focus();
-    }
-  } else {
-    attachmentSplitter.collapsed = true;
-
-    // This may have been set by the XUL splitter.
-    attachmentView.style.height = null;
-
-    if (updateFocus && document.activeElement == attachmentList) {
-      // TODO
     }
   }
 }

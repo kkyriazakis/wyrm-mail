@@ -64,6 +64,7 @@ ChromeUtils.defineESModuleGetters(this, {
   MailUtils: "resource:///modules/MailUtils.sys.mjs",
   SmartMailboxUtils: "resource:///modules/SmartMailboxUtils.sys.mjs",
   TagUtils: "resource:///modules/TagUtils.sys.mjs",
+  ToggleAnimation: "resource:///modules/ToggleAnimation.sys.mjs",
   UIDensity: "resource:///modules/UIDensity.sys.mjs",
   UIFontSize: "resource:///modules/UIFontSize.sys.mjs",
   XULStoreUtils: "resource:///modules/XULStoreUtils.sys.mjs",
@@ -3796,7 +3797,10 @@ var folderPane = {
   },
 
   toggleHeader(hide) {
-    document.getElementById("folderPaneHeaderBar").hidden = hide;
+    ToggleAnimation.setHidden(
+      document.getElementById("folderPaneHeaderBar"),
+      hide
+    );
     XULStoreUtils.setValue("messenger", "folderPaneHeaderBar", "hidden", hide);
   },
 
@@ -4315,7 +4319,7 @@ var threadPaneHeader = {
    */
   toggleThreadPaneHeader() {
     this.isHidden = !this.isHidden;
-    this.bar.hidden = this.isHidden;
+    ToggleAnimation.setHidden(this.bar, this.isHidden);
 
     XULStoreUtils.setValue(
       "messenger",

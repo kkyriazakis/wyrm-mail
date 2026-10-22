@@ -1055,8 +1055,9 @@ var gGeneralPane = {
       // If the app locale and regional settings locale are the same language,
       // regardless of region, intl.regional_prefs.use_os_locales is ignored
       // and the regional settings locale is always used, making these radio
-      // buttons useless. Hide them.
-      appLocaleRadio.closest("fieldset").hidden = true;
+      // buttons useless. Hide them, but keep the fieldset: it also holds the
+      // message list date format.
+      appLocaleRadio.closest("radiogroup").hidden = true;
       return;
     }
 

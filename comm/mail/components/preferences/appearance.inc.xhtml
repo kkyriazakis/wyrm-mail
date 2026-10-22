@@ -11,17 +11,17 @@
 
   <html:fieldset id="themeGroup" data-category="paneAppearance">
     <html:legend data-l10n-id="theme-mode-legend"></html:legend>
-    <hbox align="center" pack="start">
+    <vbox class="segmented-setting">
       <label data-l10n-id="theme-mode-label"
              control="themeMode"/>
-      <menulist id="themeMode">
-        <menupopup native="false">
-          <menuitem value="system" data-l10n-id="theme-mode-system"/>
-          <menuitem value="light" data-l10n-id="theme-mode-light"/>
-          <menuitem value="dark" data-l10n-id="theme-mode-dark"/>
-        </menupopup>
-      </menulist>
-    </hbox>
+      <radiogroup id="themeMode" class="segmented">
+        <radio value="light" data-l10n-id="theme-mode-light"/>
+        <radio value="dark" data-l10n-id="theme-mode-dark"/>
+        <radio value="system" data-l10n-id="theme-mode-system"/>
+      </radiogroup>
+      <description data-l10n-id="theme-mode-description"
+                   class="tip-caption"/>
+    </vbox>
     <hbox>
       <vbox>
         <checkbox id="translucentWindow"
@@ -35,30 +35,27 @@
 
   <html:fieldset id="colorGroup" data-category="paneAppearance">
     <html:legend data-l10n-id="accent-color-legend"></html:legend>
-    <hbox align="center" pack="start">
+    <vbox class="segmented-setting">
       <label data-l10n-id="accent-color-label"
              control="accentColor"/>
-      <hbox flex="1">
-        <menulist id="accentColor" preference="mail.appearance.accentColor">
-          <menupopup native="false">
-            <menuitem value="accent-color" class="accent-color-os"
-                      data-l10n-id="accent-color-os"/>
-            <menuitem value="thunderbird" class="accent-color-thunderbird"
-                      data-l10n-id="accent-color-thunderbird"/>
-            <menuitem value="purple" class="accent-color-purple"
-                      data-l10n-id="accent-color-purple"/>
-            <menuitem value="orange" class="accent-color-orange"
-                      data-l10n-id="accent-color-orange"/>
-            <menuitem value="pink" class="accent-color-pink"
-                      data-l10n-id="accent-color-pink"/>
-            <menuitem value="ink" class="accent-color-ink"
-                      data-l10n-id="accent-color-ink"/>
-            <menuitem value="teal" class="accent-color-teal"
-                      data-l10n-id="accent-color-teal"/>
-          </menupopup>
-        </menulist>
-      </hbox>
-    </hbox>
+      <radiogroup id="accentColor" class="segmented"
+                  preference="mail.appearance.accentColor">
+        <radio value="accent-color" class="accent-color-os"
+               data-l10n-id="accent-color-os"/>
+        <radio value="thunderbird" class="accent-color-thunderbird"
+               data-l10n-id="accent-color-thunderbird"/>
+        <radio value="purple" class="accent-color-purple"
+               data-l10n-id="accent-color-purple"/>
+        <radio value="orange" class="accent-color-orange"
+               data-l10n-id="accent-color-orange"/>
+        <radio value="pink" class="accent-color-pink"
+               data-l10n-id="accent-color-pink"/>
+        <radio value="ink" class="accent-color-ink"
+               data-l10n-id="accent-color-ink"/>
+        <radio value="teal" class="accent-color-teal"
+               data-l10n-id="accent-color-teal"/>
+      </radiogroup>
+    </vbox>
     <description id="accentColorDisabledDescription"
                  data-l10n-id="accent-color-disabled-description"
                  class="tip-caption"/>

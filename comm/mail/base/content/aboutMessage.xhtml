@@ -124,6 +124,15 @@
           <!-- notificationbox will be added here lazily. -->
         </vbox>
 
+        <!-- The attachments sit above the message body and show at most three
+             items until expanded. -->
+        <vbox id="attachmentView" collapsed="collapsed">
+#include msgAttachmentView.inc.xhtml
+        </vbox>
+        <splitter id="attachment-splitter" orient="vertical"
+                  resizebefore="closest" resizeafter="closest"
+                  collapse="after" collapsed="collapsed"/>
+
 #include ../../../calendar/base/content/widgets/calendar-invitation-panel.inc.xhtml
 #include ../../../calendar/base/content/widgets/calendar-minidate.inc.xhtml
 
@@ -150,12 +159,6 @@
                  messagemanagergroup="mail-message"
                  autocompletepopup="PopupAutoComplete"
                  manualactiveness="true"/>
-        <splitter id="attachment-splitter" orient="vertical"
-                  resizebefore="closest" resizeafter="closest"
-                  collapse="after" collapsed="collapsed"/>
-        <vbox id="attachmentView" collapsed="collapsed">
-#include msgAttachmentView.inc.xhtml
-        </vbox>
         <html:lazy-findbar id="findToolbar" browserid="messagepane"/>
       </vbox>
 #include msgSecurityPane.inc.xhtml

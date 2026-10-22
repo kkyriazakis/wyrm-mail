@@ -124,7 +124,7 @@ dialog {
     min-block-size: 0;
     margin: 0;
     border: none;
-    border-radius: var(--border-radius-xlarge);
+    border-radius: env(-moz-gtk-csd-titlebar-radius, 0);
     place-content: center;
     justify-items: center;
     overflow: auto;
@@ -192,7 +192,7 @@ dialog {
      * showing as a solid box. */
     & .account-hub-view.spinner #loadingOverlay {
       position: fixed;
-      border-radius: var(--border-radius-xlarge);
+      border-radius: env(-moz-gtk-csd-titlebar-radius, 0);
       background-color: color-mix(in srgb, var(--color-surface-subtle) 45%, transparent);
       backdrop-filter: blur(12px);
       opacity: 1;

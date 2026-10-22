@@ -446,7 +446,7 @@ var quickFilterBar = {
     this.reflectFiltererResults();
 
     if (this.domNode.hidden == this.filterer.visible) {
-      this.domNode.hidden = !this.filterer.visible;
+      ToggleAnimation.setHidden(this.domNode, !this.filterer.visible);
       window.dispatchEvent(new Event("qfbtoggle"));
     }
   },

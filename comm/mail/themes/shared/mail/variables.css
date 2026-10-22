@@ -29,6 +29,13 @@
     --inner-window-background: transparent;
   }
 
+  /* Showing and hiding panels fades and slides them over this time. */
+  --toggle-duration: 140ms;
+
+  @media (prefers-reduced-motion: reduce) {
+    --toggle-duration: 0s;
+  }
+
   --toolbar-background-color: var(--window-background);
   /* Hairline drawn around top level cards (panes, message cards). */
   --card-outline: 1px solid light-dark(rgba(14, 21, 32, 0.1), rgba(255, 255, 255, 0.09));

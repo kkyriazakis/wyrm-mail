@@ -1648,3 +1648,49 @@ panel[type="arrow"].panel-block-padding::part(content) {
   fill: color-mix(in srgb, currentColor 20%, transparent);
   stroke: currentColor;
 }
+
+/* Panels that are shown and hidden fade and slide in and out. The element
+ * keeps its display until the fade ends. */
+#spacesToolbar,
+#today-pane-panel,
+#today-splitter,
+#tabs-toolbar,
+#sidePanelNewEvent,
+#sidePanelNewTask {
+  transition:
+    opacity var(--toggle-duration, 140ms) ease-out,
+    translate var(--toggle-duration, 140ms) ease-out,
+    display var(--toggle-duration, 140ms) allow-discrete,
+    visibility var(--toggle-duration, 140ms) allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+
+#spacesToolbar[hidden],
+#today-pane-panel[collapsed],
+#today-splitter[hidden],
+#tabs-toolbar[collapsed],
+#sidePanelNewEvent[hidden],
+#sidePanelNewTask[hidden] {
+  opacity: 0;
+  translate: 0 -6px;
+}
+
+/* Views swapped in place fade in; the one being left goes away at once so
+ * both never take up space together. */
+#calendar-view-box,
+#calendar-task-box {
+  transition: opacity var(--toggle-duration, 140ms) ease-out;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+#calendar-view-box[collapsed],
+#calendar-task-box[collapsed] {
+  opacity: 0;
+}

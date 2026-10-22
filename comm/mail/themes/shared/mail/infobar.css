@@ -131,6 +131,16 @@ div.container {
   }
 }
 
+/* Info bars come and go; an opaque one shows as a solid box over the
+ * translucent window while it is up. Warning, success and error bars keep
+ * their solid alert colors. */
+/* stylelint-disable-next-line media-query-no-invalid */
+@media -moz-pref("wyrm.ui.translucent") {
+  :host(notification-message:not([type="warning"], [type="success"], [type="error"], [type="critical"])) div.container {
+    background-color: color-mix(in srgb, var(--message-bar-background-color) 45%, transparent);
+  }
+}
+
 div.content {
   /* Ensure that the message bar content is wrapped. */
   word-break: break-word;

@@ -47,9 +47,9 @@ export const appearancePane = {
    * ui.systemUsesDarkTheme; "system" clears the override.
    */
   initThemeMode() {
-    const menulist = document.getElementById("themeMode");
+    const group = document.getElementById("themeMode");
     const sync = () => {
-      menulist.value = Services.prefs.prefHasUserValue("ui.systemUsesDarkTheme")
+      group.value = Services.prefs.prefHasUserValue("ui.systemUsesDarkTheme")
         ? Services.prefs.getIntPref("ui.systemUsesDarkTheme")
           ? "dark"
           : "light"
@@ -62,13 +62,21 @@ export const appearancePane = {
       () => Services.prefs.removeObserver("ui.systemUsesDarkTheme", sync),
       { once: true }
     );
-    menulist.addEventListener("command", () => {
-      if (menulist.value == "system") {
+    group.addEventListener("select", () => {
+      const current = Services.prefs.prefHasUserValue("ui.systemUsesDarkTheme")
+        ? Services.prefs.getIntPref("ui.systemUsesDarkTheme")
+          ? "dark"
+          : "light"
+        : "system";
+      if (group.value == current) {
+        return;
+      }
+      if (group.value == "system") {
         Services.prefs.clearUserPref("ui.systemUsesDarkTheme");
       } else {
         Services.prefs.setIntPref(
           "ui.systemUsesDarkTheme",
-          menulist.value == "dark" ? 1 : 0
+          group.value == "dark" ? 1 : 0
         );
       }
     });
