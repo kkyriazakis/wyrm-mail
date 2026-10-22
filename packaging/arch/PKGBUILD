@@ -3,7 +3,7 @@
 # Maintainer: Kleanthis Kyriazakis <kleanthis_kyriaz@hotmail.com>
 
 pkgname=wyrm-mail
-pkgver=157.0.2
+pkgver=1.0.0
 pkgrel=1
 _gecko_tag=FIREFOX_157_0_BUILD1
 pkgdesc="Outlook-first email client based on Thunderbird"
