@@ -7,6 +7,7 @@ import { MailServices } from "resource:///modules/MailServices.sys.mjs";
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
+  BackgroundWindows: "resource:///modules/BackgroundWindows.sys.mjs",
   openLinkExternally: "resource:///modules/LinkHelper.sys.mjs",
   FeedUtils: "resource:///modules/FeedUtils.sys.mjs",
   MailUtils: "resource:///modules/MailUtils.sys.mjs",
@@ -503,8 +504,9 @@ export class MessengerContentHandler {
 
     if (!uri && cmdLine.state != Ci.nsICommandLine.STATE_INITIAL_LAUNCH) {
       try {
-        for (const window of Services.wm.getEnumerator("mail:3pane")) {
-          window.focus();
+        // Launching the app again shows a window kept in the background.
+        if (Services.wm.getMostRecentWindow("mail:3pane")) {
+          lazy.BackgroundWindows.showMainWindow();
           return;
         }
       } catch (e) {

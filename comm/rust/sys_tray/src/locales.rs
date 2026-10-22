@@ -17,7 +17,7 @@ static MENUBAR_FILE: &str = include_str!(mozbuild::srcdir_path!(
 ));
 
 static BRANDING_FILE: &str = include_str!(mozbuild::srcdir_path!(
-    "/comm/mail/branding/thunderbird/locales/en-US/brand.ftl"
+    "/comm/mail/branding/wyrm-mail/locales/en-US/brand.ftl"
 ));
 
 // Ask mozILocaleService for the known locale list

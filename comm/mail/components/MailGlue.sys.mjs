@@ -31,6 +31,7 @@ if (AppConstants.MOZ_SERVICES_SYNC) {
 ChromeUtils.defineESModuleGetters(lazy, {
   ActorManagerParent: "resource://gre/modules/ActorManagerParent.sys.mjs",
   AddonManager: "resource://gre/modules/AddonManager.sys.mjs",
+  BackgroundWindows: "resource:///modules/BackgroundWindows.sys.mjs",
   BuiltInThemes: "resource:///modules/BuiltInThemes.sys.mjs",
   cal: "resource:///modules/calendar/calUtils.sys.mjs",
   ChatCore: "resource:///modules/chatHandler.sys.mjs",
@@ -439,6 +440,7 @@ MailGlue.prototype = {
     Services.obs.addObserver(this, "content-document-global-created");
     Services.obs.addObserver(this, "document-element-inserted");
     Services.obs.addObserver(this, "handlersvc-store-initialized");
+    Services.obs.addObserver(this, "wyrm-tray-show-window");
 
     // Call the lazy getter to ensure ActorManagerParent is initialized.
     lazy.ActorManagerParent;
@@ -466,6 +468,7 @@ MailGlue.prototype = {
 
     Services.obs.removeObserver(this, "intl:app-locales-changed");
     Services.obs.removeObserver(this, "handle-xul-text-link");
+    Services.obs.removeObserver(this, "wyrm-tray-show-window");
     Services.obs.removeObserver(this, "chrome-document-global-created");
     Services.obs.removeObserver(this, "content-document-global-created");
     Services.obs.removeObserver(this, "document-element-inserted");
@@ -570,6 +573,9 @@ MailGlue.prototype = {
         break;
       case "xpcom-shutdown":
         this._dispose();
+        break;
+      case "wyrm-tray-show-window":
+        lazy.BackgroundWindows.showMainWindow();
         break;
       case "intl:app-locales-changed": {
         Cc["@mozilla.org/msgFolder/msgFolderService;1"]

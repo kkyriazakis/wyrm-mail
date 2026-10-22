@@ -63,6 +63,27 @@ pub struct LinuxSysTrayHandler {
     handle: Handle<SystemTray>,
 }
 
+/// The tray icon is shown while the app keeps running in the background when
+/// closed, or when it is asked to always show.
+fn tray_enabled() -> bool {
+    get_bool_pref(c"mail.closeToTray").unwrap_or(false)
+        || get_bool_pref(c"mail.biff.show_tray_icon_always").unwrap_or(false)
+}
+
+/// Format a message without arguments from the bundle.
+fn format_message(bundle: &FluentBundleRc, id: &str) -> String {
+    let Some(pattern) = bundle.get_message(id).and_then(|m| m.value()) else {
+        log::error!("missing message: {id}");
+        return String::new();
+    };
+    let mut errors = vec![];
+    let value = bundle.format_pattern(pattern, None, &mut errors);
+    if !errors.is_empty() {
+        log::error!("translation issues: {errors:?}");
+    }
+    value.into()
+}
+
 impl LinuxSysTrayHandler {
     /// Construct a new system tray
     pub fn new() -> RefPtr<LinuxSysTrayHandler> {
@@ -75,17 +96,9 @@ impl LinuxSysTrayHandler {
             .add_resource(Rc::new(resource))
             .expect("Failed to add resources to bundle");
 
-        // Grab the quit message
-        let msg = bundle
-            .get_message("system-tray-menuitem-quit")
-            .expect("Message doesn't exist.")
-            .value()
-            .expect("Message has no value.");
-        let mut errors = vec![];
-        let quit_msg = bundle.format_pattern(msg, None, &mut errors);
-        if !errors.is_empty() {
-            log::error!("translation issues: {errors:?}");
-        }
+        let quit_msg = format_message(&bundle, "system-tray-menuitem-quit");
+        let open_msg = format_message(&bundle, "system-tray-menuitem-open");
+        let title = format_message(&bundle, "system-tray-title");
 
         // Determine correct image
         let icon = if XdgIcon::requires_symbolic() {
@@ -94,37 +107,54 @@ impl LinuxSysTrayHandler {
             system_tray::locate_icon_on_system("default256.png").map(XdgIcon::Path)
         }
         .ok()
-        .unwrap_or_else(|| XdgIcon::for_desktop("thunderbird"));
+        .unwrap_or_else(|| XdgIcon::for_desktop("wyrm-mail"));
 
         // Build our menu structure
-        let menus = [TrayItem::ActionItem {
-            label: quit_msg.into(),
-            icon: None,
-            action: Action::Quit,
-            enabled: true,
-            visible: true,
-        }];
+        let menus = [
+            TrayItem::ActionItem {
+                label: open_msg,
+                icon: None,
+                action: Action::ShowWindow,
+                enabled: true,
+                visible: true,
+            },
+            TrayItem::Separator,
+            TrayItem::ActionItem {
+                label: quit_msg,
+                icon: None,
+                action: Action::Quit,
+                enabled: true,
+                visible: true,
+            },
+        ];
 
-        // Get it executed
-        let tray = SystemTray::new("Thunderbird", icon, "Thunderbird Daily").with_items(menus);
+        // The service always runs so the icon can be shown or hidden later
+        // without a restart; a hidden icon is a passive item.
+        let mut tray = SystemTray::new("wyrm-mail", icon, title).with_items(menus);
+        tray.visible = tray_enabled();
         let service = ksni::TrayService::new(tray);
         let handle = service.handle();
-        if get_bool_pref(c"mail.biff.show_tray_icon_always").unwrap_or(true) {
-            thread::spawn(|| match service.run_without_dbus_name() {
-                Ok(_) => (),
-                Err(e) => log::error!("Spawning system tray FAILED: {e}"),
-            });
-        }
+        thread::spawn(|| match service.run_without_dbus_name() {
+            Ok(_) => (),
+            Err(e) => log::error!("Spawning system tray FAILED: {e}"),
+        });
         LinuxSysTrayHandler::allocate(InitLinuxSysTrayHandler { handle })
     }
 
-    // Update the unread method count (unimplemented as yet)
+    // Show the unread count in the tooltip, and pick up a change to whether
+    // the icon should be shown.
     xpcom_method!(update_unread_count => UpdateUnreadCount(unreadCount: u32, unreadToolTip: *const nsstring::nsAString));
     fn update_unread_count(
         &self,
         _count: u32,
-        _tooltip: &nsstring::nsAString,
+        tooltip: &nsstring::nsAString,
     ) -> Result<(), nsresult> {
+        let tooltip = tooltip.to_string();
+        let visible = tray_enabled();
+        self.handle.update(|tray| {
+            tray.tooltip = tooltip;
+            tray.visible = visible;
+        });
         Ok(())
     }
 

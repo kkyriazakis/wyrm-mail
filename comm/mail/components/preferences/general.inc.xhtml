@@ -104,7 +104,7 @@
                     check-on-startup-label.label"/>
         </hbox>
       </hbox>
-#ifdef XP_WIN
+#if defined(XP_WIN) || defined(XP_LINUX)
       <hbox align="start">
         <checkbox data-l10n-id="close-to-tray-label"
                   preference="mail.closeToTray"/>
@@ -113,6 +113,17 @@
           <checkbox id="startInTray"
                     data-l10n-id="start-in-tray-label"
                     preference="mail.closeToTray.startInTray"/>
+      </hbox>
+#endif
+#ifdef XP_LINUX
+      <hbox align="start">
+        <vbox>
+          <checkbox id="launchAtLogin"
+                    data-l10n-id="launch-at-login-label"
+                    oncommand="gGeneralPane.setLaunchAtLogin(this.checked);"/>
+          <description data-l10n-id="launch-at-login-description"
+                       class="tip-caption indent"/>
+        </vbox>
       </hbox>
 #endif
       <hbox id="searchIntegrationContainer">

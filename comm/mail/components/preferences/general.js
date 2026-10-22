@@ -116,7 +116,7 @@ Preferences.addAll([
   { id: "mail.folder_widget.recent_sort_order", type: "int" },
   { id: "mail.folder_widget.max_recent", type: "int" },
 ]);
-if (AppConstants.platform == "win") {
+if (["win", "linux"].includes(AppConstants.platform)) {
   Preferences.addAll([
     { id: "mail.closeToTray", type: "bool" },
     { id: "mail.closeToTray.startInTray", type: "bool" },
@@ -234,8 +234,11 @@ var gGeneralPane = {
       conversationViewExperimental.hidden = !offerExperimentalFeatures;
     }
 
-    if (AppConstants.platform == "win") {
+    if (["win", "linux"].includes(AppConstants.platform)) {
       this.updateCloseToTray();
+    }
+    if (AppConstants.platform == "linux") {
+      this.initLaunchAtLogin();
     }
 
     this.updateStartPage();
@@ -695,6 +698,63 @@ var gGeneralPane = {
   updateCloseToTray() {
     const startInTray = document.getElementById("startInTray");
     startInTray.disabled = !Preferences.get("mail.closeToTray").value;
+  },
+
+  /**
+   * The XDG autostart entry that starts the app when the user logs in.
+   *
+   * @returns {string}
+   */
+  get autostartFile() {
+    const configHome =
+      Services.env.get("XDG_CONFIG_HOME") ||
+      PathUtils.join(Services.dirsvc.get("Home", Ci.nsIFile).path, ".config");
+    return PathUtils.join(configHome, "autostart", "wyrm-mail.desktop");
+  },
+
+  async initLaunchAtLogin() {
+    document.getElementById("launchAtLogin").checked = await IOUtils.exists(
+      this.autostartFile
+    );
+  },
+
+  /**
+   * Add or remove the autostart entry.
+   *
+   * @param {boolean} enabled
+   */
+  async setLaunchAtLogin(enabled) {
+    const file = this.autostartFile;
+    try {
+      if (!enabled) {
+        await IOUtils.remove(file, { ignoreAbsent: true });
+        return;
+      }
+      // Quote the path as the Desktop Entry spec asks for an Exec argument.
+      const exe = Services.dirsvc
+        .get("XREExeF", Ci.nsIFile)
+        .path.replace(/["`$\\]/g, "\\$&");
+      const [name] = await document.l10n.formatValues([
+        { id: "launch-at-login-entry-name" },
+      ]);
+      await IOUtils.makeDirectory(PathUtils.parent(file));
+      await IOUtils.writeUTF8(
+        file,
+        [
+          "[Desktop Entry]",
+          "Type=Application",
+          `Name=${name}`,
+          `Exec="${exe}"`,
+          "Icon=wyrm-mail",
+          "Terminal=false",
+          "X-GNOME-Autostart-enabled=true",
+          "",
+        ].join("\n")
+      );
+    } catch (e) {
+      console.error(e);
+      document.getElementById("launchAtLogin").checked = !enabled;
+    }
   },
 
   async updateWebSearch() {
@@ -3091,7 +3151,7 @@ Preferences.get("mail.biff.show_alert").on(
   "change",
   gGeneralPane.updateShowAlert
 );
-if (AppConstants.platform == "win") {
+if (["win", "linux"].includes(AppConstants.platform)) {
   Preferences.get("mail.closeToTray").on(
     "change",
     gGeneralPane.updateCloseToTray

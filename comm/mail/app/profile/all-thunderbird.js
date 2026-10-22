@@ -1487,6 +1487,11 @@ pref("toolkit.telemetry.bhrPing.enabled", true);
 #ifdef XP_WIN
 pref("mail.closeToTray", false);
 pref("mail.closeToTray.startInTray", false);
+#elifdef XP_LINUX
+// Closing the main window keeps the app running in the background, with a
+// tray icon and new mail notifications; quit from the tray icon's menu.
+pref("mail.closeToTray", true);
+pref("mail.closeToTray.startInTray", false);
 #endif
 
 pref("prompts.defaultModalType", 3);

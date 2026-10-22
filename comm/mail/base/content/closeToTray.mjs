@@ -2,8 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, you can obtain one at http://mozilla.org/MPL/2.0/. */
 
+const { BackgroundWindows } = ChromeUtils.importESModule(
+  "resource:///modules/BackgroundWindows.sys.mjs"
+);
+
 window.addEventListener("close", event => {
-  if (!Services.prefs.getBoolPref("mail.closeToTray", false)) {
+  if (!BackgroundWindows.enabled) {
     return;
   }
 
@@ -13,9 +17,5 @@ window.addEventListener("close", event => {
   }
 
   event.preventDefault();
-
-  const baseWindow = window.docShell.treeOwner.QueryInterface(Ci.nsIBaseWindow);
-  Cc["@mozilla.org/messenger/osintegration;1"]
-    .getService(Ci.nsIMessengerWindowsIntegration)
-    .hideWindow(baseWindow);
+  BackgroundWindows.hideWindow(window);
 });

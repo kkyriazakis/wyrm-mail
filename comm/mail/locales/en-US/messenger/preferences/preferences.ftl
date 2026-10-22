@@ -193,11 +193,15 @@ adding-opensearch-provider-failed-title = Adding OpenSearch Provider Failed
 adding-opensearch-provider-failed-text = Could not add OpenSearch Provider for { $url }.
 
 close-to-tray-label =
-    .label = When { -brand-short-name } is closed, move it to the tray
+    .label = Keep { -brand-short-name } running in the background when closed
     .accesskey = c
 start-in-tray-label =
-    .label = Start { -brand-short-name } in the tray
+    .label = Start { -brand-short-name } in the background
     .accesskey = S
+launch-at-login-label =
+    .label = Start { -brand-short-name } when you log in
+launch-at-login-description = Together with starting in the background, new mail is checked and notified without opening a window.
+launch-at-login-entry-name = { -brand-short-name }
 
 new-message-arrival = When new messages arrive:
 mail-play-sound-label =

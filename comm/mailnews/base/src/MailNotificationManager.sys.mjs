@@ -14,6 +14,7 @@ const AlertNotification = Components.Constructor(
 
 const lazy = {};
 ChromeUtils.defineESModuleGetters(lazy, {
+  BackgroundWindows: "resource:///modules/BackgroundWindows.sys.mjs",
   LanguageDetector:
     "resource://gre/modules/translations/LanguageDetector.sys.mjs",
   MailNotificationService:
@@ -163,10 +164,16 @@ export const MailNotificationManager = new (class {
     // system tray icon.
     this._osIntegration;
 
-    if (["macosx", "win"].includes(AppConstants.platform)) {
-      // We don't have indicator for unread count on Linux yet.
+    if (["macosx", "win", "linux"].includes(AppConstants.platform)) {
+      // On Linux the unread count is shown in the tray icon's tooltip.
       lazy.MailNotificationService.addListener(this);
       Services.obs.addObserver(this, "unread-im-count-changed");
+    }
+
+    if (AppConstants.platform == "linux") {
+      // The tray icon is shown while the app keeps running when closed.
+      Services.prefs.addObserver("mail.closeToTray", this);
+      Services.prefs.addObserver("mail.biff.show_tray_icon_always", this);
     }
 
     if (AppConstants.platform == "macosx") {
@@ -205,7 +212,8 @@ export const MailNotificationManager = new (class {
       case "nsPref:changed":
         if (
           data == "mail.biff.show_badge" ||
-          data == "mail.biff.show_tray_icon_always"
+          data == "mail.biff.show_tray_icon_always" ||
+          data == "mail.closeToTray"
         ) {
           this._updateUnreadCount();
         }
@@ -213,7 +221,7 @@ export const MailNotificationManager = new (class {
       case "profile-before-change":
         this._osIntegration?.onExit();
 
-        if (["macosx", "win"].includes(AppConstants.platform)) {
+        if (["macosx", "win", "linux"].includes(AppConstants.platform)) {
           lazy.MailNotificationService.removeListener(this);
           Services.obs.removeObserver(this, "unread-im-count-changed");
         }
@@ -225,6 +233,14 @@ export const MailNotificationManager = new (class {
         if (AppConstants.platform == "win") {
           Services.obs.removeObserver(this, "windows-refresh-badge-tray");
           Services.prefs.removeObserver("mail.biff.show_badge", this);
+          Services.prefs.removeObserver(
+            "mail.biff.show_tray_icon_always",
+            this
+          );
+        }
+
+        if (AppConstants.platform == "linux") {
+          Services.prefs.removeObserver("mail.closeToTray", this);
           Services.prefs.removeObserver(
             "mail.biff.show_tray_icon_always",
             this
@@ -543,7 +559,11 @@ export const MailNotificationManager = new (class {
             .runAction(msgHdr);
           return;
         }
-        // Display the associated message when an alert is clicked.
+        // Display the associated message when an alert is clicked, showing
+        // the main window if it is kept in the background.
+        if (AppConstants.platform != "macosx") {
+          lazy.BackgroundWindows.showMainWindow();
+        }
         lazy.MailUtils.displayMessageInFolderTab(msgHdr, true);
       },
       onAlertFinished() {},
@@ -664,6 +684,10 @@ export const MailNotificationManager = new (class {
         });
       }
       await lazy.WinUnreadBadge.updateUnreadCount(count, tooltip);
+    } else if (AppConstants.platform == "linux" && count > 0) {
+      tooltip = await lazy.l10n.formatValue("unread-messages-os-tooltip", {
+        count,
+      });
     }
     this._osIntegration?.updateUnreadCount(count, tooltip);
 

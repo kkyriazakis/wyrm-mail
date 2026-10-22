@@ -160,12 +160,10 @@ var gMailInit = {
     // When start in tray is enabled, hide the first window as well as all
     // windows restored by the SessionStoreManager.
     const hideWindow = () => {
-      const baseWindow = window.docShell.treeOwner.QueryInterface(
-        Ci.nsIBaseWindow
+      const { BackgroundWindows } = ChromeUtils.importESModule(
+        "resource:///modules/BackgroundWindows.sys.mjs"
       );
-      Cc["@mozilla.org/messenger/osintegration;1"]
-        .getService(Ci.nsIMessengerWindowsIntegration)
-        .hideWindow(baseWindow);
+      BackgroundWindows.hideWindow(window);
     };
 
     if (firstWindow) {

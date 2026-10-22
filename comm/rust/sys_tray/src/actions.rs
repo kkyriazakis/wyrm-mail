@@ -6,7 +6,7 @@
 
 use nserror::nsresult;
 use xpcom::get_service;
-use xpcom::interfaces::nsIAppStartup;
+use xpcom::interfaces::{nsIAppStartup, nsIObserverService};
 
 /// Actions from the tray menu
 /// Note: For thread safety we *must* safely support Copy!
@@ -14,6 +14,9 @@ use xpcom::interfaces::nsIAppStartup;
 pub enum Action {
     /// Quit menu has been pressed
     Quit,
+
+    /// The tray icon was clicked or "Open" was chosen: show the main window
+    ShowWindow,
 }
 
 /// Handle the given action in the tray menu
@@ -24,6 +27,7 @@ pub enum Action {
 pub(crate) fn handle_action(action: Action) -> Result<(), nsresult> {
     match &action {
         Action::Quit => request_quit(),
+        Action::ShowWindow => request_show_window(),
     }
 }
 
@@ -37,6 +41,24 @@ fn request_quit() -> Result<(), nsresult> {
     unsafe {
         service
             .Quit(nsIAppStartup::eAttemptQuit, 0, &raw mut cancelled)
+            .to_result()?;
+    }
+    Ok(())
+}
+
+/// Ask the front end to show (or open) the main window
+///
+/// This can only be called on the main thread.
+fn request_show_window() -> Result<(), nsresult> {
+    let service = get_service::<nsIObserverService>(c"@mozilla.org/observer-service;1")
+        .ok_or(nserror::NS_ERROR_NO_INTERFACE)?;
+    unsafe {
+        service
+            .NotifyObservers(
+                std::ptr::null(),
+                c"wyrm-tray-show-window".as_ptr(),
+                std::ptr::null(),
+            )
             .to_result()?;
     }
     Ok(())

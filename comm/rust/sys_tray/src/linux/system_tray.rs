@@ -24,6 +24,12 @@ pub struct SystemTray {
 
     /// Menu items
     items: Vec<TrayItem>,
+
+    /// Whether the icon is shown; a passive item is hidden by the tray host
+    pub visible: bool,
+
+    /// Tooltip text, e.g. the unread message count
+    pub tooltip: String,
 }
 
 /// Locate an icon resource on disk
@@ -123,6 +129,9 @@ pub enum TrayItem {
         /// And is it visible?
         visible: bool,
     },
+
+    /// A separator line between items
+    Separator,
 }
 
 impl From<&TrayItem> for ksni::MenuItem<SystemTray> {
@@ -148,6 +157,7 @@ impl From<&TrayItem> for ksni::MenuItem<SystemTray> {
                     ..Default::default()
                 })
             }
+            TrayItem::Separator => Self::Separator,
         }
     }
 }
@@ -176,6 +186,8 @@ impl SystemTray {
             icon,
             title: title.as_ref().to_string(),
             items: vec![],
+            visible: true,
+            tooltip: String::new(),
         }
     }
 
@@ -197,8 +209,26 @@ impl ksni::Tray for SystemTray {
         self.title.clone()
     }
 
+    fn activate(&mut self, _x: i32, _y: i32) {
+        if let Err(e) = self.dispatch_action(Action::ShowWindow) {
+            log::error!("Couldn't send to main thread: {e}");
+        }
+    }
+
     fn status(&self) -> ksni::Status {
-        ksni::Status::Active
+        if self.visible {
+            ksni::Status::Active
+        } else {
+            ksni::Status::Passive
+        }
+    }
+
+    fn tool_tip(&self) -> ksni::ToolTip {
+        ksni::ToolTip {
+            title: self.title.clone(),
+            description: self.tooltip.clone(),
+            ..Default::default()
+        }
     }
 
     fn icon_name(&self) -> String {

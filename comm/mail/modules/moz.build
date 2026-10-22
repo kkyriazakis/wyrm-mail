@@ -11,6 +11,7 @@ MOZ_SRC_FILES += [
 EXTRA_JS_MODULES += [
     "AttachmentChecker.worker.js",
     "AttachmentInfo.sys.mjs",
+    "BackgroundWindows.sys.mjs",
     "BrowserWindowTracker.sys.mjs",
     "CommandController.mjs",
     "ComposeUtils.sys.mjs",
