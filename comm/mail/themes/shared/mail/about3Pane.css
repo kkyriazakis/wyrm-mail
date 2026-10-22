@@ -931,7 +931,9 @@ conversation-view {
   }
 }
 
-#folderTree > li:first-child > .container {
+/* Keep the first account row's name clear of the floating "more" button.
+ * The account rows sit inside the folder mode's list item. */
+#folderTree > li:first-child > ul > li:first-child > .container {
   padding-inline-end: 32px;
 }
 
