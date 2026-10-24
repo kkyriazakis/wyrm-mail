@@ -30,3 +30,6 @@ __pycache__/
 /packaging/arch/pkg/
 /packaging/arch/*.tar.*
 /packaging/arch/mozbuild/
+
+codebase.md
+DESIGN-RULES.md
