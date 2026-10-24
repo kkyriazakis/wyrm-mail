@@ -1,5 +1,7 @@
 # Wyrm Mail
 
+[![Buy Me a Coffee](https://img.shields.io/badge/Support%20me-Revolut-0075EB?logo=revolut&logoColor=white)](https://revolut.me/kleanthiskyr)
+
 A native, Outlook-first email client for Linux, based on Thunderbird.
 
 It targets Microsoft 365 / Outlook (including work accounts on custom domains)
