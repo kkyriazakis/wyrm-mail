@@ -32,7 +32,7 @@ from tens of minutes to a few hours.
 sudo pacman -S --needed base-devel
 scripts/make-source-tarball.sh packaging/arch
 cd packaging/arch
-makepkg -si
+PKGDEST="$PWD/../../dist" makepkg -si
 ```
 
 ### Fedora / RHEL / AlmaLinux / Rocky (RPM package)
@@ -42,30 +42,32 @@ On RHEL-family systems enable EPEL first (use the latest RHEL 10 minor).
 ```bash
 sudo dnf install rpm-build rpmdevtools dnf-plugins-core
 rpmdev-setuptree
+repo="$PWD"
+mkdir -p "$repo/dist"
 scripts/make-source-tarball.sh ~/rpmbuild/SOURCES
 spectool -g -C ~/rpmbuild/SOURCES packaging/rpm/wyrm-mail.spec
 sudo dnf builddep packaging/rpm/wyrm-mail.spec
-rpmbuild -ba packaging/rpm/wyrm-mail.spec
-sudo dnf install ~/rpmbuild/RPMS/x86_64/wyrm-mail-*.rpm
+rpmbuild --define "_rpmdir $repo/dist" \
+  --define "_srcrpmdir $repo/dist" -ba packaging/rpm/wyrm-mail.spec
+sudo dnf install "$repo"/dist/x86_64/wyrm-mail-*.rpm
 ```
 
-### Debian / Ubuntu (from source, no .deb yet)
+### Debian / Ubuntu (.deb package)
 
-There is no Debian package yet, so build from source with Mozilla's
-bootstrap, which installs the needed toolchain with apt:
+Build the Debian package from source. Install the build dependencies with
+Mozilla's bootstrap, then run the package script:
 
 ```bash
 sudo apt install git python3 python3-pip curl
 scripts/setup.sh
 cd firefox
 ./mach --no-interactive bootstrap --application-choice "Firefox for Desktop"
-./mach build
-./mach run          # run from the build tree
+cd ..
+scripts/build-deb.sh
 ```
 
-The result lives in `firefox/obj-wyrm-mail/dist/bin/`. The same steps work on
-any distribution. See [docs/SETUP.md](docs/SETUP.md) and
-[docs/PACKAGING.md](docs/PACKAGING.md) for details.
+The `.deb` package is written to `dist/`. See [docs/SETUP.md](docs/SETUP.md)
+and [docs/PACKAGING.md](docs/PACKAGING.md) for details.
 
 ## Repository layout
 

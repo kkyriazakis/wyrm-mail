@@ -8,6 +8,7 @@
 obj-*/
 *.log
 /artifacts/
+/dist/
 
 # GTK prototype build output.
 /prototypes/gtk-mail-client/build/

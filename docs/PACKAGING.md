@@ -3,10 +3,12 @@
 How to build native packages of Wyrm Mail:
 
 - an RPM for Fedora and RHEL-family distros (RHEL, AlmaLinux, Rocky);
-- a pacman package for Arch Linux.
+- a pacman package for Arch Linux;
+- a Debian package for Debian and Ubuntu.
 
-Both packages build with the distro's own toolchains (clang, rust, cbindgen,
-nodejs) and work offline. They do not use `mach bootstrap` or `~/.mozbuild`.
+Arch and RPM packages build with the distro's own toolchains (clang, rust,
+cbindgen, nodejs) and do not use `mach bootstrap` or `~/.mozbuild`. The Debian
+script uses Mozilla's bootstrapped toolchain and a separate object directory.
 For a development build, see [SETUP.md](SETUP.md) instead.
 
 ## Layout
@@ -15,13 +17,14 @@ For a development build, see [SETUP.md](SETUP.md) instead.
 |---|---|
 | `packaging/rpm/wyrm-mail.spec` | RPM spec. |
 | `packaging/arch/PKGBUILD` | Arch package recipe. |
-| `packaging/common/mozconfig` | Build options both packages add to the top-level `mozconfig`. |
+| `packaging/debian/control.in`, `scripts/build-deb.sh` | Debian package metadata and build script. |
+| `packaging/common/mozconfig` | Build options package builds add to the top-level `mozconfig`. |
 | `packaging/common/install-extras.sh` | Installs the desktop file, metainfo, icons, `vendor.js` and `distribution.ini`. |
 | `packaging/common/*.desktop`, `*.metainfo.xml`, `vendor.js` | Files that script installs. |
 | `scripts/make-source-tarball.sh` | Packs this repository into `wyrm-mail-<version>.tar.xz`. |
 | `scripts/sync-packaging.sh` | Sets the version and Firefox tag in both recipes from `comm/`. |
 
-Each package has two sources:
+The Arch and RPM recipes have two sources:
 
 1. The Firefox source at the tag `comm/.gecko_rev.yml` pins, downloaded from
    GitHub (~1 GB).
@@ -57,12 +60,15 @@ of free disk, and 1–2 hours on 8 cores.
 sudo dnf install rpm-build rpmdevtools dnf-plugins-core
 rpmdev-setuptree
 
+repo="$PWD"
+mkdir -p "$repo/dist"
 scripts/make-source-tarball.sh ~/rpmbuild/SOURCES
 spectool -g -C ~/rpmbuild/SOURCES packaging/rpm/wyrm-mail.spec
 sudo dnf builddep packaging/rpm/wyrm-mail.spec
-rpmbuild -ba packaging/rpm/wyrm-mail.spec
+rpmbuild --define "_rpmdir $repo/dist" \
+  --define "_srcrpmdir $repo/dist" -ba packaging/rpm/wyrm-mail.spec
 
-sudo dnf install ~/rpmbuild/RPMS/x86_64/wyrm-mail-*.rpm
+sudo dnf install "$repo"/dist/x86_64/wyrm-mail-*.rpm
 ```
 
 On RHEL, AlmaLinux and Rocky, enable EPEL first (`cbindgen` and `nasm` come
@@ -89,7 +95,7 @@ sudo pacman -S --needed base-devel
 
 scripts/make-source-tarball.sh packaging/arch
 cd packaging/arch
-makepkg -si
+PKGDEST="$PWD/../../dist" makepkg -si
 ```
 
 `makepkg -s` installs the build dependencies, and `-i` installs the
@@ -100,6 +106,24 @@ To publish on the AUR, push `PKGBUILD` and `.SRCINFO`
 (`makepkg --printsrcinfo > .SRCINFO`) to an AUR repository. The AUR does not
 host source tarballs, so the second source must first be changed to a
 download URL, such as a GitHub release asset.
+
+## Debian / Ubuntu
+
+Install the build dependencies with the distribution's package manager, then
+run the build script from the repository root:
+
+```bash
+sudo apt install dpkg-dev git python3 curl
+scripts/setup.sh
+cd firefox
+./mach --no-interactive bootstrap --application-choice "Firefox for Desktop"
+cd ..
+scripts/build-deb.sh
+```
+
+The script builds in a separate `firefox/obj-wyrm-mail-deb/` directory and
+writes `dist/wyrm-mail_<version>_<architecture>.deb`. Install it with
+`sudo apt install ./dist/wyrm-mail_*.deb`.
 
 ## Updating
 
