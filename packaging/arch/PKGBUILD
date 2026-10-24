@@ -3,7 +3,7 @@
 # Maintainer: Kleanthis Kyriazakis <kleanthis_kyriaz@hotmail.com>
 
 pkgname=wyrm-mail
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 _gecko_tag=FIREFOX_157_0_BUILD1
 pkgdesc="Outlook-first email client based on Thunderbird"
@@ -76,6 +76,8 @@ EOF
 
 build() {
   cd "firefox-$_gecko_tag"
+  CXXFLAGS="${CXXFLAGS//-fexceptions/}"
+  export CXXFLAGS
   export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
   export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
   export MOZ_NOSPAM=1

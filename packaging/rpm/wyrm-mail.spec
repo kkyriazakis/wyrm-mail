@@ -17,7 +17,7 @@
 %global __requires_exclude ^(libxul|liblgpllibs|libmoz[a-z0-9]+|libgkcodecs|librnp|libipcclientcerts|libnss3|libnssutil3|libsmime3|libssl3|libsoftokn3|libfreeblpriv3|libnspr4|libplc4|libplds4)\\.so.*$
 
 Name:           wyrm-mail
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        Outlook-first email client based on Thunderbird
 
@@ -112,6 +112,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/%{app_id}.meta
 %{_datadir}/icons/hicolor/symbolic/apps/%{name}-symbolic.svg
 
 %changelog
+* Sat Oct 24 2026 Kleanthis Kyriazakis <kleanthis_kyriaz@hotmail.com> - 1.0.1-1
+- Release 1.0.1
 * Thu Oct 22 2026 Kleanthis Kyriazakis <kleanthis_kyriaz@hotmail.com> - 1.0.0-1
 - First stable release
 * Mon Oct 19 2026 Kleanthis Kyriazakis <kleanthis_kyriaz@hotmail.com> - 157.0.2-1
