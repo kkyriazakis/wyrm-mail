@@ -75,6 +75,16 @@ On RHEL, AlmaLinux and Rocky, enable EPEL first (`cbindgen` and `nasm` come
 from there). Gecko needs a recent rust and clang, so use the latest minor
 release of RHEL 10; older releases are likely to fail at configure.
 
+The RPM recipe explicitly points bindgen at the system library directory for
+libclang. Gecko's automatic search can miss Fedora/RHEL's libclang location,
+causing `Unable to find libclang` during the Rust build even with
+`clang-devel` installed.
+
+The recipe also removes `-fexceptions` from RPM's default compiler flags.
+Otherwise it overrides Gecko's `-fno-exceptions` when Rust crates compile C++
+sources, causing an STL wrapper error. Forcing `-fno-exceptions` globally is
+not an option: bundled Botan (used by RNP) needs exceptions.
+
 ### COPR
 
 To publish a dnf repository, create a COPR project with the Fedora (and

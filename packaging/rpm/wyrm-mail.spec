@@ -79,6 +79,7 @@ ln -sfn %{name}-%{version}/comm comm
 cat %{name}-%{version}/mozconfig %{name}-%{version}/packaging/common/mozconfig > mozconfig
 cat >> mozconfig <<'EOF'
 ac_add_options --libdir=%{_libdir}
+ac_add_options --with-libclang-path=%{_libdir}
 ac_add_options --with-distribution-id=org.fedoraproject
 # Fedora and RHEL do not package a wasi sysroot that Gecko can use.
 ac_add_options --without-wasm-sandboxed-libraries
@@ -88,6 +89,10 @@ EOF
 export MOZBUILD_STATE_PATH="$PWD/.mozbuild"
 export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
 export MOZ_NOSPAM=1
+# Drop RPM's -fexceptions: it overrides Gecko's -fno-exceptions in Rust-built
+# C++. Components that need exceptions (e.g. Botan) enable them themselves.
+export CFLAGS="$(echo "%{optflags}" | sed 's/ -fexceptions//g')"
+export CXXFLAGS="$CFLAGS"
 ulimit -n 4096
 ./mach build
 
